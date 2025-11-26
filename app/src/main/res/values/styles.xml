@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material3 Button Styles -->
+    <style name="Button.Filled" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/md_primary</item>
+        <item name="android:textColor">@color/md_on_primary</item>
+        <item name="cornerRadius">@dimen/corner_radius_full</item>
+        <item name="android:elevation">@dimen/elevation_1</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+
+    <style name="Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/md_outline</item>
+        <item name="android:textColor">@color/md_primary</item>
+        <item name="cornerRadius">@dimen/corner_radius_full</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+
+    <!-- TextInputLayout Style -->
+    <style name="TextInputLayout.Rounded" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_full</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_full</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_full</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_full</item>
+        <item name="boxBackgroundColor">@color/md_surface_container_high</item>
+        <item name="hintTextColor">@color/md_on_surface_variant</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Card Style -->
+    <style name="CardView.Rounded" parent="CardView">
+        <item name="cardCornerRadius">@dimen/corner_radius_20</item>
+        <item name="cardElevation">@dimen/elevation_2</item>
+        <item name="cardBackgroundColor">@color/md_surface_container_low</item>
+    </style>
+
+    <!-- Bottom Navigation Style -->
+    <style name="BottomNavigationView.Custom" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemBackground">@drawable/bottom_nav_item_background</item>
+        <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
+        <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
+        <item name="android:background">@color/md_surface_container</item>
+    </style>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Corner radius -->
+    <dimen name="corner_radius_20">20dp</dimen>
+    <dimen name="corner_radius_28">28dp</dimen>
+    <dimen name="corner_radius_full">50dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_32">32dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_1">1dp</dimen>
+    <dimen name="elevation_2">2dp</dimen>
+    <dimen name="elevation_3">3dp</dimen>
+    <dimen name="elevation_4">4dp</dimen>
+
+    <!-- Sizes -->
+    <dimen name="avatar_size_sm">64dp</dimen>
+    <dimen name="avatar_size_md">112dp</dimen>
+    <dimen name="avatar_size_lg">128dp</dimen>
+    <dimen name="icon_button_size">48dp</dimen>
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="button_height">56dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_sm">14sp</dimen>
+    <dimen name="text_base">16sp</dimen>
+    <dimen name="text_lg">18sp</dimen>
+    <dimen name="text_xl">20sp</dimen>
+    <dimen name="text_2xl">24sp</dimen>
+</resources>

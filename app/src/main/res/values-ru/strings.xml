@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="tagline">Найди единомышленников</string>
+
+    <!-- Auth -->
+    <string name="login">Вход</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="enter_email">your@email.com</string>
+    <string name="enter_password">••••••••</string>
+    <string name="no_account">Нет аккаунта?</string>
+    <string name="have_account">Уже есть аккаунт?</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="sign_in">Войти</string>
+
+    <!-- Profile -->
+    <string name="profile">Профиль</string>
+    <string name="name">Имя</string>
+    <string name="enter_name">Введите ваше имя</string>
+    <string name="my_interests">Мои интересы</string>
+    <string name="interests_not_selected">Интересы не выбраны</string>
+    <string name="select">Выбрать</string>
+    <string name="hide">Скрыть</string>
+    <string name="statistics">Статистика</string>
+    <string name="chats">Чатов</string>
+    <string name="rooms">Комнат</string>
+    <string name="matches">Совпадений</string>
+    <string name="switch_profile">Сменить профиль</string>
+    <string name="fill_profile">Заполните профиль, чтобы начать</string>
+    <string name="fill_profile_button">Заполнить профиль</string>
+    <string name="select_interests_hint">Нажмите \"Выбрать\" чтобы добавить интересы</string>
+
+    <!-- Home -->
+    <string name="hello">Привет,</string>
+    <string name="switch_it">Сменить</string>
+    <string name="chat_roulette">Чат-рулетка</string>
+    <string name="chat_roulette_description">Быстрое общение 1 на 1 с единомышленниками</string>
+    <string name="active_rooms">Активные комнаты</string>
+    <string name="rooms_count">%d комнат</string>
+    <string name="join">Войти</string>
+
+    <!-- Navigation -->
+    <string name="home">Главная</string>
+    <string name="rooms_nav">Комнаты</string>
+    <string name="profile_nav">Профиль</string>
+
+    <!-- Rooms -->
+    <string name="search_rooms">Поиск комнат…</string>
+    <string name="all">Все</string>
+    <string name="popular">Популярные</string>
+    <string name="new_rooms">Новые</string>
+    <string name="no_rooms_found">Комнаты не найдены</string>
+    <string name="members">%d участников</string>
+    <string name="online">%d онлайн</string>
+
+    <!-- Chat -->
+    <string name="type_message">Напишите сообщение…</string>
+    <string name="send">Отправить</string>
+    <string name="searching_partner">Ищем собеседника…</string>
+    <string name="searching_description">Подбираем человека с похожими интересами</string>
+    <string name="skip">Пропустить</string>
+    <string name="room_members">Участники комнаты</string>
+    <string name="online_status">В сети</string>
+    <string name="offline_status">Не в сети</string>
+    <string name="you">Вы</string>
+
+    <!-- Interests -->
+    <string-array name="interests_list">
+        <item>Технологии</item>
+        <item>Искусство</item>
+        <item>Спорт</item>
+        <item>Музыка</item>
+        <item>Путешествия</item>
+        <item>Кино</item>
+        <item>Книги</item>
+        <item>Игры</item>
+        <item>Наука</item>
+        <item>Мода</item>
+        <item>Фотография</item>
+        <item>Кулинария</item>
+    </string-array>
+
+    <!-- Profile Selector -->
+    <string name="select_profile">Выберите профиль</string>
+    <string name="select_profile_description">С каким профилем хотите продолжить?</string>
+    <string name="create_new_profile">Создать новый профиль</string>
+    <string name="create_profile_hint">Добавьте еще одну персону</string>
+    <string name="new_profile">Новый профиль</string>
+    <string name="profile_name">Имя профиля</string>
+    <string name="enter_profile_name">Введите имя</string>
+    <string name="create_profile">Создать профиль</string>
+</resources>

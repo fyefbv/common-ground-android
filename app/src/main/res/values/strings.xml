@@ -1,3 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">common-ground-android</string>
+    <!-- App -->
+    <string name="app_name" translatable="false">Common Ground</string>
+    <string name="tagline">Find like-minded people</string>
+
+    <!-- Auth -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_email">your@email.com</string>
+    <string name="enter_password">••••••••</string>
+    <string name="no_account">No account?</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <!-- Profile -->
+    <string name="profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="my_interests">My Interests</string>
+    <string name="interests_not_selected">No interests selected</string>
+    <string name="select">Select</string>
+    <string name="hide">Hide</string>
+    <string name="statistics">Statistics</string>
+    <string name="chats">Chats</string>
+    <string name="rooms">Rooms</string>
+    <string name="matches">Matches</string>
+    <string name="switch_profile">Switch Profile</string>
+    <string name="fill_profile">Fill out your profile to start</string>
+    <string name="fill_profile_button">Fill Profile</string>
+    <string name="select_interests_hint">Click \"Select\" to add interests</string>
+
+    <!-- Home -->
+    <string name="hello">Hello,</string>
+    <string name="switch_it">Switch</string>
+    <string name="chat_roulette">Chat Roulette</string>
+    <string name="chat_roulette_description">Quick 1-on-1 chat with like-minded people</string>
+    <string name="active_rooms">Active Rooms</string>
+    <string name="rooms_count">%d rooms</string>
+    <string name="join">Join</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="rooms_nav">Rooms</string>
+    <string name="profile_nav">Profile</string>
+
+    <!-- Rooms -->
+    <string name="search_rooms">Search rooms…</string>
+    <string name="all">All</string>
+    <string name="popular">Popular</string>
+    <string name="new_rooms">New</string>
+    <string name="no_rooms_found">No rooms found</string>
+    <string name="members">%d members</string>
+    <string name="online">%d online</string>
+
+    <!-- Chat -->
+    <string name="type_message">Type a message…</string>
+    <string name="send">Send</string>
+    <string name="searching_partner">Searching for a partner…</string>
+    <string name="searching_description">Finding someone with similar interests</string>
+    <string name="skip">Skip</string>
+    <string name="room_members">Room Members</string>
+    <string name="online_status">Online</string>
+    <string name="offline_status">Offline</string>
+    <string name="you">You</string>
+
+    <!-- Interests -->
+    <string-array name="interests_list">
+        <item>Technology</item>
+        <item>Art</item>
+        <item>Sports</item>
+        <item>Music</item>
+        <item>Travel</item>
+        <item>Movies</item>
+        <item>Books</item>
+        <item>Games</item>
+        <item>Science</item>
+        <item>Fashion</item>
+        <item>Photography</item>
+        <item>Cooking</item>
+    </string-array>
+
+    <!-- Profile Selector -->
+    <string name="select_profile">Select Profile</string>
+    <string name="select_profile_description">Which profile would you like to continue with?</string>
+    <string name="create_new_profile">Create New Profile</string>
+    <string name="create_profile_hint">Add another persona</string>
+    <string name="new_profile">New Profile</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="enter_profile_name">Enter name</string>
+    <string name="create_profile">Create Profile</string>
 </resources>

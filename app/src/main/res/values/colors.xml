@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Material Design 3 Sunset Orange Theme -->
+    <color name="md_primary">#F97316</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_primary_container">#FFEDD5</color>
+    <color name="md_on_primary_container">#7C2D12</color>
+
+    <color name="md_secondary">#EF4444</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_secondary_container">#FEE2E2</color>
+    <color name="md_on_secondary_container">#7F1D1D</color>
+
+    <color name="md_tertiary">#FBBF24</color>
+    <color name="md_on_tertiary">#422006</color>
+    <color name="md_tertiary_container">#FEF3C7</color>
+    <color name="md_on_tertiary_container">#78350F</color>
+
+    <color name="md_error">#DC2626</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_error_container">#FEE2E2</color>
+    <color name="md_on_error_container">#7F1D1D</color>
+
+    <color name="md_surface">#FFFBF5</color>
+    <color name="md_on_surface">#1C1B1F</color>
+    <color name="md_surface_variant">#FFF7ED</color>
+    <color name="md_on_surface_variant">#52443C</color>
+    <color name="md_outline">#A58D7F</color>
+    <color name="md_outline_variant">#E7D7CC</color>
+
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_container_low">#FEF8F3</color>
+    <color name="md_surface_container">#FFF7ED</color>
+    <color name="md_surface_container_high">#FFF3E9</color>
+    <color name="md_surface_container_highest">#FFEFE0</color>
+
+    <!-- Additional colors -->
+    <color name="green_online">#4CAF50</color>
+    <color name="flame_red">#FF6B6B</color>
 </resources>
