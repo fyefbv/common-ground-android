@@ -39,6 +39,6 @@
         <item name="itemBackground">@drawable/bottom_nav_item_background</item>
         <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
         <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
-        <item name="android:background">@color/md_surface_container</item>
+        <item name="android:background">@drawable/bottom_nav_background</item>
     </style>
 </resources>
