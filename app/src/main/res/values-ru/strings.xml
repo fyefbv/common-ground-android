@@ -5,8 +5,10 @@
 
     <!-- Auth -->
     <string name="login">Вход</string>
+    <string name="login_description">Войдите в свой аккаунт</string>
     <string name="register">Регистрация</string>
-    <string name="email">Email</string>
+    <string name="register_description">Создайте новый аккаунт</string>
+    <string name="email">Почта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Подтвердите пароль</string>
     <string name="enter_email">your@email.com</string>
@@ -92,4 +94,12 @@
     <string name="profile_name">Имя профиля</string>
     <string name="enter_profile_name">Введите имя</string>
     <string name="create_profile">Создать профиль</string>
+
+    <!-- Error Messages -->
+    <string name="error_all_fields_required">Пожалуйста, заполните все поля</string>
+    <string name="error_passwords_dont_match">Пароли не совпадают</string>
+    <string name="error_password_too_short">Пароль должен содержать не менее 6 символов</string>
+    <string name="error_invalid_email">Введите корректный email адрес</string>
+    <string name="error_network">Ошибка сети. Проверьте подключение</string>
+    <string name="error_unknown">Произошла неизвестная ошибка</string>
 </resources>

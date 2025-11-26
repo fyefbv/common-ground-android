@@ -37,8 +37,25 @@
     <!-- Bottom Navigation Style -->
     <style name="BottomNavigationView.Custom" parent="Widget.Material3.BottomNavigationView">
         <item name="itemBackground">@drawable/bottom_nav_item_background</item>
-        <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
-        <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
         <item name="android:background">@drawable/bottom_nav_background</item>
+    </style>
+
+    <!-- Style for clickable link text -->
+    <style name="TextLink">
+        <item name="android:textColor">@color/md_primary</item>
+        <item name="android:textSize">@dimen/text_sm</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingStart">@dimen/spacing_4</item>
+        <item name="android:paddingEnd">@dimen/spacing_4</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <!-- Style for regular secondary text -->
+    <style name="TextSecondary">
+        <item name="android:textColor">@color/md_on_surface_variant</item>
+        <item name="android:textSize">@dimen/text_sm</item>
     </style>
 </resources>

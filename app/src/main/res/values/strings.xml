@@ -6,7 +6,9 @@
 
     <!-- Auth -->
     <string name="login">Login</string>
+    <string name="login_description">Log in to your account</string>
     <string name="register">Register</string>
+    <string name="register_description">Create a new account</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -93,4 +95,12 @@
     <string name="profile_name">Profile Name</string>
     <string name="enter_profile_name">Enter name</string>
     <string name="create_profile">Create Profile</string>
+
+    <!-- Error Messages -->
+    <string name="error_all_fields_required">Please fill in all fields</string>
+    <string name="error_passwords_dont_match">Passwords don\'t match</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_network">Network error. Please check your connection</string>
+    <string name="error_unknown">An unknown error occurred</string>
 </resources>
