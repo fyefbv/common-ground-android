@@ -10,6 +10,6 @@
         android:title="@string/rooms_nav" />
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/ic_person"
         android:title="@string/profile_nav" />
 </menu>
