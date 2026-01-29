@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/md_surface"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_surface_container"
+        android:elevation="@dimen/elevation_2">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:titleTextColor="@color/md_on_surface"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetLeftWithNavigation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/spacing_16"
+                android:gravity="center_vertical">
+
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/md_on_surface" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/room_management"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="@dimen/spacing_16">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Rounded"
+                app:cardCornerRadius="@dimen/corner_radius_20"
+                app:cardElevation="@dimen/elevation_1"
+                android:layout_marginBottom="@dimen/spacing_16">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_16">
+
+                    <TextView
+                        android:id="@+id/room_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Технологии и AI"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_lg"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/spacing_8" />
+
+                    <TextView
+                        android:id="@+id/room_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Обсуждаем новейшие технологии и искусственный интеллект"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="@dimen/text_sm"
+                        android:layout_marginBottom="@dimen/spacing_12" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            tools:text="24 участника"
+                            android:textColor="@color/md_on_surface_variant"
+                            android:textSize="@dimen/text_sm" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_room_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            style="@style/Button.Outlined"
+                            android:text="@string/edit"
+                            android:textSize="@dimen/text_sm" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Rounded"
+                app:cardCornerRadius="@dimen/corner_radius_20"
+                app:cardElevation="@dimen/elevation_1"
+                android:layout_marginBottom="@dimen/spacing_16">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/participants"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_lg"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/spacing_12" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/participants_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="300dp"
+                        tools:listitem="@layout/item_participant"
+                        tools:itemCount="5" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/show_all_participants_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Button.Outlined"
+                        android:text="@string/show_all_participants"
+                        android:textSize="@dimen/text_sm"
+                        android:layout_marginTop="@dimen/spacing_12" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Rounded"
+                app:cardCornerRadius="@dimen/corner_radius_20"
+                app:cardElevation="@dimen/elevation_1"
+                android:layout_marginBottom="@dimen/spacing_16">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_lg"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/spacing_12" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="@dimen/spacing_16">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/max_participants"
+                            android:textColor="@color/md_on_surface"
+                            android:textSize="@dimen/text_base" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/max_participants_slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="2"
+                            android:valueTo="100"
+                            android:value="50"
+                            android:stepSize="1"
+                            app:trackColorInactive="@color/md_outline_variant"
+                            app:trackColorActive="@color/md_primary"
+                            app:thumbColor="@color/md_primary" />
+
+                        <TextView
+                            android:id="@+id/max_participants_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="50 участников"
+                            android:textColor="@color/md_on_surface_variant"
+                            android:textSize="@dimen/text_sm"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_16">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/private_room"
+                            android:textColor="@color/md_on_surface"
+                            android:textSize="@dimen/text_base" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/private_room_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="@color/md_primary"
+                            app:thumbTint="@color/md_on_primary" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/save_settings_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Button.Filled"
+                        android:text="@string/save_settings"
+                        android:textSize="@dimen/text_sm" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Rounded"
+                app:cardCornerRadius="@dimen/corner_radius_20"
+                app:cardElevation="@dimen/elevation_1"
+                android:backgroundTint="@color/md_error_container">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_16">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/leave_room_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Button.Outlined"
+                        android:text="@string/leave_room"
+                        android:textColor="@color/md_error"
+                        app:strokeColor="@color/md_error"
+                        android:textSize="@dimen/text_sm"
+                        android:layout_marginBottom="@dimen/spacing_8" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/delete_room_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Button.Filled"
+                        android:backgroundTint="@color/md_error"
+                        android:text="@string/delete_room"
+                        android:textSize="@dimen/text_sm" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

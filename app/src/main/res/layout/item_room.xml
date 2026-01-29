@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardView.Rounded"
@@ -35,7 +35,7 @@
                     android:id="@+id/room_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Название комнаты"
+                    tools:text="Название комнаты"
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_lg"
                     android:textStyle="bold"
@@ -45,9 +45,10 @@
                     android:id="@+id/room_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Описание комнаты"
+                    tools:text="Описание комнаты"
                     android:textColor="@color/md_on_surface_variant"
-                    android:textSize="@dimen/text_sm" />
+                    android:textSize="@dimen/text_sm"
+                    android:layout_marginBottom="@dimen/spacing_8" />
 
             </LinearLayout>
 
@@ -61,50 +62,88 @@
 
         </LinearLayout>
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tags_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="@dimen/spacing_4"
+            app:chipSpacingVertical="@dimen/spacing_4"
+            android:layout_marginBottom="@dimen/spacing_12" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_12">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginEnd="@dimen/spacing_12">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/topic_chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Тема"
-                    app:chipBackgroundColor="@color/md_secondary_container"
-                    android:textColor="@color/md_on_secondary_container"
-                    app:chipCornerRadius="@dimen/corner_radius_full" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/md_on_surface_variant"
+                    android:layout_marginEnd="@dimen/spacing_4" />
 
                 <TextView
-                    android:id="@+id/members_count"
+                    android:id="@+id/participants_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24 участников"
+                    tools:text="12/50"
                     android:textColor="@color/md_on_surface_variant"
-                    android:textSize="@dimen/text_sm"
-                    android:layout_marginStart="@dimen/spacing_12" />
+                    android:textSize="@dimen/text_sm" />
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/join_button"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/primary_interest_chip"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                style="@style/Button.Filled"
-                android:text="@string/join"
-                android:textSize="@dimen/text_sm"
-                android:paddingStart="@dimen/spacing_16"
-                android:paddingEnd="@dimen/spacing_16" />
+                android:layout_height="wrap_content"
+                tools:text="Технологии"
+                app:chipBackgroundColor="@color/md_tertiary_container"
+                android:textColor="@color/md_on_tertiary_container"
+                app:chipCornerRadius="@dimen/corner_radius_full"
+                android:textSize="10sp"
+                android:layout_marginEnd="@dimen/spacing_8" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/privacy_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Приватная"
+                app:chipBackgroundColor="@color/md_secondary_container"
+                android:textColor="@color/md_on_secondary_container"
+                app:chipCornerRadius="@dimen/corner_radius_full"
+                android:textSize="10sp" />
 
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/join_button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            style="@style/Button.Filled"
+            android:text="@string/join"
+            android:textSize="@dimen/text_sm"
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingEnd="@dimen/spacing_16" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/leave_button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            style="@style/Button.Outlined"
+            android:text="@string/leave"
+            android:textSize="@dimen/text_sm"
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingEnd="@dimen/spacing_16"
+            android:visibility="gone" />
 
     </LinearLayout>
 

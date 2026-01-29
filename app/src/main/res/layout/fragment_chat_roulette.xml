@@ -1,10 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ChatRouletteFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/md_surface"
+    android:fitsSystemWindows="true">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_surface_container"
+        android:elevation="@dimen/elevation_2">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/searching_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:titleTextColor="@color/md_on_surface">
 
-</FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chat_roulette"
+                android:textColor="@color/md_on_surface"
+                android:layout_gravity="center"
+                android:textSize="@dimen/text_xl"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <LinearLayout
+            android:id="@+id/session_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:background="@color/md_primary_container"
+            android:elevation="@dimen/elevation_3"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_12">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/spacing_12">
+
+                    <TextView
+                        android:id="@+id/session_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="05:00"
+                        android:textColor="@color/md_on_primary_container"
+                        android:textSize="@dimen/text_xl"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/session_time"
+                        android:textColor="@color/md_on_primary_container"
+                        android:textSize="@dimen/text_xs"
+                        android:alpha="0.8" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/extend_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    style="@style/Button.Outlined"
+                    android:text="@string/extend_session_button"
+                    android:textSize="@dimen/text_sm"
+                    android:textColor="@color/md_on_primary_container"
+                    app:strokeColor="@color/md_on_primary_container"
+                    android:layout_marginStart="@dimen/spacing_8" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/spacing_12">
+
+                <ImageButton
+                    android:id="@+id/complete_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle_background_white_alpha"
+                    android:src="@drawable/ic_exit"
+                    app:tint="@color/md_on_primary_container"
+                    android:layout_marginEnd="@dimen/spacing_8" />
+
+                <ImageButton
+                    android:id="@+id/report_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle_background_white_alpha"
+                    android:src="@drawable/ic_flag"
+                    app:tint="@color/md_on_primary_container" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/searching_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="@dimen/spacing_32"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Rounded"
+            app:cardCornerRadius="@dimen/corner_radius_28"
+            app:cardElevation="@dimen/elevation_3"
+            android:layout_margin="@dimen/spacing_32">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_32"
+                android:gravity="center">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/searching_animation"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:lottie_rawRes="@raw/loading_animation"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    android:layout_marginBottom="@dimen/spacing_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/searching_partner"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_8"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/searching_description"
+                    android:textColor="@color/md_on_surface_variant"
+                    android:textSize="@dimen/text_sm"
+                    android:gravity="center" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancel_search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Button.Outlined"
+                    android:text="@string/cancel_search"
+                    android:layout_marginTop="@dimen/spacing_24" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_16"
+            android:background="@color/md_surface_container_low"
+            android:elevation="@dimen/elevation_1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/partner_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_person"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/md_outline_variant" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_12">
+
+                <TextView
+                    android:id="@+id/partner_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Алексей"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_lg"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/partner_interests_chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="@dimen/spacing_4"
+                    android:layout_marginTop="@dimen/spacing_4" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/spacing_8"
+            tools:listitem="@layout/item_roulette_message"
+            tools:itemCount="10"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_16"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputLayout.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/spacing_8">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/message_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="@string/type_message"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_base"
+                    android:maxLines="3" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/send_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/circle_background_primary"
+                android:src="@drawable/ic_send"
+                app:tint="@color/md_on_primary"
+                android:contentDescription="@string/send" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

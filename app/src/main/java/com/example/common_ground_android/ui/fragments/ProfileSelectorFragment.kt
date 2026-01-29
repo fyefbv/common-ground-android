@@ -47,7 +47,7 @@ class ProfileSelectorFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.createProfileCard.setOnClickListener {
-            navigateToCreateProfile()
+
         }
     }
 
@@ -61,9 +61,5 @@ class ProfileSelectorFragment : Fragment() {
 
     private fun navigateToHome() {
         findNavController().navigate(R.id.action_profileSelectorFragment_to_homeFragment)
-    }
-
-    private fun navigateToCreateProfile() {
-        findNavController().navigate(R.id.action_profileSelectorFragment_to_profileFragment)
     }
 }

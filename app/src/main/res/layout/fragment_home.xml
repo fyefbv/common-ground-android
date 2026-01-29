@@ -18,7 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:titleTextColor="@color/md_on_surface">
+            app:titleTextColor="@color/md_on_surface"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetLeftWithNavigation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +49,7 @@
                         android:id="@+id/user_name_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User Name"
+                        tools:text="User Name"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_xl"
                         android:textStyle="bold" />
@@ -96,7 +100,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Chat Roulette Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/chat_roulette_card"
                 android:layout_width="match_parent"
@@ -159,6 +162,7 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_person"
                         android:alpha="0.2"
                         app:tint="@color/md_on_primary" />
@@ -187,7 +191,7 @@
                     android:id="@+id/rooms_count_chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 комнат"
+                    tools:text="5 комнат"
                     app:chipBackgroundColor="@color/md_secondary_container"
                     android:textColor="@color/md_on_secondary_container"
                     app:chipCornerRadius="@dimen/corner_radius_full" />

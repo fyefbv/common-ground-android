@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/CardView.Rounded"
+    app:cardCornerRadius="@dimen/corner_radius_20"
+    app:cardElevation="@dimen/elevation_1"
+    android:layout_marginBottom="@dimen/spacing_8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_12"
+        android:gravity="center_vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/participant_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_person"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/md_outline_variant" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/spacing_12">
+
+            <TextView
+                android:id="@+id/participant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Александр"
+                android:textColor="@color/md_on_surface"
+                android:textSize="@dimen/text_base"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/participant_role_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Создатель"
+                    app:chipBackgroundColor="@color/md_primary_container"
+                    android:textColor="@color/md_on_primary_container"
+                    app:chipCornerRadius="@dimen/corner_radius_full"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:id="@+id/online_status_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_8"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/online_indicator"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:src="@drawable/ic_circle"
+                        app:tint="@color/green_online"
+                        android:layout_marginEnd="@dimen/spacing_4" />
+
+                    <TextView
+                        android:id="@+id/online_status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/online_status"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="@dimen/text_xs" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/offline_status_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_8"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/offline_indicator"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:src="@drawable/ic_circle"
+                        app:tint="@color/md_outline"
+                        android:layout_marginEnd="@dimen/spacing_4" />
+
+                    <TextView
+                        android:id="@+id/offline_status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/offline_status"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="@dimen/text_xs" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/participant_menu_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_more_vert"
+            android:background="@drawable/circle_background_outline"
+            app:tint="@color/md_on_surface_variant"
+            android:contentDescription="@string/participant_actions"
+            android:padding="@dimen/spacing_8" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

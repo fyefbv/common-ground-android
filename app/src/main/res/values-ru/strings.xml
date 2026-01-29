@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
+    <string name="app_name" translatable="false">Common Ground</string>
     <string name="tagline">Найди единомышленников</string>
 
     <!-- Auth -->
@@ -33,7 +34,10 @@
     <string name="switch_profile">Сменить профиль</string>
     <string name="fill_profile">Заполните профиль, чтобы начать</string>
     <string name="fill_profile_button">Заполнить профиль</string>
-    <string name="select_interests_hint">Нажмите \"Выбрать\" чтобы добавить интересы</string>
+    <string name="select_interests_hint">Нажмите "Выбрать" чтобы добавить интересы</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="change_role_title">Изменить роль участника</string>
 
     <!-- Home -->
     <string name="hello">Привет,</string>
@@ -54,9 +58,17 @@
     <string name="all">Все</string>
     <string name="popular">Популярные</string>
     <string name="new_rooms">Новые</string>
+    <string name="my_rooms">Мои</string>
     <string name="no_rooms_found">Комнаты не найдены</string>
     <string name="members">%d участников</string>
     <string name="online">%d онлайн</string>
+    <string name="joined">Вы в комнате</string>
+    <string name="leave">Покинуть</string>
+    <string name="tags_label">Теги:</string>
+    <string name="participants_label">участника</string>
+    <string name="messages_label">сообщений</string>
+    <string name="max_label">макс.</string>
+    <string name="messages_title">Сообщения</string>
 
     <!-- Chat -->
     <string name="type_message">Напишите сообщение…</string>
@@ -68,6 +80,9 @@
     <string name="online_status">В сети</string>
     <string name="offline_status">Не в сети</string>
     <string name="you">Вы</string>
+    <string name="extend_session_button">+5 мин</string>
+    <string name="session_time">Время сессии</string>
+    <string name="chat_partner_label">Собеседник</string>
 
     <!-- Interests -->
     <string-array name="interests_list">
@@ -94,6 +109,7 @@
     <string name="profile_name">Имя профиля</string>
     <string name="enter_profile_name">Введите имя</string>
     <string name="create_profile">Создать профиль</string>
+    <string name="select_interests_title">Выберите интересы</string>
 
     <!-- Error Messages -->
     <string name="error_all_fields_required">Пожалуйста, заполните все поля</string>
@@ -102,4 +118,90 @@
     <string name="error_invalid_email">Введите корректный email адрес</string>
     <string name="error_network">Ошибка сети. Проверьте подключение</string>
     <string name="error_unknown">Произошла неизвестная ошибка</string>
+
+    <!-- Room Management -->
+    <string name="room_management">Управление комнатой</string>
+    <string name="participants">Участники</string>
+    <string name="settings">Настройки</string>
+    <string name="leave_room">Покинуть комнату</string>
+    <string name="delete_room">Удалить комнату</string>
+    <string name="mute">Заглушить</string>
+    <string name="unmute">Разглушить</string>
+    <string name="ban">Забанить</string>
+    <string name="unban">Разбанить</string>
+    <string name="kick">Исключить</string>
+    <string name="change_role">Изменить роль</string>
+    <string name="creator">Создатель</string>
+    <string name="moderator">Модератор</string>
+    <string name="member">Участник</string>
+    <string name="show_all_participants">Показать всех участников</string>
+    <string name="save_settings">Сохранить настройки</string>
+    <string name="participant_actions">Действия с участником</string>
+
+    <!-- Chat Roulette -->
+    <string name="select_priority_interests">Выберите приоритетные интересы</string>
+    <string name="max_5_interests">Максимум 5 интересов</string>
+    <string name="start_search">Начать поиск</string>
+    <string name="cancel_search">Отменить поиск</string>
+    <string name="rate_partner">Оценить собеседника</string>
+    <string name="submit_report">Пожаловаться</string>
+    <string name="session_ended">Сессия завершена</string>
+    <string name="extend_session">Продлить сессию</string>
+    <string name="end_session">Завершить сессию</string>
+    <string name="selected_interests_title">Выбранные интересы</string>
+    <string name="your_interests_title">Ваши интересы</string>
+    <string name="select_interests_description">Выберите до 5 приоритетных интересов из вашего профиля</string>
+
+    <!-- Profile Additional -->
+    <string name="bio">О себе</string>
+    <string name="enter_bio">Расскажите о себе</string>
+    <string name="change_avatar">Сменить аватар</string>
+    <string name="remove_avatar">Удалить аватар</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="cancel">Отмена</string>
+    <string name="profile_updated">Профиль обновлен</string>
+
+    <!-- Statistics -->
+    <string name="total_sessions">Всего сессий</string>
+    <string name="avg_rating">Средний рейтинг</string>
+    <string name="completion_rate">Завершено</string>
+    <string name="reputation_score">Репутация</string>
+    <string name="active_now">Активны сейчас</string>
+
+    <!-- Report Reasons -->
+    <string name="reason_spam">Спам</string>
+    <string name="reason_harassment">Оскорбления</string>
+    <string name="reason_inappropriate">Неуместный контент</string>
+    <string name="reason_other">Другое</string>
+    <string name="report_details">Подробности жалобы</string>
+    <string name="report_submitted">Жалоба отправлена</string>
+    <string name="report_title">Пожаловаться на собеседника</string>
+    <string name="report_description">Опишите проблему, и мы рассмотрим вашу жалобу</string>
+    <string name="report_reason_title">Причина жалобы</string>
+
+    <!-- Rating -->
+    <string name="rate_experience">Оцените ваше общение</string>
+    <string name="optional_feedback">Отзыв (опционально)</string>
+    <string name="submit_rating">Отправить оценку</string>
+    <string name="skip_rating">Пропустить</string>
+
+    <!-- Room Creation -->
+    <string name="create_room">Создать комнату</string>
+    <string name="room_name">Название комнаты</string>
+    <string name="room_description">Описание комнаты</string>
+    <string name="primary_interest">Основной интерес</string>
+    <string name="tags">Теги (через запятую)</string>
+    <string name="max_participants">Максимум участников</string>
+    <string name="private_room">Приватная комната</string>
+    <string name="danger_zone">Опасная зона</string>
+
+    <!-- Chat Session -->
+    <string name="session_statistics">Статистика чат-рулетки</string>
+    <string name="sessions">Сессий</string>
+    <string name="average_rating">Средний рейтинг</string>
+    <string name="completed">Завершено</string>
+
+    <!-- Message Actions -->
+    <string name="edit_message">Редактировать</string>
+    <string name="delete_message">Удалить</string>
 </resources>

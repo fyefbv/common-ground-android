@@ -21,13 +21,21 @@
             android:gravity="center"
             android:layout_marginBottom="@dimen/spacing_32">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_logo"
-                android:background="@drawable/logo_background"
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:padding="@dimen/spacing_16"
-                android:layout_marginBottom="@dimen/spacing_16" />
+                android:layout_marginBottom="@dimen/spacing_16"
+                app:cardCornerRadius="50dp"
+                app:cardPreventCornerOverlap="false">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_logo" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_24">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_role_title"
+        android:textColor="@color/md_on_surface"
+        android:textSize="@dimen/text_lg"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/spacing_16" />
+
+    <RadioGroup
+        android:id="@+id/role_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/role_member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/member"
+            android:layout_marginBottom="@dimen/spacing_8" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/role_moderator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/moderator"
+            android:layout_marginBottom="@dimen/spacing_16" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_role_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Button.Outlined"
+            android:text="@string/cancel"
+            android:textSize="@dimen/text_sm"
+            android:layout_marginEnd="@dimen/spacing_8" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_role_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Button.Filled"
+            android:text="@string/save"
+            android:textSize="@dimen/text_sm" />
+
+    </LinearLayout>
+
+</LinearLayout>

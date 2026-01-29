@@ -1,60 +1,161 @@
 package com.example.common_ground_android.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.common_ground_android.R
+import com.example.common_ground_android.data.models.ChatMessage
+import com.example.common_ground_android.data.models.ChatPartner
+import com.example.common_ground_android.databinding.FragmentChatRouletteBinding
+import com.example.common_ground_android.ui.adapters.ChatMessagesAdapter
+import java.util.*
+import kotlin.concurrent.schedule
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatRouletteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChatRouletteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentChatRouletteBinding
+    private lateinit var messagesAdapter: ChatMessagesAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var isSearching = true
+    private var currentPartner: ChatPartner? = null
+    private val messages = mutableListOf<ChatMessage>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentChatRouletteBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+        setupClickListeners()
+        startSearching()
+    }
+
+    private fun setupRecyclerView() {
+        messagesAdapter = ChatMessagesAdapter()
+        binding.messagesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext()).apply {
+                stackFromEnd = true
+            }
+            adapter = messagesAdapter
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_roulette, container, false)
+    private fun setupClickListeners() {
+        binding.sendButton.setOnClickListener {
+            sendMessage()
+        }
+
+        binding.messageEditText.setOnEditorActionListener { _, _, _ ->
+            sendMessage()
+            true
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatRouletteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatRouletteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun startSearching() {
+        isSearching = true
+        currentPartner = null
+        messages.clear()
+        messagesAdapter.submitList(emptyList())
+
+        binding.searchingState.visibility = View.VISIBLE
+        binding.chatState.visibility = View.GONE
+
+        Timer().schedule(2000) {
+            requireActivity().runOnUiThread {
+                foundPartner()
             }
+        }
+    }
+
+    private fun foundPartner() {
+        isSearching = false
+
+        currentPartner = ChatPartner(
+            name = "Алексей",
+            interests = listOf("Технологии", "Музыка")
+        )
+
+        messages.add(ChatMessage.createPartnerMessage(
+            text = "Привет! Рад познакомиться!"
+        ))
+
+        updatePartnerInfo()
+        messagesAdapter.submitList(messages.toList())
+
+        binding.searchingState.visibility = View.GONE
+        binding.chatState.visibility = View.VISIBLE
+
+        scrollToBottom()
+    }
+
+    private fun updatePartnerInfo() {
+        currentPartner?.let { partner ->
+            binding.partnerName.text = partner.name
+
+            binding.partnerInterestsChipGroup.removeAllViews()
+
+            partner.interests.forEach { interest ->
+                val chip = com.google.android.material.chip.Chip(requireContext()).apply {
+                    text = interest
+                    isCheckable = false
+                    chipBackgroundColor = android.content.res.ColorStateList.valueOf(
+                        resources.getColor(R.color.md_secondary_container, null)
+                    )
+                    setTextColor(resources.getColor(R.color.md_on_secondary_container, null))
+                    chipCornerRadius = resources.getDimension(R.dimen.corner_radius_full)
+                    textSize = 12f
+                }
+                binding.partnerInterestsChipGroup.addView(chip)
+            }
+        }
+    }
+
+    private fun sendMessage() {
+        val messageText = binding.messageEditText.text?.toString()?.trim()
+        if (!messageText.isNullOrEmpty()) {
+            val message = ChatMessage.createUserMessage(messageText)
+
+            messages.add(message)
+            messagesAdapter.submitList(messages.toList())
+            binding.messageEditText.text?.clear()
+
+            scrollToBottom()
+
+            simulatePartnerResponse()
+        }
+    }
+
+    private fun simulatePartnerResponse() {
+        Timer().schedule(1000) {
+            requireActivity().runOnUiThread {
+                val responses = listOf(
+                    "Интересно! Расскажи подробнее",
+                    "Согласен, это действительно так",
+                    "А у меня был похожий опыт",
+                    "Отличная мысль!"
+                )
+                val randomResponse = responses.random()
+
+                messages.add(ChatMessage.createPartnerMessage(text = randomResponse))
+                messagesAdapter.submitList(messages.toList())
+                scrollToBottom()
+            }
+        }
+    }
+
+    private fun scrollToBottom() {
+        binding.messagesRecyclerView.post {
+            binding.messagesRecyclerView.smoothScrollToPosition(messages.size - 1)
+        }
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_mute"
+        android:title="@string/mute"
+        android:icon="@drawable/ic_volume_off" />
+
+    <item
+        android:id="@+id/action_unmute"
+        android:title="@string/unmute"
+        android:icon="@drawable/ic_volume_up"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_ban"
+        android:title="@string/ban"
+        android:icon="@drawable/ic_block" />
+
+    <item
+        android:id="@+id/action_unban"
+        android:title="@string/unban"
+        android:icon="@drawable/ic_check_circle"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_kick"
+        android:title="@string/kick"
+        android:icon="@drawable/ic_log_out" />
+
+    <item
+        android:id="@+id/action_change_role"
+        android:title="@string/change_role"
+        android:icon="@drawable/ic_shield" />
+
+</menu>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/md_surface"
+    android:padding="@dimen/spacing_16"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Rounded"
+            app:cardCornerRadius="@dimen/corner_radius_28"
+            app:cardElevation="@dimen/elevation_2"
+            android:layout_marginBottom="@dimen/spacing_24">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_24">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_room"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_24" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout.Rounded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_20">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/room_name_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_height"
+                        android:hint="@string/room_name"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_base" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout.Rounded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_20">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/room_description_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/room_description"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_base" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/primary_interest"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_base"
+                    android:layout_marginBottom="@dimen/spacing_8" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/primary_interests_chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="@dimen/spacing_8"
+                    app:chipSpacingVertical="@dimen/spacing_8"
+                    android:layout_marginBottom="@dimen/spacing_20" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout.Rounded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_20"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_add"
+                    app:endIconTint="@color/md_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tags_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_height"
+                        android:hint="@string/tags"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_base" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/added_tags_chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="@dimen/spacing_8"
+                    app:chipSpacingVertical="@dimen/spacing_8"
+                    android:layout_marginBottom="@dimen/spacing_20"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/max_participants"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_base"
+                    android:layout_marginBottom="@dimen/spacing_8" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/max_participants_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="2"
+                    android:valueTo="100"
+                    android:value="50"
+                    android:stepSize="1"
+                    app:trackColorInactive="@color/md_outline_variant"
+                    app:trackColorActive="@color/md_primary"
+                    app:thumbColor="@color/md_primary"
+                    android:layout_marginBottom="@dimen/spacing_20" />
+
+                <TextView
+                    android:id="@+id/max_participants_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="50 участников"
+                    android:textColor="@color/md_on_surface_variant"
+                    android:textSize="@dimen/text_sm"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_20" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/spacing_24">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/private_room"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_base" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/private_room_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:trackTint="@color/md_primary"
+                        app:thumbTint="@color/md_on_primary" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/create_room_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    style="@style/Button.Filled"
+                    android:text="@string/create_room" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -13,6 +13,7 @@
     <dimen name="spacing_20">20dp</dimen>
     <dimen name="spacing_24">24dp</dimen>
     <dimen name="spacing_32">32dp</dimen>
+    <dimen name="spacing_64">64dp</dimen>
 
     <!-- Elevation -->
     <dimen name="elevation_1">1dp</dimen>
