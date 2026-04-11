@@ -1,5 +1,6 @@
 package com.example.common_ground_android.network.model.domain.profile
 
+import com.example.common_ground_android.network.model.domain.interest.Interest
 import com.example.common_ground_android.network.model.response.profile.ProfileResponse
 import com.example.common_ground_android.network.utils.DateUtils
 import java.util.Date
@@ -12,7 +13,8 @@ data class Profile(
     val reputationScore: Float,
     val createdAt: Date,
     val updatedAt: Date,
-    val avatarUrl: String?
+    val avatarUrl: String?,
+    val interests: List<Interest> = emptyList()
 ) {
     companion object {
         fun fromResponse(response: ProfileResponse): Profile {

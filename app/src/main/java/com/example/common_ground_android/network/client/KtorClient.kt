@@ -1,8 +1,12 @@
 package com.example.common_ground_android.network.client
 
 import com.example.common_ground_android.network.config.ApiConfig
+import com.example.common_ground_android.network.model.request.auth.RefreshTokenRequest
 import com.example.common_ground_android.network.model.response.ApiErrorResponse
+import com.example.common_ground_android.network.model.response.ValidationErrorDetail
+import com.example.common_ground_android.network.model.response.auth.AuthTokensResponse
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.engine.android.*
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.plugins.*
@@ -16,12 +20,26 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.*
+import io.ktor.utils.io.InternalAPI
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 
 @OptIn(InternalAPI::class)
 class KtorClient(private val tokenManager: TokenManager) {
+    private val json = Json { ignoreUnknownKeys = true }
+
+    private suspend fun performTokenRefresh(refreshToken: String): AuthTokensResponse? {
+        return try {
+            httpClient.post {
+                attributes.put(AuthCircuitBreaker, Unit)
+                url(ApiConfig.Endpoints.AUTH_REFRESH)
+                contentType(ContentType.Application.Json)
+                setBody(RefreshTokenRequest(refreshToken))
+            }.body()
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     val httpClient = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -34,7 +52,11 @@ class KtorClient(private val tokenManager: TokenManager) {
         }
 
         install(Logging) {
-            logger = Logger.DEFAULT
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println("HTTP: $message")
+                }
+            }
             level = LogLevel.ALL
         }
 
@@ -45,35 +67,31 @@ class KtorClient(private val tokenManager: TokenManager) {
         }
 
         install(HttpTimeout) {
-            requestTimeoutMillis = ApiConfig.REQUEST_TIMEOUT
-            connectTimeoutMillis = ApiConfig.CONNECT_TIMEOUT
-            socketTimeoutMillis = ApiConfig.SOCKET_TIMEOUT
+            requestTimeoutMillis = ApiConfig.REQUEST_TIMEOUT.inWholeMilliseconds
+            connectTimeoutMillis = ApiConfig.CONNECT_TIMEOUT.inWholeMilliseconds
+            socketTimeoutMillis = ApiConfig.SOCKET_TIMEOUT.inWholeMilliseconds
         }
 
         install(Auth) {
             bearer {
+                cacheTokens = false
                 loadTokens {
                     val token = runBlocking { tokenManager.getAccessTokenSync() }
                     BearerTokens(accessToken = token ?: "", refreshToken = "")
                 }
                 refreshTokens {
                     val refreshToken = runBlocking { tokenManager.getRefreshTokenSync() }
-                    if (refreshToken != null) {
-                        try {
-                            // TODO: Реализовать обновление токенов
-                            // val newTokens = refreshTokens(refreshToken)
-                            // tokenManager.saveTokens(newTokens.accessToken, newTokens.refreshToken)
-                            val token = runBlocking { tokenManager.getAccessTokenSync() }
-                            BearerTokens(accessToken = token ?: "", refreshToken = refreshToken)
-                        } catch (e: Exception) {
-                            null
-                        }
-                    } else {
-                        null
+                    if (refreshToken == null) return@refreshTokens null
+                    val response = runBlocking { this@KtorClient.performTokenRefresh(refreshToken) }
+                    if (response == null) {
+                        runBlocking { tokenManager.clearTokens() }
+                        return@refreshTokens null
                     }
+                    runBlocking { tokenManager.saveTokens(response.accessToken, response.refreshToken) }
+                    BearerTokens(accessToken = response.accessToken, refreshToken = response.refreshToken)
                 }
                 sendWithoutRequest { request ->
-                    !request.url.encodedPath.contains("/auth/")
+                    !request.attributes.contains(AuthCircuitBreaker)
                 }
             }
         }
@@ -86,59 +104,63 @@ class KtorClient(private val tokenManager: TokenManager) {
         }
 
         HttpResponseValidator {
+            validateResponse { response ->
+                val statusCode = response.status
+
+                if (!statusCode.isSuccess()) {
+                    val errorBody = try {
+                        response.bodyAsText()
+                    } catch (e: Exception) {
+                        "Не удалось прочитать тело ошибки"
+                    }
+
+                    val errorResponse = try {
+                        json.decodeFromString<ApiErrorResponse>(errorBody)
+                    } catch (e: Exception) {
+                        null
+                    }
+
+                    val errorCode = errorResponse?.error?.code
+                    val errorMessage = errorResponse?.error?.message ?: errorBody
+                    val errorDetails = errorResponse?.error?.details
+
+                    when (statusCode.value) {
+                        in 400..499 -> throw NetworkException.ClientError(
+                            status = statusCode,
+                            message = errorMessage,
+                            errorCode = errorCode,
+                            details = errorDetails
+                        )
+                        in 500..599 -> throw NetworkException.ServerError(
+                            status = statusCode,
+                            message = errorMessage,
+                            errorCode = errorCode
+                        )
+                        else -> throw NetworkException.UnknownError(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
             handleResponseExceptionWithRequest { exception, request ->
-                val clientException = exception as? ClientRequestException
-                val serverException = exception as? ServerResponseException
-
-                when {
-                    clientException != null -> {
-                        val status = clientException.response.status
-                        val errorBody = try {
-                            clientException.response.bodyAsText()
-                        } catch (e: Exception) {
-                            "Не удалось прочитать тело ошибки"
-                        }
-
-                        throw NetworkException.ClientError(
-                            status = status,
-                            message = "HTTP $status: $errorBody",
-                            cause = exception
-                        )
-                    }
-
-                    serverException != null -> {
-                        val status = serverException.response.status
-                        val errorBody = try {
-                            serverException.response.bodyAsText()
-                        } catch (e: Exception) {
-                            "Не удалось прочитать тело ошибки"
-                        }
-
-                        throw NetworkException.ServerError(
-                            status = status,
-                            message = "HTTP $status: $errorBody",
-                            cause = exception
-                        )
-                    }
-
-                    exception is HttpRequestTimeoutException -> {
+                when (exception) {
+                    is HttpRequestTimeoutException -> {
                         throw NetworkException.TimeoutError(
                             message = "Таймаут запроса",
                             cause = exception
                         )
                     }
-
-                    exception is ConnectTimeoutException -> {
+                    is ConnectTimeoutException -> {
                         throw NetworkException.ConnectionError(
                             message = "Таймаут подключения",
                             cause = exception
                         )
                     }
-
-                    else -> throw NetworkException.UnknownError(
-                        message = exception.message ?: "Неизвестная ошибка сети",
-                        cause = exception
-                    )
+                    is ClientRequestException, is ServerResponseException -> {
+                        throw exception
+                    }
+                    else -> throw exception
                 }
             }
         }
@@ -151,7 +173,11 @@ class KtorClient(private val tokenManager: TokenManager) {
         }
 
         install(Logging) {
-            logger = Logger.DEFAULT
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println("WS: $message")
+                }
+            }
             level = LogLevel.INFO
         }
     }
@@ -174,20 +200,24 @@ class KtorClient(private val tokenManager: TokenManager) {
 
 sealed class NetworkException(
     message: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
+    open val errorCode: String? = null
 ) : Exception(message, cause) {
 
     data class ClientError(
         val status: HttpStatusCode,
         override val message: String,
-        override val cause: Throwable? = null
-    ) : NetworkException(message, cause)
+        override val cause: Throwable? = null,
+        override val errorCode: String? = null,
+        val details: List<ValidationErrorDetail>? = null
+    ) : NetworkException(message, cause, errorCode)
 
     data class ServerError(
         val status: HttpStatusCode,
         override val message: String,
-        override val cause: Throwable? = null
-    ) : NetworkException(message, cause)
+        override val cause: Throwable? = null,
+        override val errorCode: String? = null
+    ) : NetworkException(message, cause, errorCode)
 
     data class TimeoutError(
         override val message: String,

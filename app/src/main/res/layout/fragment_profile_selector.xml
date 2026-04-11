@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/md_surface"
-    android:padding="@dimen/spacing_16"
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:id="@+id/top_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:paddingTop="@dimen/spacing_16"
+        android:paddingStart="@dimen/spacing_16"
+        android:paddingEnd="@dimen/spacing_16"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/spacing_32">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/spacing_24">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,67 +43,166 @@
                 android:gravity="center" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/profiles_recycler_view"
+        <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_16"
-            tools:listitem="@layout/item_profile"
-            tools:itemCount="3"/>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/create_profile_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/CardView.Rounded"
-            app:cardCornerRadius="@dimen/corner_radius_20"
-            app:cardElevation="@dimen/elevation_1"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:title=""
+            app:contentInsetStart="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/spacing_16"
-                android:gravity="center_vertical">
+                android:paddingHorizontal="@dimen/spacing_8">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/ic_add"
-                    android:background="@drawable/add_profile_background"
-                    android:padding="@dimen/spacing_16" />
-
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/spacing_16">
+                    android:text="@string/select_profile"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/create_new_profile"
-                        android:textColor="@color/md_on_surface"
-                        android:textSize="@dimen/text_lg"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/create_profile_hint"
-                        android:textColor="@color/md_on_surface_variant"
-                        android:textSize="@dimen/text_sm"
-                        android:layout_marginTop="@dimen/spacing_4" />
-                </LinearLayout>
-
+                <ImageButton
+                    android:id="@+id/settings_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/account_settings"
+                    android:src="@drawable/ic_settings"
+                    app:tint="@color/md_on_surface" />
             </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
+        </com.google.android.material.appbar.MaterialToolbar>
     </LinearLayout>
 
-</ScrollView>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:layout_marginBottom="@dimen/spacing_16"
+        app:layout_constraintTop_toBottomOf="@id/top_section"
+        app:layout_constraintBottom_toTopOf="@id/create_profile_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profiles_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/spacing_16"
+                android:paddingEnd="@dimen/spacing_16"
+                android:paddingBottom="@dimen/spacing_16"
+                tools:listitem="@layout/item_profile" />
+
+            <LinearLayout
+                android:id="@+id/empty_state_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="@dimen/spacing_32">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_profile"
+                    android:alpha="0.6"
+                    app:tint="@color/md_on_surface_variant"
+                    android:layout_marginBottom="@dimen/spacing_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_profiles_title"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_8" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_profiles_message"
+                    android:textColor="@color/md_on_surface_variant"
+                    android:textSize="@dimen/text_base"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_24" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/create_profile_from_empty"
+                    style="@style/Button.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_first_profile" />
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/create_profile_card"
+        style="@style/CardView.Rounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:layout_marginBottom="@dimen/spacing_16"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/corner_radius_20"
+        app:cardElevation="@dimen/elevation_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_16">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/add_profile_background"
+                android:padding="@dimen/spacing_16"
+                android:src="@drawable/ic_add" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_16">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_new_profile"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_lg"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:text="@string/create_profile_hint"
+                    android:textColor="@color/md_on_surface_variant"
+                    android:textSize="@dimen/text_sm" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

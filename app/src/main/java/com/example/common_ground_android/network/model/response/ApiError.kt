@@ -2,6 +2,8 @@ package com.example.common_ground_android.network.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 
 @Serializable
 data class ApiErrorResponse(
@@ -21,47 +23,73 @@ data class ErrorDetails(
     val message: String,
 
     @SerialName("timestamp")
-    val timestamp: String? = null
+    val timestamp: String? = null,
+
+    @SerialName("details")
+    val details: List<ValidationErrorDetail>? = null
+)
+
+@Serializable
+data class ValidationErrorDetail(
+    @SerialName("type")
+    val type: String,
+
+    @SerialName("loc")
+    val loc: List<String>,
+
+    @SerialName("msg")
+    val msg: String,
+
+    @SerialName("input")
+    val input: String? = null,
+
+    @SerialName("ctx")
+    val ctx: Map<String, String>? = null
 )
 
 sealed class NetworkResult<out T> {
     data class Success<out T>(val data: T) : NetworkResult<T>()
     data class Error(
-        val code: String? = null,
-        val message: String? = null,
-        val httpCode: Int? = null,
+        val errorCode: String? = null,
+        val errorMessage: String,
         val exception: Throwable? = null
     ) : NetworkResult<Nothing>()
 
     object Loading : NetworkResult<Nothing>()
+
+    val isSuccess: Boolean get() = this is Success
+    val isError: Boolean get() = this is Error
+    val isLoading: Boolean get() = this is Loading
 }
 
-object ApiErrorCodes {
-    const val INVALID_TOKEN = "invalid_token"
-    const val EXPIRED_TOKEN = "expired_token"
-    const val MISSING_TOKEN = "missing_token"
-    const val AUTHENTICATION_FAILED = "authentication_failed"
+object ErrorParser {
+    private val json = Json { ignoreUnknownKeys = true }
 
-    const val USER_NOT_FOUND = "user_not_found"
-    const val USER_ALREADY_EXISTS = "user_already_exists"
+    fun parseErrorJson(jsonText: String): ApiErrorResponse? {
+        return try {
+            json.decodeFromString<ApiErrorResponse>(jsonText)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
-    const val PROFILE_NOT_FOUND = "profile_not_found"
-    const val PROFILE_ALREADY_EXISTS = "profile_already_exists"
-    const val PROFILE_PERMISSION_DENIED = "profile_permission_denied"
-    const val PROFILE_NOT_SELECTED = "profile_not_selected"
+    fun parseErrorCode(jsonText: String): String? {
+        return try {
+            val jsonElement = json.parseToJsonElement(jsonText)
+            val errorObject = jsonElement.jsonObject["error"]?.jsonObject
+            errorObject?.get("code")?.toString()?.trim('"')
+        } catch (e: Exception) {
+            null
+        }
+    }
 
-    const val ROOM_NOT_FOUND = "room_not_found"
-    const val ROOM_ALREADY_EXISTS = "room_already_exists"
-    const val ROOM_PERMISSION_DENIED = "room_permission_denied"
-    const val ROOM_FULL = "room_full"
-    const val ROOM_PRIVATE = "room_private"
-    const val NOT_ROOM_MEMBER = "not_room_member"
-    const val PARTICIPANT_BANNED = "participant_banned"
-    const val PARTICIPANT_MUTED = "participant_muted"
-
-    const val ALREADY_IN_SEARCH = "already_in_search"
-    const val ALREADY_IN_SESSION = "already_in_session"
-    const val NO_MATCHING_FOUND = "no_matching_found"
-    const val SESSION_NOT_FOUND = "session_not_found"
-    const val EXTENSION_NOT_APPROVED = "extension_not_approved"
+    fun parseErrorMessage(jsonText: String): String {
+        return try {
+            val jsonElement = json.parseToJsonElement(jsonText)
+            val errorObject = jsonElement.jsonObject["error"]?.jsonObject
+            errorObject?.get("message")?.toString()?.trim('"') ?: jsonText
+        } catch (e: Exception) {
+            jsonText
+        }
+    }
 }

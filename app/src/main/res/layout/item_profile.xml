@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="@dimen/spacing_16">
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingEnd="@dimen/spacing_8">
 
             <TextView
                 android:id="@+id/profile_name"
@@ -42,16 +43,34 @@
                 android:textColor="@color/md_on_surface"
                 android:textSize="@dimen/text_lg"
                 android:textStyle="bold"
-                android:layout_marginBottom="@dimen/spacing_8" />
+                android:layout_marginBottom="@dimen/spacing_4" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/interests_chip_group"
+            <TextView
+                android:id="@+id/profile_bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:singleLine="true"
-                app:chipSpacingHorizontal="@dimen/spacing_4">
+                tools:text="Short bio"
+                android:textColor="@color/md_on_surface_variant"
+                android:textSize="@dimen/text_sm"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginBottom="@dimen/spacing_8" />
 
-            </com.google.android.material.chip.ChipGroup>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:requiresFadingEdge="horizontal"
+                android:fadingEdgeLength="16dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/interests_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:chipSpacingHorizontal="@dimen/spacing_4" />
+
+            </HorizontalScrollView>
 
         </LinearLayout>
 

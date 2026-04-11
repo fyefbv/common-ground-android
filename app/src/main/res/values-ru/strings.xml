@@ -34,7 +34,7 @@
     <string name="switch_profile">Сменить профиль</string>
     <string name="fill_profile">Заполните профиль, чтобы начать</string>
     <string name="fill_profile_button">Заполнить профиль</string>
-    <string name="select_interests_hint">Нажмите "Выбрать" чтобы добавить интересы</string>
+    <string name="select_interests_hint">Нажмите Выбрать чтобы добавить интересы</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
     <string name="change_role_title">Изменить роль участника</string>
@@ -47,6 +47,19 @@
     <string name="active_rooms">Активные комнаты</string>
     <string name="rooms_count">%d комнат</string>
     <string name="join">Войти</string>
+
+    <!-- Account -->
+    <string name="account_settings">Настройки аккаунта</string>
+    <string name="change_email">Изменить email</string>
+    <string name="new_email">Новый email</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="current_password">Текущий пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="delete_account">Удалить аккаунт</string>
+    <string name="delete_account_confirmation">Вы уверены, что хотите удалить аккаунт? Это действие необратимо.</string>
+    <string name="logout">Выйти</string>
+    <string name="account_settings_description">Управление email, паролем и аккаунтом</string>
+    <string name="back">Назад</string>
 
     <!-- Navigation -->
     <string name="home">Главная</string>
@@ -84,22 +97,6 @@
     <string name="session_time">Время сессии</string>
     <string name="chat_partner_label">Собеседник</string>
 
-    <!-- Interests -->
-    <string-array name="interests_list">
-        <item>Технологии</item>
-        <item>Искусство</item>
-        <item>Спорт</item>
-        <item>Музыка</item>
-        <item>Путешествия</item>
-        <item>Кино</item>
-        <item>Книги</item>
-        <item>Игры</item>
-        <item>Наука</item>
-        <item>Мода</item>
-        <item>Фотография</item>
-        <item>Кулинария</item>
-    </string-array>
-
     <!-- Profile Selector -->
     <string name="select_profile">Выберите профиль</string>
     <string name="select_profile_description">С каким профилем хотите продолжить?</string>
@@ -110,6 +107,9 @@
     <string name="enter_profile_name">Введите имя</string>
     <string name="create_profile">Создать профиль</string>
     <string name="select_interests_title">Выберите интересы</string>
+    <string name="no_profiles_title">Нет профилей</string>
+    <string name="no_profiles_message">Создайте свой первый профиль, чтобы начать общение</string>
+    <string name="create_first_profile">Создать профиль</string>
 
     <!-- Error Messages -->
     <string name="error_all_fields_required">Пожалуйста, заполните все поля</string>
@@ -160,6 +160,11 @@
     <string name="save_changes">Сохранить изменения</string>
     <string name="cancel">Отмена</string>
     <string name="profile_updated">Профиль обновлен</string>
+    <string name="type_to_search_interest">Введите название интереса</string>
+    <string name="clear_avatar">Очистить аватар</string>
+    <string name="no_interests">У вас нет интересов</string>
+    <string name="delete_profile">Удалить профиль</string>
+    <string name="delete_profile_confirmation">Вы уверены, что хотите удалить этот профиль? Это действие необратимо.</string>
 
     <!-- Statistics -->
     <string name="total_sessions">Всего сессий</string>

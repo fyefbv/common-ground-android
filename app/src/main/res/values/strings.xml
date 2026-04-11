@@ -34,7 +34,7 @@
     <string name="switch_profile">Switch Profile</string>
     <string name="fill_profile">Fill out your profile to start</string>
     <string name="fill_profile_button">Fill Profile</string>
-    <string name="select_interests_hint">Click "Select" to add interests</string>
+    <string name="select_interests_hint">Click Select to add interests</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="change_role_title">Change participant role</string>
@@ -47,6 +47,19 @@
     <string name="active_rooms">Active Rooms</string>
     <string name="rooms_count">%d rooms</string>
     <string name="join">Join</string>
+
+    <!-- Account -->
+    <string name="account_settings">Account Settings</string>
+    <string name="change_email">Change Email</string>
+    <string name="new_email">New Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_confirmation">Are you sure you want to delete your account? This action cannot be undone.</string>
+    <string name="logout">Log Out</string>
+    <string name="account_settings_description">Manage your email, password, and account</string>
+    <string name="back">Back</string>
 
     <!-- Navigation -->
     <string name="home">Home</string>
@@ -84,22 +97,6 @@
     <string name="session_time">Session Time</string>
     <string name="chat_partner_label">Chat partner</string>
 
-    <!-- Interests -->
-    <string-array name="interests_list">
-        <item>Technology</item>
-        <item>Art</item>
-        <item>Sports</item>
-        <item>Music</item>
-        <item>Travel</item>
-        <item>Movies</item>
-        <item>Books</item>
-        <item>Games</item>
-        <item>Science</item>
-        <item>Fashion</item>
-        <item>Photography</item>
-        <item>Cooking</item>
-    </string-array>
-
     <!-- Profile Selector -->
     <string name="select_profile">Select Profile</string>
     <string name="select_profile_description">Which profile would you like to continue with?</string>
@@ -110,6 +107,9 @@
     <string name="enter_profile_name">Enter name</string>
     <string name="create_profile">Create Profile</string>
     <string name="select_interests_title">Select interests</string>
+    <string name="no_profiles_title">No profiles</string>
+    <string name="no_profiles_message">Create your first profile to start chatting</string>
+    <string name="create_first_profile">Create profile</string>
 
     <!-- Error Messages -->
     <string name="error_all_fields_required">Please fill in all fields</string>
@@ -160,6 +160,11 @@
     <string name="save_changes">Save Changes</string>
     <string name="cancel">Cancel</string>
     <string name="profile_updated">Profile Updated</string>
+    <string name="type_to_search_interest">Enter the name of the interest</string>
+    <string name="clear_avatar">Clear avatar</string>
+    <string name="no_interests">You have no interests</string>
+    <string name="delete_profile">Delete profile</string>
+    <string name="delete_profile_confirmation">Are you sure you want to delete this profile? This action is irreversible.</string>
 
     <!-- Statistics -->
     <string name="total_sessions">Total Sessions</string>

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -39,9 +41,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.logging)
@@ -50,9 +56,10 @@ dependencies {
     implementation(libs.ktor.client.websockets)
     implementation(libs.ktor.client.auth)
 
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
     implementation(libs.timber)
 
     testImplementation(libs.ktor.client.mock)
@@ -60,6 +67,9 @@ dependencies {
 
     implementation(libs.lottie)
     implementation(libs.circleimageview)
+
+    implementation(libs.glide)
+    kapt(libs.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -1,102 +1,105 @@
 package com.example.common_ground_android.network.client
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import com.example.common_ground_android.network.config.ApiConfig
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.core.content.edit
 
-private val Context.dataStore by preferencesDataStore(name = "tokens")
+class TokenManager(context: Context) {
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
 
-class TokenManager(private val context: Context) {
-    private val dataStore = context.dataStore
+    private val prefs = EncryptedSharedPreferences.create(
+        context,
+        "secure_tokens",
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    private val _accessToken = MutableStateFlow<String?>(prefs.getString(KEY_ACCESS_TOKEN, null))
+    val accessToken: StateFlow<String?> = _accessToken.asStateFlow()
+
+    private val _refreshToken = MutableStateFlow<String?>(prefs.getString(KEY_REFRESH_TOKEN, null))
+    val refreshToken: StateFlow<String?> = _refreshToken.asStateFlow()
+
+    private val _profileId = MutableStateFlow<String?>(prefs.getString(KEY_PROFILE_ID, null))
+    val profileId: StateFlow<String?> = _profileId.asStateFlow()
+
+    private val _isAuthenticated = MutableStateFlow(prefs.getBoolean(KEY_IS_AUTHENTICATED, false))
+    val isAuthenticated: StateFlow<Boolean> = _isAuthenticated.asStateFlow()
 
     companion object {
-        private val ACCESS_TOKEN = stringPreferencesKey("access_token")
-        private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
-        private val PROFILE_ID = stringPreferencesKey("profile_id")
-        private val TOKENS_EXPIRE_AT = stringPreferencesKey("tokens_expire_at")
-        private val IS_AUTHENTICATED = booleanPreferencesKey("is_authenticated")
+        private const val KEY_ACCESS_TOKEN = "access_token"
+        private const val KEY_REFRESH_TOKEN = "refresh_token"
+        private const val KEY_PROFILE_ID = "profile_id"
+        private const val KEY_IS_AUTHENTICATED = "is_authenticated"
     }
 
-    suspend fun saveTokens(accessToken: String, refreshToken: String, profileId: String? = null) {
-        dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN] = accessToken
-            preferences[REFRESH_TOKEN] = refreshToken
-            preferences[IS_AUTHENTICATED] = true
-
-            profileId?.let {
-                preferences[PROFILE_ID] = it
-            }
-
-            val expireAt = System.currentTimeMillis() + 15 * 60 * 1000 - ApiConfig.TOKEN_EXPIRY_BUFFER
-            preferences[TOKENS_EXPIRE_AT] = expireAt.toString()
+    suspend fun saveTokens(accessToken: String, refreshToken: String, profileId: String? = null) = withContext(Dispatchers.IO) {
+        prefs.edit {
+            putString(KEY_ACCESS_TOKEN, accessToken)
+                .putString(KEY_REFRESH_TOKEN, refreshToken)
+                .putBoolean(KEY_IS_AUTHENTICATED, true)
         }
-    }
 
-    suspend fun updateAccessToken(accessToken: String) {
-        dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN] = accessToken
-
-            val expireAt = System.currentTimeMillis() + 15 * 60 * 1000 - ApiConfig.TOKEN_EXPIRY_BUFFER
-            preferences[TOKENS_EXPIRE_AT] = expireAt.toString()
-        }
-    }
-
-    suspend fun saveProfileId(profileId: String) {
-        dataStore.edit { preferences ->
-            preferences[PROFILE_ID] = profileId
-        }
-    }
-
-    suspend fun clearTokens() {
-        dataStore.edit { preferences ->
-            preferences.remove(ACCESS_TOKEN)
-            preferences.remove(REFRESH_TOKEN)
-            preferences.remove(PROFILE_ID)
-            preferences.remove(TOKENS_EXPIRE_AT)
-            preferences[IS_AUTHENTICATED] = false
-        }
-    }
-
-    val accessToken: Flow<String?> = dataStore.data
-        .map { preferences -> preferences[ACCESS_TOKEN] }
-
-    val refreshToken: Flow<String?> = dataStore.data
-        .map { preferences -> preferences[REFRESH_TOKEN] }
-
-    val profileId: Flow<String?> = dataStore.data
-        .map { preferences -> preferences[PROFILE_ID] }
-
-    val isAuthenticated: Flow<Boolean> = dataStore.data
-        .map { preferences -> preferences[IS_AUTHENTICATED] ?: false }
-
-    suspend fun getAccessTokenSync(): String? {
-        return dataStore.data.map { it[ACCESS_TOKEN] }.firstOrNull()
-    }
-
-    suspend fun getRefreshTokenSync(): String? {
-        return dataStore.data.map { it[REFRESH_TOKEN] }.firstOrNull()
-    }
-
-    suspend fun getProfileIdSync(): String? {
-        return dataStore.data.map { it[PROFILE_ID] }.firstOrNull()
-    }
-
-    suspend fun isAccessTokenExpired(): Boolean {
-        val expireAtStr = dataStore.data.map { it[TOKENS_EXPIRE_AT] }.firstOrNull()
-        return if (expireAtStr != null) {
-            val expireAt = expireAtStr.toLongOrNull() ?: return true
-            System.currentTimeMillis() >= expireAt
+        if (profileId != null) {
+            prefs.edit { putString(KEY_PROFILE_ID, profileId) }
         } else {
-            true
+            prefs.edit(commit = true) { remove(KEY_PROFILE_ID) }
+        }
+
+        scope.launch {
+            _accessToken.emit(accessToken)
+            _refreshToken.emit(refreshToken)
+            _isAuthenticated.emit(true)
+            if (profileId != null) _profileId.emit(profileId) else _profileId.emit(null)
         }
     }
+
+    suspend fun updateAccessToken(accessToken: String) = withContext(Dispatchers.IO) {
+        prefs.edit {
+            putString(KEY_ACCESS_TOKEN, accessToken)
+        }
+
+        scope.launch {
+            _accessToken.emit(accessToken)
+        }
+    }
+
+    suspend fun saveProfileId(profileId: String) = withContext(Dispatchers.IO) {
+        prefs.edit { putString(KEY_PROFILE_ID, profileId) }
+        scope.launch { _profileId.emit(profileId) }
+    }
+
+    suspend fun clearTokens() = withContext(Dispatchers.IO) {
+        prefs.edit { clear() }
+        scope.launch {
+            _accessToken.emit(null)
+            _refreshToken.emit(null)
+            _profileId.emit(null)
+            _isAuthenticated.emit(false)
+        }
+    }
+
+    suspend fun clearProfileId() = withContext(Dispatchers.IO) {
+        prefs.edit(commit = true) { remove(KEY_PROFILE_ID) }
+        scope.launch {
+            _profileId.emit(null)
+        }
+    }
+
+    fun getAccessTokenSync(): String? = prefs.getString(KEY_ACCESS_TOKEN, null)
+    fun getRefreshTokenSync(): String? = prefs.getString(KEY_REFRESH_TOKEN, null)
+    fun getProfileIdSync(): String? = prefs.getString(KEY_PROFILE_ID, null)
 }

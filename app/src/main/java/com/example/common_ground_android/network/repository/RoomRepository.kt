@@ -4,6 +4,7 @@ import com.example.common_ground_android.network.api.service.RoomService
 import com.example.common_ground_android.network.model.request.room.*
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.model.response.room.*
+import com.example.common_ground_android.network.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,7 +27,8 @@ class RoomRepository(
                 val response = roomService.searchRooms(filter)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.searchRooms")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -37,7 +39,8 @@ class RoomRepository(
                 val response = roomService.getPopularRooms(limit)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getPopularRooms")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -48,7 +51,8 @@ class RoomRepository(
                 val response = roomService.getMyRooms()
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getMyRooms")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -67,7 +71,8 @@ class RoomRepository(
                 val response = roomService.createRoom(request)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.createRoom")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -78,7 +83,8 @@ class RoomRepository(
                 val response = roomService.getRoomById(roomId)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getRoomById")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -97,7 +103,8 @@ class RoomRepository(
                 val response = roomService.updateRoom(roomId, request)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.updateRoom")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -105,10 +112,11 @@ class RoomRepository(
     suspend fun deleteRoom(roomId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.deleteRoom(roomId)
+                roomService.deleteRoom(roomId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.deleteRoom")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -119,7 +127,8 @@ class RoomRepository(
                 val response = roomService.joinRoom(roomId)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.joinRoom")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -127,10 +136,11 @@ class RoomRepository(
     suspend fun leaveRoom(roomId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.leaveRoom(roomId)
+                roomService.leaveRoom(roomId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.leaveRoom")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -141,7 +151,8 @@ class RoomRepository(
                 val response = roomService.getRoomParticipants(roomId, includeBanned)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getRoomParticipants")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -149,10 +160,11 @@ class RoomRepository(
     suspend fun kickParticipant(roomId: String, profileId: String, reason: String? = null): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.kickParticipant(roomId, profileId, reason)
+                roomService.kickParticipant(roomId, profileId, reason)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.kickParticipant")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -167,7 +179,8 @@ class RoomRepository(
                 val response = roomService.getRoomMessages(roomId, before, limit)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getRoomMessages")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -179,7 +192,8 @@ class RoomRepository(
                 val response = roomService.sendMessage(roomId, request)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.sendMessage")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -190,7 +204,8 @@ class RoomRepository(
                 val response = roomService.updateMessage(messageId, content)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.updateMessage")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -198,10 +213,11 @@ class RoomRepository(
     suspend fun deleteMessage(messageId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.deleteMessage(messageId)
+                roomService.deleteMessage(messageId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.deleteMessage")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -209,10 +225,11 @@ class RoomRepository(
     suspend fun muteParticipant(roomId: String, participantId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.muteParticipant(roomId, participantId)
+                roomService.muteParticipant(roomId, participantId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.muteParticipant")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -220,10 +237,11 @@ class RoomRepository(
     suspend fun unmuteParticipant(roomId: String, participantId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.unmuteParticipant(roomId, participantId)
+                roomService.unmuteParticipant(roomId, participantId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.unmuteParticipant")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -231,10 +249,11 @@ class RoomRepository(
     suspend fun banParticipant(roomId: String, participantId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.banParticipant(roomId, participantId)
+                roomService.banParticipant(roomId, participantId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.banParticipant")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -242,10 +261,11 @@ class RoomRepository(
     suspend fun unbanParticipant(roomId: String, participantId: String): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = roomService.unbanParticipant(roomId, participantId)
+                roomService.unbanParticipant(roomId, participantId)
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.unbanParticipant")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -256,7 +276,8 @@ class RoomRepository(
                 val response = roomService.getBannedParticipants(roomId)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getBannedParticipants")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -271,7 +292,8 @@ class RoomRepository(
                 val response = roomService.changeParticipantRole(roomId, targetProfileId, newRole)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.changeParticipantRole")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }

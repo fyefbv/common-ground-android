@@ -2,12 +2,14 @@ package com.example.common_ground_android.ui
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.ActivityMainBinding
+import com.example.common_ground_android.network.client.KtorClientFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,26 +29,35 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.apply {
             setupWithNavController(navController)
-
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                visibility = when (destination.id) {
+                val show = when (destination.id) {
                     R.id.loginFragment,
                     R.id.registerFragment,
                     R.id.profileSelectorFragment,
                     R.id.chatRouletteFragment,
-                    R.id.groupRoomFragment -> {
-                        View.GONE
-                    }
-
-                    else -> {
-                        View.VISIBLE
-                    }
+                    R.id.accountSettingsFragment,
+                    R.id.createProfileFragment,
+                    R.id.profileFragment,
+                    R.id.groupRoomFragment -> false
+                    else -> true
                 }
+                showBottomNavigation(show)
             }
         }
     }
 
-    fun showBottomNavigation(show: Boolean) {
+    private fun showBottomNavigation(show: Boolean) {
         binding.bottomNavigation.visibility = if (show) View.VISIBLE else View.GONE
+        adjustFragmentContainerMargin(show)
+    }
+
+    private fun adjustFragmentContainerMargin(show: Boolean) {
+        val params = binding.fragmentContainer.layoutParams as ViewGroup.MarginLayoutParams
+        params.bottomMargin = if (show) {
+            resources.getDimensionPixelSize(R.dimen.bottom_nav_height)
+        } else {
+            0
+        }
+        binding.fragmentContainer.layoutParams = params
     }
 }

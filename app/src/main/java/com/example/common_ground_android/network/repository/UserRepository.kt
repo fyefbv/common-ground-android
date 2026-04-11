@@ -3,6 +3,7 @@ package com.example.common_ground_android.network.repository
 import com.example.common_ground_android.network.api.service.UserService
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.model.response.auth.UserResponse
+import com.example.common_ground_android.network.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,7 +19,8 @@ class UserRepository(
                 val response = userService.getCurrentUser()
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "UserRepository.getCurrentUser")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -29,7 +31,8 @@ class UserRepository(
                 val response = userService.updateUser(email = email)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "UserRepository.updateEmail")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -40,7 +43,8 @@ class UserRepository(
                 val response = userService.updateUser(password = password)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "UserRepository.updatePassword")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -51,7 +55,8 @@ class UserRepository(
                 val response = userService.updateUser(email = email, password = password)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "UserRepository.updateUser")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -62,7 +67,8 @@ class UserRepository(
                 val response = userService.deleteUser()
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "UserRepository.deleteUser")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }

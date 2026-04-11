@@ -1,15 +1,18 @@
 package com.example.common_ground_android.network.config
 
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+
 object ApiConfig {
-    const val BASE_URL = "http://localhost:8000/api"
-    const val WS_BASE_URL = "ws://localhost:8000/ws"
+    const val BASE_URL = "http://10.0.2.2:8000"
+    const val WS_BASE_URL = "http://10.0.2.2:8000"
 
-    const val CONNECT_TIMEOUT = 30_000L
-    const val SOCKET_TIMEOUT = 30_000L
-    const val REQUEST_TIMEOUT = 30_000L
+    val CONNECT_TIMEOUT: Duration = 30.seconds
+    val SOCKET_TIMEOUT: Duration = 30.seconds
+    val REQUEST_TIMEOUT: Duration = 30.seconds
 
-    const val WS_PING_INTERVAL = 25_000L
-    const val WS_RECONNECT_DELAY = 3_000L
+    val WS_PING_INTERVAL: Duration = 25.seconds
+    val WS_RECONNECT_DELAY: Duration = 3.seconds
     const val WS_MAX_RECONNECT_ATTEMPTS = 5
 
     const val HEADER_AUTHORIZATION = "Authorization"
@@ -20,50 +23,52 @@ object ApiConfig {
     const val DEFAULT_LANGUAGE = "ru"
 
     const val TOKEN_TYPE_BEARER = "Bearer"
-    const val TOKEN_EXPIRY_BUFFER = 60_000L
+    val TOKEN_EXPIRY_BUFFER: Duration = 60.seconds
 
     object Endpoints {
-        const val AUTH_REGISTER = "/auth/register"
-        const val AUTH_LOGIN = "/auth/login"
-        const val AUTH_SELECT_PROFILE = "/auth/select-profile"
-        const val AUTH_REFRESH = "/auth/refresh"
+        const val AUTH_REGISTER = "/api/auth/register"
+        const val AUTH_LOGIN = "/api/auth/login"
+        const val AUTH_SELECT_PROFILE = "/api/auth/select-profile"
+        const val AUTH_REFRESH = "/api/auth/refresh"
 
-        const val USERS_ME = "/users/me"
+        const val USERS_ME = "/api/users/me"
 
-        const val PROFILES = "/profiles"
-        const val PROFILES_ME = "/profiles/me"
-        const val PROFILES_BY_USERNAME = "/profiles/{username}"
-        const val PROFILES_AVATAR = "/profiles/me/avatar"
-        const val PROFILES_INTERESTS = "/profiles/{username}/interests"
-        const val PROFILES_ME_INTERESTS = "/profiles/me/interests"
+        const val PROFILES = "/api/profiles/"
+        const val PROFILES_ME = "/api/profiles/me"
+        const val PROFILES_BY_USERNAME = "/api/profiles/{username}"
+        const val PROFILES_AVATAR = "/api/profiles/me/avatar"
+        const val PROFILES_AVATAR_BY_USERNAME = "/api/profiles/{username}/avatar"
+        const val PROFILES_INTERESTS = "/api/profiles/{username}/interests"
+        const val PROFILES_ME_INTERESTS = "/api/profiles/me/interests"
+        const val PROFILES_CURRENT = "/api/profiles/current"
 
-        const val INTERESTS = "/interests"
+        const val INTERESTS = "/api/interests/"
 
-        const val ROOMS = "/rooms"
-        const val ROOMS_POPULAR = "/rooms/popular"
-        const val ROOMS_MY = "/rooms/my"
-        const val ROOMS_BY_ID = "/rooms/{room_id}"
-        const val ROOMS_JOIN = "/rooms/{room_id}/join"
-        const val ROOMS_LEAVE = "/rooms/{room_id}/leave"
-        const val ROOMS_PARTICIPANTS = "/rooms/{room_id}/participants"
-        const val ROOMS_MESSAGES = "/rooms/{room_id}/messages"
-        const val ROOMS_MESSAGES_BY_ID = "/rooms/messages/{message_id}"
-        const val ROOMS_MUTE = "/rooms/{room_id}/participants/mute"
-        const val ROOMS_UNMUTE = "/rooms/{room_id}/participants/unmute"
-        const val ROOMS_BAN = "/rooms/{room_id}/participants/ban"
-        const val ROOMS_UNBAN = "/rooms/{room_id}/participants/unban"
-        const val ROOMS_BANNED = "/rooms/{room_id}/banned"
-        const val ROOMS_CHANGE_ROLE = "/rooms/{room_id}/participants/change-role"
+        const val ROOMS = "/api/rooms"
+        const val ROOMS_POPULAR = "/api/rooms/popular"
+        const val ROOMS_MY = "/api/rooms/my"
+        const val ROOMS_BY_ID = "/api/rooms/{room_id}"
+        const val ROOMS_JOIN = "/api/rooms/{room_id}/join"
+        const val ROOMS_LEAVE = "/api/rooms/{room_id}/leave"
+        const val ROOMS_PARTICIPANTS = "/api/rooms/{room_id}/participants"
+        const val ROOMS_MESSAGES = "/api/rooms/{room_id}/messages"
+        const val ROOMS_MESSAGES_BY_ID = "/api/rooms/messages/{message_id}"
+        const val ROOMS_MUTE = "/api/rooms/{room_id}/participants/mute"
+        const val ROOMS_UNMUTE = "/api/rooms/{room_id}/participants/unmute"
+        const val ROOMS_BAN = "/api/rooms/{room_id}/participants/ban"
+        const val ROOMS_UNBAN = "/api/rooms/{room_id}/participants/unban"
+        const val ROOMS_BANNED = "/api/rooms/{room_id}/banned"
+        const val ROOMS_CHANGE_ROLE = "/api/rooms/{room_id}/participants/change-role"
 
-        const val CHAT_ROULETTE_SEARCH = "/chat-roulette/search"
-        const val CHAT_ROULETTE_SEARCH_CANCEL = "/chat-roulette/search/cancel"
-        const val CHAT_ROULETTE_SESSION = "/chat-roulette/session"
-        const val CHAT_ROULETTE_SESSION_EXTEND = "/chat-roulette/session/extend"
-        const val CHAT_ROULETTE_SESSION_END = "/chat-roulette/session/end"
-        const val CHAT_ROULETTE_RATE = "/chat-roulette/rate"
-        const val CHAT_ROULETTE_REPORT = "/chat-roulette/report"
-        const val CHAT_ROULETTE_STATISTICS = "/chat-roulette/statistics"
-        const val CHAT_ROULETTE_MESSAGES = "/chat-roulette/messages"
+        const val CHAT_ROULETTE_SEARCH = "/api/chat-roulette/search"
+        const val CHAT_ROULETTE_SEARCH_CANCEL = "/api/chat-roulette/search/cancel"
+        const val CHAT_ROULETTE_SESSION = "/api/chat-roulette/session"
+        const val CHAT_ROULETTE_SESSION_EXTEND = "/api/chat-roulette/session/extend"
+        const val CHAT_ROULETTE_SESSION_END = "/api/chat-roulette/session/end"
+        const val CHAT_ROULETTE_RATE = "/api/chat-roulette/rate"
+        const val CHAT_ROULETTE_REPORT = "/api/chat-roulette/report"
+        const val CHAT_ROULETTE_STATISTICS = "/api/chat-roulette/statistics"
+        const val CHAT_ROULETTE_MESSAGES = "/api/chat-roulette/messages"
 
         const val WS_ROOMS = "/ws/rooms/{room_id}"
         const val WS_CHAT_ROULETTE = "/ws/chat-roulette/{session_id}"

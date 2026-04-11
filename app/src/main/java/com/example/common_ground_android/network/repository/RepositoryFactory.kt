@@ -20,11 +20,11 @@ object RepositoryFactory {
     private var roomWebSocketRepository: RoomWebSocketRepository? = null
     private var chatRouletteWebSocketRepository: ChatRouletteWebSocketRepository? = null
 
-    fun createAuthRepository(context: Context): AuthRepository {
+    fun createAuthRepository(): AuthRepository {
         return authRepository ?: synchronized(this) {
             authRepository ?: AuthRepository(
                 authService = AuthService(),
-                tokenManager = TokenManager(context),
+                tokenManager = KtorClientFactory.getTokenManager(),
                 dispatcher = Dispatchers.IO
             ).also { authRepository = it }
         }

@@ -4,6 +4,7 @@ import com.example.common_ground_android.network.config.ApiConfig
 import com.example.common_ground_android.network.model.response.interest.InterestResponse
 import com.example.common_ground_android.network.client.KtorClientFactory
 import io.ktor.client.call.*
+import io.ktor.client.plugins.auth.AuthCircuitBreaker
 import io.ktor.client.request.*
 import io.ktor.http.*
 
@@ -12,6 +13,7 @@ class InterestService {
 
     suspend fun getAllInterests(language: String = ApiConfig.DEFAULT_LANGUAGE): List<InterestResponse> {
         return client.get {
+            attributes.put(AuthCircuitBreaker, Unit)
             url(ApiConfig.Endpoints.INTERESTS)
             header(ApiConfig.HEADER_ACCEPT_LANGUAGE, language)
         }.body()

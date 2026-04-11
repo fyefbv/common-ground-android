@@ -4,6 +4,7 @@ import com.example.common_ground_android.network.api.service.AuthService
 import com.example.common_ground_android.network.client.TokenManager
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.model.response.auth.AuthTokensResponse
+import com.example.common_ground_android.network.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +22,8 @@ class AuthRepository(
                 tokenManager.saveTokens(response.accessToken, response.refreshToken)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "AuthRepository.register")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -33,7 +35,8 @@ class AuthRepository(
                 tokenManager.saveTokens(response.accessToken, response.refreshToken)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "AuthRepository.login")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -45,7 +48,8 @@ class AuthRepository(
                 tokenManager.saveTokens(response.accessToken, response.refreshToken, profileId)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "AuthRepository.selectProfile")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -56,15 +60,15 @@ class AuthRepository(
                 val refreshToken = tokenManager.getRefreshTokenSync()
                 if (refreshToken == null) {
                     tokenManager.clearTokens()
-                    return@withContext NetworkResult.Error(message = "No refresh token")
+                    return@withContext NetworkResult.Error(errorMessage = "Токен обновления отсутствует")
                 }
-
                 val response = authService.refreshToken(refreshToken)
                 tokenManager.saveTokens(response.accessToken, response.refreshToken)
                 NetworkResult.Success(true)
             } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "AuthRepository.refreshToken")
                 tokenManager.clearTokens()
-                NetworkResult.Error(exception = e)
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -75,7 +79,8 @@ class AuthRepository(
                 tokenManager.clearTokens()
                 NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "AuthRepository.logout")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }

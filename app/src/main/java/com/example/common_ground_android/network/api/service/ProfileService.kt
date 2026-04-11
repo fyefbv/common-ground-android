@@ -40,6 +40,12 @@ class ProfileService {
         }.body()
     }
 
+    suspend fun getCurrentProfile(): ProfileResponse {
+        return client.get {
+            url(ApiConfig.Endpoints.PROFILES_CURRENT)
+        }.body()
+    }
+
     suspend fun getProfileByUsername(username: String): ProfileResponse {
         return client.get {
             url(ApiConfig.Endpoints.PROFILES_BY_USERNAME.replacePathParams("username" to username))
@@ -74,6 +80,20 @@ class ProfileService {
         }.body()
     }
 
+    suspend fun uploadAvatarByUsername(username: String, fileBytes: ByteArray): AvatarResponse {
+        return client.post {
+            url(ApiConfig.Endpoints.PROFILES_AVATAR_BY_USERNAME.replacePathParams("username" to username))
+            setBody(MultiPartFormDataContent(
+                formData {
+                    append("file", fileBytes, Headers.build {
+                        append(HttpHeaders.ContentType, "image/jpeg")
+                        append(HttpHeaders.ContentDisposition, "filename=\"avatar.jpg\"")
+                    })
+                }
+            ))
+        }.body()
+    }
+
     suspend fun deleteAvatar(): DeleteResponse {
         return client.delete {
             url(ApiConfig.Endpoints.PROFILES_AVATAR)
@@ -89,6 +109,14 @@ class ProfileService {
     suspend fun addInterestsToMyProfile(request: ProfileInterestsRequest): DeleteResponse {
         return client.post {
             url(ApiConfig.Endpoints.PROFILES_ME_INTERESTS)
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+    }
+
+    suspend fun addInterestsToProfileByUsername(username: String, request: ProfileInterestsRequest): DeleteResponse {
+        return client.post {
+            url(ApiConfig.Endpoints.PROFILES_INTERESTS.replacePathParams("username" to username))
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()

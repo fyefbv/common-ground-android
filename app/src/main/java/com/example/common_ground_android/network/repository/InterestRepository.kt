@@ -3,6 +3,7 @@ package com.example.common_ground_android.network.repository
 import com.example.common_ground_android.network.api.service.InterestService
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.model.response.interest.InterestResponse
+import com.example.common_ground_android.network.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,7 +19,8 @@ class InterestRepository(
                 val response = interestService.getAllInterests(language)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getAllInterests")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -29,7 +31,8 @@ class InterestRepository(
                 val response = interestService.getInterestById(interestId, language)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getInterestById")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
@@ -41,7 +44,8 @@ class InterestRepository(
                 val filtered = allInterests.filter { interestIds.contains(it.id) }
                 NetworkResult.Success(filtered)
             } catch (e: Exception) {
-                NetworkResult.Error(exception = e)
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getInterestsByIds")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
     }
