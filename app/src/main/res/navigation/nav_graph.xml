@@ -102,14 +102,16 @@
         android:label="RoomsFragment"
         tools:layout="@layout/fragment_rooms">
         <action
-            android:id="@+id/action_roomsFragment_to_groupRoomFragment"
-            app:destination="@id/groupRoomFragment" />
-        <action
             android:id="@+id/action_roomsFragment_to_createRoomFragment"
             app:destination="@id/createRoomFragment" />
-        <argument
-            android:name="roomId"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_roomsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_roomsFragment_to_groupRoomFragment"
+            app:destination="@id/groupRoomFragment" />
     </fragment>
 
     <fragment
@@ -166,7 +168,14 @@
         tools:layout="@layout/fragment_create_room">
         <action
             android:id="@+id/action_createRoomFragment_to_roomsFragment"
-            app:destination="@id/roomsFragment" />
+            app:destination="@id/roomsFragment"
+            app:popUpTo="@id/roomsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_createRoomFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

@@ -36,10 +36,10 @@
 
     <!-- Bottom Navigation Style -->
     <style name="BottomNavigationView.Custom" parent="Widget.Material3.BottomNavigationView">
-        <item name="itemBackground">@drawable/bottom_nav_item_background</item>
+        <item name="android:background">@drawable/bg_bottom_nav</item>
+        <item name="android:elevation">0dp</item>
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
-        <item name="android:background">@drawable/bottom_nav_background</item>
     </style>
 
     <!-- Style for clickable link text -->

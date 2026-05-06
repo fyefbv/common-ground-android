@@ -3,15 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:background="@color/md_surface"
-    android:padding="@dimen/spacing_16"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="@dimen/spacing_16">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:title=""
+            app:contentInsetStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:paddingHorizontal="@dimen/spacing_8">
+
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/back"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/md_on_surface" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/create_room"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_xl"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -19,7 +62,10 @@
             style="@style/CardView.Rounded"
             app:cardCornerRadius="@dimen/corner_radius_28"
             app:cardElevation="@dimen/elevation_2"
-            android:layout_marginBottom="@dimen/spacing_24">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,39 +73,31 @@
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_24">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_room"
-                    android:textColor="@color/md_on_surface"
-                    android:textSize="@dimen/text_xl"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/spacing_24" />
-
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/name_input_layout"
                     style="@style/TextInputLayout.Rounded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_20">
+                    android:layout_marginBottom="@dimen/spacing_16">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/room_name_edit_text"
+                        android:id="@+id/name_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_height"
                         android:hint="@string/room_name"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base" />
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/description_input_layout"
                     style="@style/TextInputLayout.Rounded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_20">
+                    android:layout_marginBottom="@dimen/spacing_16">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/room_description_edit_text"
+                        android:id="@+id/description_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/room_description"
@@ -67,7 +105,6 @@
                         android:maxLines="3"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base" />
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -75,51 +112,78 @@
                     android:layout_height="wrap_content"
                     android:text="@string/primary_interest"
                     android:textColor="@color/md_on_surface"
-                    android:textSize="@dimen/text_base"
+                    android:textSize="@dimen/text_lg"
+                    android:textStyle="bold"
                     android:layout_marginBottom="@dimen/spacing_8" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/primary_interests_chip_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:chipSpacingHorizontal="@dimen/spacing_8"
-                    app:chipSpacingVertical="@dimen/spacing_8"
-                    android:layout_marginBottom="@dimen/spacing_20" />
-
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/primary_interest_input_layout"
                     style="@style/TextInputLayout.Rounded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_20"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_add"
-                    app:endIconTint="@color/md_primary">
+                    app:endIconMode="dropdown_menu"
+                    android:layout_marginBottom="@dimen/spacing_16">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tags_edit_text"
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/primary_interest_auto_complete"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_height"
-                        android:hint="@string/tags"
+                        android:hint="@string/select_primary_interest"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tags"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_lg"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_8" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tag_input_layout"
+                    style="@style/TextInputLayout.Rounded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_add"
+                    app:endIconTint="@color/md_primary"
+                    android:layout_marginBottom="@dimen/spacing_16">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tag_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_height"
+                        android:hint="@string/enter_tag"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/md_on_surface"
+                        android:textSize="@dimen/text_base" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/added_tags_chip_group"
+                    android:id="@+id/tags_chip_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="@dimen/spacing_8"
-                    app:chipSpacingVertical="@dimen/spacing_8"
-                    android:layout_marginBottom="@dimen/spacing_20"
-                    android:visibility="gone" />
+                    app:chipSpacingVertical="@dimen/spacing_4"
+                    android:layout_marginBottom="@dimen/spacing_16" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/max_participants"
                     android:textColor="@color/md_on_surface"
-                    android:textSize="@dimen/text_base"
+                    android:textSize="@dimen/text_lg"
+                    android:textStyle="bold"
                     android:layout_marginBottom="@dimen/spacing_8" />
 
                 <com.google.android.material.slider.Slider
@@ -127,23 +191,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:valueFrom="2"
-                    android:valueTo="100"
+                    android:valueTo="1000"
                     android:value="50"
                     android:stepSize="1"
                     app:trackColorInactive="@color/md_outline_variant"
                     app:trackColorActive="@color/md_primary"
                     app:thumbColor="@color/md_primary"
-                    android:layout_marginBottom="@dimen/spacing_20" />
+                    android:layout_marginBottom="@dimen/spacing_8" />
 
                 <TextView
                     android:id="@+id/max_participants_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="50 участников"
+                    android:text="50 участников"
                     android:textColor="@color/md_on_surface_variant"
                     android:textSize="@dimen/text_sm"
                     android:gravity="center"
-                    android:layout_marginBottom="@dimen/spacing_20" />
+                    android:layout_marginBottom="@dimen/spacing_16" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -156,7 +220,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/private_room"
+                        android:text="@string/create_private_room"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base" />
 
@@ -164,9 +228,8 @@
                         android:id="@+id/private_room_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:trackTint="@color/md_primary"
-                        app:thumbTint="@color/md_on_primary" />
-
+                        app:thumbTint="@color/switch_thumb_selector"
+                        app:trackTint="@color/switch_track_selector" />
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -177,9 +240,6 @@
                     android:text="@string/create_room" />
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

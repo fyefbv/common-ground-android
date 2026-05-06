@@ -43,7 +43,7 @@
     <string name="hello">Hello,</string>
     <string name="switch_it">Switch</string>
     <string name="chat_roulette">Chat Roulette</string>
-    <string name="chat_roulette_description">Quick 1-on-1 chat with like-minded people</string>
+    <string name="chat_roulette_description">Quick 1-on-1 chat</string>
     <string name="active_rooms">Active Rooms</string>
     <string name="rooms_count">%d rooms</string>
     <string name="join">Join</string>
@@ -71,17 +71,21 @@
     <string name="all">All</string>
     <string name="popular">Popular</string>
     <string name="new_rooms">New</string>
-    <string name="my_rooms">My</string>
-    <string name="no_rooms_found">No rooms found</string>
+    <string name="my_rooms">My rooms</string>
     <string name="members">%d members</string>
     <string name="online">%d online</string>
     <string name="joined">You\'re in</string>
-    <string name="leave">Leave</string>
     <string name="tags_label">Tags:</string>
     <string name="participants_label">participants</string>
     <string name="messages_label">messages</string>
     <string name="max_label">max</string>
     <string name="messages_title">Messages</string>
+    <string name="popular_rooms">Popular rooms</string>
+    <string name="no_rooms_found">No rooms found</string>
+    <string name="error_loading_rooms">Error loading rooms</string>
+    <string name="leave">Leave</string>
+    <string name="public_room">Public</string>
+    <string name="private_room">Private</string>
 
     <!-- Chat -->
     <string name="type_message">Type a message…</string>
@@ -195,10 +199,12 @@
     <string name="room_name">Room Name</string>
     <string name="room_description">Room Description</string>
     <string name="primary_interest">Primary Interest</string>
-    <string name="tags">Tags (comma separated)</string>
+    <string name="create_tags">Tags (comma separated)</string>
     <string name="max_participants">Max Participants</string>
-    <string name="private_room">Private Room</string>
     <string name="danger_zone">Danger Zone</string>
+    <string name="select_primary_interest">Select primary interest</string>
+    <string name="enter_tag">Enter tag</string>
+    <string name="create_private_room">Private room</string>
 
     <!-- Chat Session -->
     <string name="session_statistics">Chat Roulette Statistics</string>
@@ -209,4 +215,35 @@
     <!-- Message Actions -->
     <string name="edit_message">Edit</string>
     <string name="delete_message">Delete</string>
+
+    <!-- Splash Screen -->
+    <string name="loading">Loading...</string>
+
+    <!-- Filter & Sort -->
+    <string name="filter_rooms">Filter rooms</string>
+    <string name="show_my_rooms">Show only my rooms</string>
+    <string name="interests">Interests</string>
+    <string name="sort_by">Sort by</string>
+    <string name="date">Date</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Apply</string>
+    <string name="filter">Filter</string>
+    <string name="room_type">Room type</string>
+    <string name="all_rooms">All rooms</string>
+    <string name="search_tags">Search tags</string>
+    <string name="sort_by_criterion">Sort by</string>
+    <string name="sort_order">Order</string>
+    <string name="tags">Tags</string>
+
+    <plurals name="rooms_count">
+        <item quantity="one">%d room</item>
+        <item quantity="other">%d rooms</item>
+    </plurals>
+
+    <plurals name="participants_count">
+        <item quantity="one">%d participant</item>
+        <item quantity="other">%d participants</item>
+    </plurals>
 </resources>

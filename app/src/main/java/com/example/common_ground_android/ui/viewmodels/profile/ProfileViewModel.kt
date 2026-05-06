@@ -103,26 +103,37 @@ class ProfileViewModel(
     private fun loadProfile() {
         viewModelScope.launch {
             _profileState.value = ProfileFormState.Loading
-            val profileId = tokenManager.getProfileIdSync()
-            if (profileId == null) {
-                _profileState.value = ProfileFormState.Error("Профиль не выбран")
-                return@launch
-            }
-
-            when (val result = profileRepository.getCurrentProfile()) {
+            when (val profileResult = profileRepository.getCurrentProfile()) {
                 is NetworkResult.Success -> {
-                    val currentProfile = Profile.fromResponse(result.data)
+                    val currentProfile = Profile.fromResponse(profileResult.data)
                     _profileData.value = currentProfile
                     _username.value = currentProfile.username
                     _bio.value = currentProfile.bio ?: ""
-                    _pendingInterestIds.value = currentProfile.interests.map { it.id }.toSet()
-                    loadProfileInterests(currentProfile.username)
-                    _profileState.value = ProfileFormState.Idle
+
+                    when (val interestsResult = fetchProfileInterests(currentProfile.username)) {
+                        is NetworkResult.Success -> {
+                            val interestIds = interestsResult.data
+                            _selectedInterestIds.value = interestIds
+                            _pendingInterestIds.value = interestIds
+                            _profileState.value = ProfileFormState.Idle
+                        }
+                        is NetworkResult.Error -> {
+                            _profileState.value = ProfileFormState.Error(
+                                "Профиль загружен, но не удалось загрузить интересы: ${interestsResult.errorMessage}",
+                                interestsResult.errorCode
+                            )
+                        }
+                        else -> {
+                            _profileState.value = ProfileFormState.Error("Неизвестная ошибка при загрузке интересов")
+                        }
+                    }
                 }
                 is NetworkResult.Error -> {
-                    _profileState.value = ProfileFormState.Error(result.errorMessage)
+                    _profileState.value = ProfileFormState.Error(profileResult.errorMessage, profileResult.errorCode)
                 }
-                else -> {}
+                else -> {
+                    _profileState.value = ProfileFormState.Error("Неизвестная ошибка при загрузке профиля")
+                }
             }
         }
     }
@@ -139,17 +150,11 @@ class ProfileViewModel(
         }
     }
 
-    private fun loadProfileInterests(username: String) {
-        viewModelScope.launch {
-            when (val result = profileRepository.getProfileInterests(username)) {
-                is NetworkResult.Success -> {
-                    val interestIds = result.data.map { it.id }.toSet()
-                    _selectedInterestIds.value = interestIds
-                    _pendingInterestIds.value = interestIds
-                }
-                is NetworkResult.Error -> { }
-                else -> {}
-            }
+    private suspend fun fetchProfileInterests(username: String): NetworkResult<Set<String>> {
+        return when (val result = profileRepository.getProfileInterests(username)) {
+            is NetworkResult.Success -> NetworkResult.Success(result.data.map { it.id }.toSet())
+            is NetworkResult.Error -> NetworkResult.Error(result.errorCode, result.errorMessage)
+            else -> NetworkResult.Error(errorMessage = "Неизвестная ошибка")
         }
     }
 
@@ -201,7 +206,7 @@ class ProfileViewModel(
                     _bio.value = updatedProfile.bio ?: ""
                 }
                 is NetworkResult.Error -> {
-                    _profileState.value = ProfileFormState.Error(updateResult.errorMessage)
+                    _profileState.value = ProfileFormState.Error(updateResult.errorMessage, updateResult.errorCode)
                     return@launch
                 }
                 else -> {}
@@ -214,7 +219,7 @@ class ProfileViewModel(
                 if (toRemove.isNotEmpty()) {
                     when (val removeResult = profileRepository.removeInterestsFromMyProfile(toRemove)) {
                         is NetworkResult.Error -> {
-                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить интересы: ${removeResult.errorMessage}")
+                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить интересы: ${removeResult.errorMessage}", removeResult.errorCode)
                             return@launch
                         }
                         else -> {}
@@ -224,7 +229,7 @@ class ProfileViewModel(
                 if (toAdd.isNotEmpty()) {
                     when (val addResult = profileRepository.addInterestsToMyProfile(toAdd)) {
                         is NetworkResult.Error -> {
-                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось добавить интересы: ${addResult.errorMessage}")
+                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось добавить интересы: ${addResult.errorMessage}", addResult.errorCode)
                             return@launch
                         }
                         else -> {}
@@ -240,7 +245,7 @@ class ProfileViewModel(
                         _deleteAvatar.value = false
                     }
                     is NetworkResult.Error -> {
-                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить аватар: ${deleteResult.errorMessage}")
+                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить аватар: ${deleteResult.errorMessage}", deleteResult.errorCode)
                         return@launch
                     }
                     else -> {}
@@ -252,7 +257,7 @@ class ProfileViewModel(
                         _newAvatarBytes.value = null
                     }
                     is NetworkResult.Error -> {
-                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось загрузить аватар: ${uploadResult.errorMessage}")
+                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось загрузить аватар: ${uploadResult.errorMessage}", uploadResult.errorCode)
                         return@launch
                     }
                     else -> {}

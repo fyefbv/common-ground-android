@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bottom_nav_height">56dp</dimen>
+    <dimen name="bottom_nav_height">90dp</dimen>
 
     <!-- Corner radius -->
     <dimen name="corner_radius_20">20dp</dimen>

@@ -21,7 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_navigation_menu"
-        style="@style/BottomNavigationView.Custom" />
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:layout_marginBottom="@dimen/spacing_12"
+        style="@style/BottomNavigationView.Custom"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

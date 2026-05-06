@@ -13,18 +13,24 @@ import io.ktor.http.Parameters
 class RoomService {
     private val client = KtorClientFactory.getInstance().httpClient
 
+    suspend fun getAllTags(): List<String> {
+        return client.get {
+            url(ApiConfig.Endpoints.ROOMS_TAGS)
+        }.body()
+    }
+
     suspend fun searchRooms(filter: RoomFilter): List<RoomResponse> {
         return client.get {
-            url(ApiConfig.Endpoints.ROOMS)
-
-            parameters {
-                filter.query?.let { append(ApiConfig.QueryParams.QUERY, it) }
-                filter.interestId?.let { append(ApiConfig.QueryParams.INTEREST_ID, it) }
-                filter.tags?.forEach { tag ->
-                    append(ApiConfig.QueryParams.TAGS, tag)
-                }
-                append(ApiConfig.QueryParams.LIMIT, filter.limit.toString())
-                append(ApiConfig.QueryParams.OFFSET, filter.offset.toString())
+            url {
+                takeFrom(ApiConfig.Endpoints.ROOMS)
+                filter.query?.takeIf { it.isNotBlank() }?.let { parameters.append("query", it) }
+                filter.interestIds?.forEach { id -> parameters.append("interest_ids", id) }
+                filter.tags?.forEach { tag -> parameters.append("tags", tag) }
+                if (filter.myRooms) parameters.append("my_rooms", "true")
+                parameters.append("sort_by", filter.sortBy)
+                parameters.append("sort_order", filter.sortOrder)
+                parameters.append("limit", filter.limit.toString())
+                parameters.append("offset", filter.offset.toString())
             }
         }.body()
     }

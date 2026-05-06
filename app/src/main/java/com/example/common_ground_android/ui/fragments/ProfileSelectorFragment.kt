@@ -124,6 +124,7 @@ class ProfileSelectorFragment : Fragment() {
                 showEmptyState(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
+                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()

@@ -89,8 +89,11 @@ data class UpdateMessageRequest(
 
 data class RoomFilter(
     val query: String? = null,
-    val interestId: String? = null,
+    val interestIds: List<String>? = null,
     val tags: List<String>? = null,
+    val myRooms: Boolean = false,
+    val sortBy: String = "created_at",
+    val sortOrder: String = "desc",
     val limit: Int = 50,
     val offset: Int = 0
 )

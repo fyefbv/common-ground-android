@@ -44,7 +44,8 @@ object ApiConfig {
 
         const val INTERESTS = "/api/interests/"
 
-        const val ROOMS = "/api/rooms"
+        const val ROOMS = "/api/rooms/"
+        const val ROOMS_TAGS = "/api/rooms/tags"
         const val ROOMS_POPULAR = "/api/rooms/popular"
         const val ROOMS_MY = "/api/rooms/my"
         const val ROOMS_BY_ID = "/api/rooms/{room_id}"

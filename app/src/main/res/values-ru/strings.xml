@@ -43,7 +43,7 @@
     <string name="hello">Привет,</string>
     <string name="switch_it">Сменить</string>
     <string name="chat_roulette">Чат-рулетка</string>
-    <string name="chat_roulette_description">Быстрое общение 1 на 1 с единомышленниками</string>
+    <string name="chat_roulette_description">Быстрое общение 1 на 1</string>
     <string name="active_rooms">Активные комнаты</string>
     <string name="rooms_count">%d комнат</string>
     <string name="join">Войти</string>
@@ -71,17 +71,21 @@
     <string name="all">Все</string>
     <string name="popular">Популярные</string>
     <string name="new_rooms">Новые</string>
-    <string name="my_rooms">Мои</string>
-    <string name="no_rooms_found">Комнаты не найдены</string>
+    <string name="my_rooms">Мои комнаты</string>
     <string name="members">%d участников</string>
     <string name="online">%d онлайн</string>
     <string name="joined">Вы в комнате</string>
-    <string name="leave">Покинуть</string>
     <string name="tags_label">Теги:</string>
     <string name="participants_label">участника</string>
     <string name="messages_label">сообщений</string>
     <string name="max_label">макс.</string>
     <string name="messages_title">Сообщения</string>
+    <string name="popular_rooms">Популярные комнаты</string>
+    <string name="no_rooms_found">Комнаты не найдены</string>
+    <string name="error_loading_rooms">Ошибка загрузки комнат</string>
+    <string name="leave">Выйти</string>
+    <string name="public_room">Публичная</string>
+    <string name="private_room">Приватная</string>
 
     <!-- Chat -->
     <string name="type_message">Напишите сообщение…</string>
@@ -195,10 +199,12 @@
     <string name="room_name">Название комнаты</string>
     <string name="room_description">Описание комнаты</string>
     <string name="primary_interest">Основной интерес</string>
-    <string name="tags">Теги (через запятую)</string>
+    <string name="create_tags">Теги (через запятую)</string>
     <string name="max_participants">Максимум участников</string>
-    <string name="private_room">Приватная комната</string>
     <string name="danger_zone">Опасная зона</string>
+    <string name="select_primary_interest">Выберите основной интерес</string>
+    <string name="enter_tag">Введите тег</string>
+    <string name="create_private_room">Приватная комната</string>
 
     <!-- Chat Session -->
     <string name="session_statistics">Статистика чат-рулетки</string>
@@ -209,4 +215,39 @@
     <!-- Message Actions -->
     <string name="edit_message">Редактировать</string>
     <string name="delete_message">Удалить</string>
+
+    <!-- Splash Screen -->
+    <string name="loading">Загрузка...</string>
+
+    <!-- Filter & Sort -->
+    <string name="filter_rooms">Фильтр комнат</string>
+    <string name="show_my_rooms">Показывать только мои комнаты</string>
+    <string name="interests">Интересы</string>
+    <string name="sort_by">Сортировка</string>
+    <string name="date">По дате</string>
+    <string name="ascending">Возрастание</string>
+    <string name="descending">Убывание</string>
+    <string name="reset">Сбросить</string>
+    <string name="apply">Применить</string>
+    <string name="filter">Фильтр</string>
+    <string name="room_type">Тип комнат</string>
+    <string name="all_rooms">Все комнаты</string>
+    <string name="search_tags">Поиск тегов</string>
+    <string name="sort_by_criterion">По чему</string>
+    <string name="sort_order">Порядок</string>
+    <string name="tags">Теги</string>
+
+    <plurals name="rooms_count">
+        <item quantity="one">%d комната</item>
+        <item quantity="few">%d комнаты</item>
+        <item quantity="many">%d комнат</item>
+        <item quantity="other">%d комнат</item>
+    </plurals>
+
+    <plurals name="participants_count">
+        <item quantity="one">%d участник</item>
+        <item quantity="few">%d участника</item>
+        <item quantity="many">%d участников</item>
+        <item quantity="other">%d участников</item>
+    </plurals>
 </resources>

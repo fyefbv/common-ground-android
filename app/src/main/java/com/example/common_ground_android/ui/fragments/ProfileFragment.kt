@@ -269,10 +269,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         binding.editButton.setOnClickListener {
             if (viewModel.isEditMode.value) {
                 viewModel.cancelEditing()
@@ -369,6 +365,7 @@ class ProfileFragment : Fragment() {
                 setLoading(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
+                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()

@@ -54,9 +54,7 @@ class CreateProfileViewModel(
                 is NetworkResult.Success -> {
                     _interests.value = result.data.map { Interest.fromResponse(it) }
                 }
-                is NetworkResult.Error -> {
-
-                }
+                is NetworkResult.Error -> { }
                 else -> {}
             }
         }
@@ -122,7 +120,7 @@ class CreateProfileViewModel(
                     if (selectedIds.isNotEmpty()) {
                         val interestResult = profileRepository.addInterestsToProfileByUsername(profile.username, selectedIds)
                         if (interestResult is NetworkResult.Error) {
-                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось добавить интересы: ${interestResult.errorMessage}")
+                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось добавить интересы: ${interestResult.errorMessage}", interestResult.errorCode)
                             return@launch
                         }
                     }
@@ -130,14 +128,14 @@ class CreateProfileViewModel(
                     if (avatarBytes != null) {
                         val avatarResult = profileRepository.uploadAvatarByUsername(profile.username, avatarBytes)
                         if (avatarResult is NetworkResult.Error) {
-                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось загрузить аватар: ${avatarResult.errorMessage}")
+                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось загрузить аватар: ${avatarResult.errorMessage}", avatarResult.errorCode)
                             return@launch
                         }
                     }
                     _state.value = ProfileFormState.Success("Профиль создан")
                 }
                 is NetworkResult.Error -> {
-                    _state.value = ProfileFormState.Error(result.errorMessage)
+                    _state.value = ProfileFormState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {
                     _state.value = ProfileFormState.Error("Неизвестная ошибка")

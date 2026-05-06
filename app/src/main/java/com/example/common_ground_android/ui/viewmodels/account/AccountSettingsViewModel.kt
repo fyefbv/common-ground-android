@@ -44,7 +44,7 @@ class AccountSettingsViewModel(
                     _currentEmail.value = result.data.email
                 }
                 is NetworkResult.Error -> {
-                    _state.value = AccountSettingsState.Error("Не удалось загрузить email")
+                    _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {}
             }
@@ -70,7 +70,7 @@ class AccountSettingsViewModel(
                     _state.value = AccountSettingsState.Success("Email успешно обновлён")
                 }
                 is NetworkResult.Error -> {
-                    _state.value = AccountSettingsState.Error(result.errorMessage)
+                    _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {}
             }
@@ -101,7 +101,7 @@ class AccountSettingsViewModel(
                     _confirmPasswordError.value = null
                 }
                 is NetworkResult.Error -> {
-                    _state.value = AccountSettingsState.Error(result.errorMessage)
+                    _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {}
             }
@@ -117,7 +117,7 @@ class AccountSettingsViewModel(
                     _state.value = AccountSettingsState.LoggedOut
                 }
                 is NetworkResult.Error -> {
-                    _state.value = AccountSettingsState.Error(result.errorMessage)
+                    _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {}
             }

@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)

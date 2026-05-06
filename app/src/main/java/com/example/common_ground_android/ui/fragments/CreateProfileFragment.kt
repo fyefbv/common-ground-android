@@ -188,10 +188,6 @@ class CreateProfileFragment : Fragment() {
             viewModel.createProfile()
         }
 
-        binding.avatarEditButton.setOnClickListener {
-            Snackbar.make(binding.root, "Выбор аватара будет реализован позже", Snackbar.LENGTH_SHORT).show()
-        }
-
         binding.root.setOnClickListener {
             hideKeyboard()
         }
@@ -228,6 +224,7 @@ class CreateProfileFragment : Fragment() {
                 setLoading(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
+                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()

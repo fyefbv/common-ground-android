@@ -16,20 +16,33 @@ class RoomRepository(
 
     suspend fun searchRooms(
         query: String? = null,
-        interestId: String? = null,
+        interestIds: List<String>? = null,
         tags: List<String>? = null,
+        myRooms: Boolean = false,
+        sortBy: String = "created_at",
+        sortOrder: String = "desc",
         limit: Int = 50,
         offset: Int = 0
     ): NetworkResult<List<RoomResponse>> {
         return withContext(dispatcher) {
             try {
-                val filter = RoomFilter(query, interestId, tags, limit, offset)
+                val filter = RoomFilter(query, interestIds, tags, myRooms, sortBy, sortOrder, limit, offset)
                 val response = roomService.searchRooms(filter)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
                 val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.searchRooms")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
+        }
+    }
+
+    suspend fun getAllTags(): NetworkResult<List<String>> = withContext(dispatcher) {
+        try {
+            val response = roomService.getAllTags()
+            NetworkResult.Success(response)
+        } catch (e: Exception) {
+            val (errorCode, errorMessage) = ErrorHandler.handleException(e, "RoomRepository.getAllTags")
+            NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
         }
     }
 

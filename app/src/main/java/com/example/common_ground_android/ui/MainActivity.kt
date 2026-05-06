@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.ActivityMainBinding
-import com.example.common_ground_android.network.client.KtorClientFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,8 +37,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.chatRouletteFragment,
                     R.id.accountSettingsFragment,
                     R.id.createProfileFragment,
-                    R.id.profileFragment,
-                    R.id.groupRoomFragment -> false
+                    R.id.groupRoomFragment,
+                    R.id.splashFragment,
+                    R.id.createRoomFragment-> false
                     else -> true
                 }
                 showBottomNavigation(show)

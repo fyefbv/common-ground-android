@@ -25,4 +25,11 @@
         <item name="android:navigationBarColor">@color/md_surface_container</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="Theme.Common_Ground.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/md_surface</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/empty_icon</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.Common_Ground</item>
+    </style>
 </resources>
