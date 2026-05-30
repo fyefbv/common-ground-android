@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/spacing_4"
+    android:paddingHorizontal="@dimen/spacing_8">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_person"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/md_outline_variant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Иван Иванов"
+            android:textColor="@color/md_on_surface"
+            android:textSize="@dimen/text_sm"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/spacing_12"
+            android:layout_marginBottom="@dimen/spacing_4" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/message_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="240dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="@dimen/elevation_1"
+            android:layout_marginStart="@dimen/spacing_4"
+            app:cardBackgroundColor="@color/md_surface_container_high">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/spacing_8"
+                android:paddingHorizontal="@dimen/spacing_12">
+
+                <LinearLayout
+                    android:id="@+id/reply_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/md_surface_variant"
+                    android:padding="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:visibility="gone"
+                    app:cornerRadius="8dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_reply"
+                        app:tint="@color/md_on_surface_variant"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/reply_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="12sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        tools:text="Предыдущее сообщение..." />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/message_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Текст сообщения"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_base" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/spacing_4">
+
+                    <TextView
+                        android:id="@+id/message_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="14:23"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="@dimen/text_xs" />
+
+                    <TextView
+                        android:id="@+id/message_edited"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" (ред.)"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:textSize="@dimen/text_xs"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

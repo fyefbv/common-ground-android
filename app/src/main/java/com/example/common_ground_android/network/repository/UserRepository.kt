@@ -2,8 +2,8 @@ package com.example.common_ground_android.network.repository
 
 import com.example.common_ground_android.network.api.service.UserService
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.auth.UserResponse
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.UserResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

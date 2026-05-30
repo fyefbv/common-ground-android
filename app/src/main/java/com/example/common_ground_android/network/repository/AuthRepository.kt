@@ -3,8 +3,8 @@ package com.example.common_ground_android.network.repository
 import com.example.common_ground_android.network.api.service.AuthService
 import com.example.common_ground_android.network.client.TokenManager
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.auth.AuthTokensResponse
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.AuthTokensResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

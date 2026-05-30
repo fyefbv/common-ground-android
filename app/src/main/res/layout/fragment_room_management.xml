@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/md_surface"
     android:fitsSystemWindows="true">
 
@@ -11,51 +11,70 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/md_surface_container"
-        android:elevation="@dimen/elevation_2">
+        android:elevation="@dimen/elevation_2"
+        app:liftOnScroll="false">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
-            app:titleTextColor="@color/md_on_surface"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/spacing_16"
-                android:gravity="center_vertical">
+                android:layout_height="match_parent">
 
                 <ImageButton
                     android:id="@+id/back_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/md_on_surface" />
+                    android:layout_marginStart="@dimen/spacing_8"
+                    app:tint="@color/md_on_surface"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/room_management"
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_xl"
                     android:textStyle="bold"
-                    android:gravity="center" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
-            </LinearLayout>
+                <ImageButton
+                    android:id="@+id/edit_room_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="@dimen/spacing_8"
+                    android:visibility="gone"
+                    app:tint="@color/md_on_surface"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.MaterialToolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="@dimen/spacing_16">
+        android:padding="@dimen/spacing_16"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,11 +82,11 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/room_card"
+                style="@style/CardView.Rounded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CardView.Rounded"
                 app:cardCornerRadius="@dimen/corner_radius_20"
-                app:cardElevation="@dimen/elevation_1"
                 android:layout_marginBottom="@dimen/spacing_16">
 
                 <LinearLayout
@@ -76,232 +95,287 @@
                     android:orientation="vertical"
                     android:padding="@dimen/spacing_16">
 
-                    <TextView
-                        android:id="@+id/room_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Технологии и AI"
-                        android:textColor="@color/md_on_surface"
-                        android:textSize="@dimen/text_lg"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="@dimen/spacing_8" />
-
-                    <TextView
-                        android:id="@+id/room_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Обсуждаем новейшие технологии и искусственный интеллект"
-                        android:textColor="@color/md_on_surface_variant"
-                        android:textSize="@dimen/text_sm"
-                        android:layout_marginBottom="@dimen/spacing_12" />
-
                     <LinearLayout
+                        android:id="@+id/view_mode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/room_name"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            tools:text="24 участника"
+                            android:textColor="@color/md_on_surface"
+                            android:textSize="@dimen/text_lg"
+                            android:textStyle="bold"
+                            tools:text="Название комнаты"
+                            android:layout_marginBottom="@dimen/spacing_4" />
+
+                        <TextView
+                            android:id="@+id/room_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:textColor="@color/md_on_surface_variant"
-                            android:textSize="@dimen/text_sm" />
+                            android:textSize="@dimen/text_sm"
+                            tools:text="Описание комнаты"
+                            android:layout_marginBottom="@dimen/spacing_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/spacing_8">
+
+                            <TextView
+                                android:id="@+id/room_participants"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/md_on_surface_variant"
+                                android:textSize="@dimen/text_sm"
+                                tools:text="Участников: 4/200" />
+
+                            <TextView
+                                android:id="@+id/room_messages_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/md_on_surface_variant"
+                                android:textSize="@dimen/text_sm"
+                                tools:text="Сообщений: 128" />
+                        </LinearLayout>
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/primary_interest_chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:chipBackgroundColor="@color/md_tertiary_container"
+                            android:textColor="@color/md_on_tertiary_container"
+                            app:chipCornerRadius="@dimen/corner_radius_full"
+                            android:textSize="10sp"
+                            android:layout_marginBottom="@dimen/spacing_8"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/tags_chip_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="@dimen/spacing_4"
+                            app:chipSpacingVertical="@dimen/spacing_4"
+                            android:layout_marginBottom="@dimen/spacing_12" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/md_outline_variant"
+                            android:layout_marginVertical="@dimen/spacing_12" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/edit_room_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
+                            android:id="@+id/leave_room_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height"
                             style="@style/Button.Outlined"
-                            android:text="@string/edit"
-                            android:textSize="@dimen/text_sm" />
+                            android:text="@string/leave_room"
+                            android:textColor="@color/md_error"
+                            android:visibility="gone"
+                            app:strokeColor="@color/md_error" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/delete_room_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height"
+                            style="@style/Button.Outlined"
+                            android:text="@string/delete_room"
+                            android:textColor="@color/md_error"
+                            app:strokeColor="@color/md_error"
+                            android:layout_marginTop="@dimen/spacing_8"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/CardView.Rounded"
-                app:cardCornerRadius="@dimen/corner_radius_20"
-                app:cardElevation="@dimen/elevation_1"
-                android:layout_marginBottom="@dimen/spacing_16">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_16">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/participants"
-                        android:textColor="@color/md_on_surface"
-                        android:textSize="@dimen/text_lg"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="@dimen/spacing_12" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/participants_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxHeight="300dp"
-                        tools:listitem="@layout/item_participant"
-                        tools:itemCount="5" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/show_all_participants_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Outlined"
-                        android:text="@string/show_all_participants"
-                        android:textSize="@dimen/text_sm"
-                        android:layout_marginTop="@dimen/spacing_12" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/CardView.Rounded"
-                app:cardCornerRadius="@dimen/corner_radius_20"
-                app:cardElevation="@dimen/elevation_1"
-                android:layout_marginBottom="@dimen/spacing_16">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_16">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings"
-                        android:textColor="@color/md_on_surface"
-                        android:textSize="@dimen/text_lg"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="@dimen/spacing_12" />
-
                     <LinearLayout
+                        android:id="@+id/edit_mode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginBottom="@dimen/spacing_16">
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/TextInputLayout.Rounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_16">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_room_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/input_height"
+                                android:hint="@string/room_name"
+                                android:inputType="text"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/TextInputLayout.Rounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_16">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_room_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/room_description"
+                                android:inputType="textMultiLine"
+                                android:maxLines="3" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/TextInputLayout.Rounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:endIconMode="dropdown_menu"
+                            android:layout_marginBottom="@dimen/spacing_16">
+
+                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                android:id="@+id/edit_primary_interest"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/input_height"
+                                android:hint="@string/select_primary_interest"
+                                android:paddingStart="16dp"
+                                android:inputType="text"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/TextInputLayout.Rounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_8"
+                            app:endIconMode="custom"
+                            app:endIconDrawable="@drawable/ic_add"
+                            app:endIconTint="@color/md_primary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_tag_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/input_height"
+                                android:hint="@string/enter_tag"
+                                android:inputType="text"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/edit_tags_chip_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="@dimen/spacing_4"
+                            app:chipSpacingVertical="@dimen/spacing_4"
+                            android:layout_marginBottom="@dimen/spacing_16" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/max_participants"
                             android:textColor="@color/md_on_surface"
-                            android:textSize="@dimen/text_base" />
+                            android:textSize="@dimen/text_base"
+                            android:layout_marginBottom="@dimen/spacing_8" />
 
                         <com.google.android.material.slider.Slider
-                            android:id="@+id/max_participants_slider"
+                            android:id="@+id/edit_max_participants_slider"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:valueFrom="2"
-                            android:valueTo="100"
+                            android:valueTo="1000"
                             android:value="50"
                             android:stepSize="1"
                             app:trackColorInactive="@color/md_outline_variant"
                             app:trackColorActive="@color/md_primary"
-                            app:thumbColor="@color/md_primary" />
+                            app:thumbColor="@color/md_primary"
+                            android:layout_marginBottom="@dimen/spacing_4" />
 
                         <TextView
-                            android:id="@+id/max_participants_value"
+                            android:id="@+id/edit_max_participants_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:text="50 участников"
                             android:textColor="@color/md_on_surface_variant"
                             android:textSize="@dimen/text_sm"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:layout_marginBottom="@dimen/spacing_16" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/spacing_24">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/private_room"
+                                android:textColor="@color/md_on_surface"
+                                android:textSize="@dimen/text_base" />
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/edit_private_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:thumbTint="@color/switch_thumb_selector"
+                                app:trackTint="@color/switch_track_selector" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/save_room_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height"
+                            style="@style/Button.Filled"
+                            android:text="@string/save" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/cancel_edit_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height"
+                            style="@style/Button.Outlined"
+                            android:text="@string/cancel"
+                            android:layout_marginTop="@dimen/spacing_8" />
 
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/spacing_16">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/private_room"
-                            android:textColor="@color/md_on_surface"
-                            android:textSize="@dimen/text_base" />
-
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/private_room_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:trackTint="@color/md_primary"
-                            app:thumbTint="@color/md_on_primary" />
-
-                    </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/save_settings_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Filled"
-                        android:text="@string/save_settings"
-                        android:textSize="@dimen/text_sm" />
-
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputLayout.Rounded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CardView.Rounded"
-                app:cardCornerRadius="@dimen/corner_radius_20"
-                app:cardElevation="@dimen/elevation_1"
-                android:backgroundTint="@color/md_error_container">
+                android:layout_marginBottom="@dimen/spacing_8">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_participants"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_16">
+                    android:layout_height="@dimen/input_height"
+                    android:hint="@string/search_participants"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/leave_room_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Outlined"
-                        android:text="@string/leave_room"
-                        android:textColor="@color/md_error"
-                        app:strokeColor="@color/md_error"
-                        android:textSize="@dimen/text_sm"
-                        android:layout_marginBottom="@dimen/spacing_8" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/delete_room_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Filled"
-                        android:backgroundTint="@color/md_error"
-                        android:text="@string/delete_room"
-                        android:textSize="@dimen/text_sm" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/participants_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/spacing_8"
+                android:clipToPadding="false"
+                tools:listitem="@layout/item_participant" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

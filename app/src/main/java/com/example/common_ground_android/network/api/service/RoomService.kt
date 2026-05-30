@@ -1,14 +1,25 @@
 package com.example.common_ground_android.network.api.service
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.room.*
-import com.example.common_ground_android.network.model.response.room.*
 import com.example.common_ground_android.network.client.KtorClientFactory
 import com.example.common_ground_android.network.client.replacePathParams
+import com.example.common_ground_android.network.model.request.BanParticipantRequest
+import com.example.common_ground_android.network.model.request.ChangeRoleRequest
+import com.example.common_ground_android.network.model.request.CreateRoomRequest
+import com.example.common_ground_android.network.model.request.KickParticipantRequest
+import com.example.common_ground_android.network.model.request.MuteParticipantRequest
+import com.example.common_ground_android.network.model.request.RoomFilter
+import com.example.common_ground_android.network.model.request.SendMessageRequest
+import com.example.common_ground_android.network.model.request.UpdateMessageRequest
+import com.example.common_ground_android.network.model.request.UpdateRoomRequest
+import com.example.common_ground_android.network.model.response.DeleteProfileResponse
+import com.example.common_ground_android.network.model.response.MessageResponse
+import com.example.common_ground_android.network.model.response.MessagesResponse
+import com.example.common_ground_android.network.model.response.ParticipantResponse
+import com.example.common_ground_android.network.model.response.RoomResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.http.Parameters
 
 class RoomService {
     private val client = KtorClientFactory.getInstance().httpClient
@@ -23,14 +34,22 @@ class RoomService {
         return client.get {
             url {
                 takeFrom(ApiConfig.Endpoints.ROOMS)
-                filter.query?.takeIf { it.isNotBlank() }?.let { parameters.append("query", it) }
-                filter.interestIds?.forEach { id -> parameters.append("interest_ids", id) }
-                filter.tags?.forEach { tag -> parameters.append("tags", tag) }
-                if (filter.myRooms) parameters.append("my_rooms", "true")
-                parameters.append("sort_by", filter.sortBy)
-                parameters.append("sort_order", filter.sortOrder)
-                parameters.append("limit", filter.limit.toString())
-                parameters.append("offset", filter.offset.toString())
+                filter.query?.takeIf { it.isNotBlank() }?.let {
+                    parameters.append(ApiConfig.QueryParams.QUERY, it)
+                }
+                filter.interestIds?.forEach { id ->
+                    parameters.append(ApiConfig.QueryParams.INTEREST_IDS, id)
+                }
+                filter.tags?.forEach { tag ->
+                    parameters.append(ApiConfig.QueryParams.TAGS, tag)
+                }
+                if (filter.myRooms) {
+                    parameters.append(ApiConfig.QueryParams.MY_ROOMS, "true")
+                }
+                parameters.append(ApiConfig.QueryParams.SORT_BY, filter.sortBy)
+                parameters.append(ApiConfig.QueryParams.SORT_ORDER, filter.sortOrder)
+                filter.limit?.let { parameters.append(ApiConfig.QueryParams.LIMIT, it.toString()) }
+                parameters.append(ApiConfig.QueryParams.OFFSET, filter.offset.toString())
             }
         }.body()
     }
@@ -70,7 +89,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun deleteRoom(roomId: String): DeleteResponse {
+    suspend fun deleteRoom(roomId: String): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.ROOMS_BY_ID.replacePathParams("room_id" to roomId))
         }.body()
@@ -82,7 +101,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun leaveRoom(roomId: String): DeleteResponse {
+    suspend fun leaveRoom(roomId: String): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.ROOMS_LEAVE.replacePathParams("room_id" to roomId))
         }.body()
@@ -95,7 +114,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun kickParticipant(roomId: String, profileId: String, reason: String? = null): DeleteResponse {
+    suspend fun kickParticipant(roomId: String, profileId: String, reason: String? = null): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.ROOMS_PARTICIPANTS.replacePathParams("room_id" to roomId))
             contentType(ContentType.Application.Json)
@@ -106,13 +125,13 @@ class RoomService {
     suspend fun getRoomMessages(
         roomId: String,
         before: String? = null,
-        limit: Int = 50
+        limit: Int? = null
     ): MessagesResponse {
         return client.get {
             url(ApiConfig.Endpoints.ROOMS_MESSAGES.replacePathParams("room_id" to roomId))
             parameters {
                 before?.let { append(ApiConfig.QueryParams.BEFORE, it) }
-                append(ApiConfig.QueryParams.LIMIT, limit.toString())
+                limit?.let { append(ApiConfig.QueryParams.LIMIT, limit.toString()) }
             }
         }.body()
     }
@@ -133,13 +152,13 @@ class RoomService {
         }.body()
     }
 
-    suspend fun deleteMessage(messageId: String): DeleteResponse {
+    suspend fun deleteMessage(messageId: String): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.ROOMS_MESSAGES_BY_ID.replacePathParams("message_id" to messageId))
         }.body()
     }
 
-    suspend fun muteParticipant(roomId: String, participantId: String): DeleteResponse {
+    suspend fun muteParticipant(roomId: String, participantId: String): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.ROOMS_MUTE.replacePathParams("room_id" to roomId))
             contentType(ContentType.Application.Json)
@@ -147,7 +166,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun unmuteParticipant(roomId: String, participantId: String): DeleteResponse {
+    suspend fun unmuteParticipant(roomId: String, participantId: String): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.ROOMS_UNMUTE.replacePathParams("room_id" to roomId))
             contentType(ContentType.Application.Json)
@@ -155,7 +174,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun banParticipant(roomId: String, participantId: String): DeleteResponse {
+    suspend fun banParticipant(roomId: String, participantId: String): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.ROOMS_BAN.replacePathParams("room_id" to roomId))
             contentType(ContentType.Application.Json)
@@ -163,7 +182,7 @@ class RoomService {
         }.body()
     }
 
-    suspend fun unbanParticipant(roomId: String, participantId: String): DeleteResponse {
+    suspend fun unbanParticipant(roomId: String, participantId: String): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.ROOMS_UNBAN.replacePathParams("room_id" to roomId))
             contentType(ContentType.Application.Json)

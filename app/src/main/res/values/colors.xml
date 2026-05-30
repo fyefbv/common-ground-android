@@ -35,4 +35,5 @@
 
     <color name="green_online">#4CAF50</color>
     <color name="flame_red">#FF6B6B</color>
+    <color name="light_gray">#CCCCCC</color>
 </resources>

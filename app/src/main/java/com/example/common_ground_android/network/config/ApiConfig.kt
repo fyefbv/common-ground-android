@@ -5,7 +5,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object ApiConfig {
     const val BASE_URL = "http://10.0.2.2:8000"
-    const val WS_BASE_URL = "http://10.0.2.2:8000"
+    const val WS_BASE_URL = "ws://10.0.2.2:8000"
 
     val CONNECT_TIMEOUT: Duration = 30.seconds
     val SOCKET_TIMEOUT: Duration = 30.seconds
@@ -34,15 +34,19 @@ object ApiConfig {
         const val USERS_ME = "/api/users/me"
 
         const val PROFILES = "/api/profiles/"
+        const val PROFILES_BATCH = "/api/profiles/batch"
         const val PROFILES_ME = "/api/profiles/me"
-        const val PROFILES_BY_USERNAME = "/api/profiles/{username}"
+        const val PROFILE_BY_ID = "/api/profiles/by-id/{profile_id}"
         const val PROFILES_AVATAR = "/api/profiles/me/avatar"
         const val PROFILES_AVATAR_BY_USERNAME = "/api/profiles/{username}/avatar"
         const val PROFILES_INTERESTS = "/api/profiles/{username}/interests"
         const val PROFILES_ME_INTERESTS = "/api/profiles/me/interests"
         const val PROFILES_CURRENT = "/api/profiles/current"
+        const val PROFILES_ME_STATISTICS = "/api/profiles/me/statistics"
+        const val PROFILE_STATISTICS_BY_ID = "/api/profiles/by-id/{profile_id}/statistics"
 
         const val INTERESTS = "/api/interests/"
+        const val INTERESTS_BATCH = "/api/interests/batch"
 
         const val ROOMS = "/api/rooms/"
         const val ROOMS_TAGS = "/api/rooms/tags"
@@ -68,8 +72,10 @@ object ApiConfig {
         const val CHAT_ROULETTE_SESSION_END = "/api/chat-roulette/session/end"
         const val CHAT_ROULETTE_RATE = "/api/chat-roulette/rate"
         const val CHAT_ROULETTE_REPORT = "/api/chat-roulette/report"
-        const val CHAT_ROULETTE_STATISTICS = "/api/chat-roulette/statistics"
         const val CHAT_ROULETTE_MESSAGES = "/api/chat-roulette/messages"
+        const val CHAT_ROULETTE_SESSION_MESSAGES = "/api/chat-roulette/session/messages"
+        const val CHAT_ROULETTE_SESSION_EXTENSION_REJECT = "/api/chat-roulette/session/extension/reject"
+        const val CHAT_ROULETTE_SESSION_EXTENSION_CANCEL = "/api/chat-roulette/session/extension/cancel"
 
         const val WS_ROOMS = "/ws/rooms/{room_id}"
         const val WS_CHAT_ROULETTE = "/ws/chat-roulette/{session_id}"
@@ -77,7 +83,10 @@ object ApiConfig {
 
     object QueryParams {
         const val QUERY = "query"
-        const val INTEREST_ID = "interest_id"
+        const val INTEREST_IDS = "interest_ids"
+        const val MY_ROOMS = "my_rooms"
+        const val SORT_BY = "sort_by"
+        const val SORT_ORDER = "sort_order"
         const val TAGS = "tags"
         const val LIMIT = "limit"
         const val OFFSET = "offset"

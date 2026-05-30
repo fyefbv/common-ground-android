@@ -1,10 +1,12 @@
 package com.example.common_ground_android.network.repository
 
 import com.example.common_ground_android.network.api.service.ChatRouletteService
-import com.example.common_ground_android.network.model.request.chat_roulette.*
+import com.example.common_ground_android.network.model.response.ChatRouletteMessageResponse
+import com.example.common_ground_android.network.model.response.ChatRouletteSessionResponse
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.chat_roulette.*
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.SearchResponse
+import com.example.common_ground_android.network.model.response.SessionExtensionResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -98,13 +100,25 @@ class ChatRouletteRepository(
         }
     }
 
-    suspend fun getStatistics(): NetworkResult<ChatRouletteStatisticsResponse> {
+    suspend fun rejectExtension(): NetworkResult<Unit> {
         return withContext(dispatcher) {
             try {
-                val response = chatRouletteService.getStatistics()
-                NetworkResult.Success(response)
+                chatRouletteService.rejectExtension()
+                NetworkResult.Success(Unit)
             } catch (e: Exception) {
-                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ChatRouletteRepository.getStatistics")
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ChatRouletteRepository.rejectExtension")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
+            }
+        }
+    }
+
+    suspend fun cancelExtensionRequest(): NetworkResult<Unit> {
+        return withContext(dispatcher) {
+            try {
+                chatRouletteService.cancelExtensionRequest()
+                NetworkResult.Success(Unit)
+            } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ChatRouletteRepository.cancelExtensionRequest")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
@@ -117,6 +131,18 @@ class ChatRouletteRepository(
                 NetworkResult.Success(response)
             } catch (e: Exception) {
                 val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ChatRouletteRepository.sendMessage")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
+            }
+        }
+    }
+
+    suspend fun getSessionMessages(limit: Int? = null, before: String? = null): NetworkResult<List<ChatRouletteMessageResponse>> {
+        return withContext(dispatcher) {
+            try {
+                val response = chatRouletteService.getSessionMessages(limit, before)
+                NetworkResult.Success(response)
+            } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ChatRouletteRepository.getSessionMessages")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }

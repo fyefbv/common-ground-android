@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.ActivityMainBinding
+import com.example.common_ground_android.network.client.KtorClientFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -38,11 +41,25 @@ class MainActivity : AppCompatActivity() {
                     R.id.accountSettingsFragment,
                     R.id.createProfileFragment,
                     R.id.groupRoomFragment,
+                    R.id.roomManagementFragment,
+                    R.id.profileViewFragment,
                     R.id.splashFragment,
-                    R.id.createRoomFragment-> false
+                    R.id.createRoomFragment,
+                    R.id.selectInterestsFragment -> false
                     else -> true
                 }
                 showBottomNavigation(show)
+
+                val isRoomFragment = destination.id == R.id.groupRoomFragment ||
+                        destination.id == R.id.roomManagementFragment ||
+                        destination.id == R.id.profileViewFragment
+                if (!isRoomFragment) {
+                    lifecycleScope.launch {
+                        try {
+                            KtorClientFactory.getRoomWebSocketRepository().disconnect()
+                        } catch (e: Exception) { }
+                    }
+                }
             }
         }
     }

@@ -46,7 +46,7 @@
     <string name="chat_roulette_description">Быстрое общение 1 на 1</string>
     <string name="active_rooms">Активные комнаты</string>
     <string name="rooms_count">%d комнат</string>
-    <string name="join">Войти</string>
+    <string name="join">Вступить</string>
 
     <!-- Account -->
     <string name="account_settings">Настройки аккаунта</string>
@@ -83,9 +83,12 @@
     <string name="popular_rooms">Популярные комнаты</string>
     <string name="no_rooms_found">Комнаты не найдены</string>
     <string name="error_loading_rooms">Ошибка загрузки комнат</string>
-    <string name="leave">Выйти</string>
+    <string name="leave">Покинуть</string>
     <string name="public_room">Публичная</string>
     <string name="private_room">Приватная</string>
+    <string name="typing">Печатает...</string>
+    <string name="answer">Ответить</string>
+    <string name="delete">Удалить</string>
 
     <!-- Chat -->
     <string name="type_message">Напишите сообщение…</string>
@@ -100,6 +103,8 @@
     <string name="extend_session_button">+5 мин</string>
     <string name="session_time">Время сессии</string>
     <string name="chat_partner_label">Собеседник</string>
+    <string name="matched_interest_label">Интерес подбора:</string>
+    <string name="common_interests_label">Общие интересы:</string>
 
     <!-- Profile Selector -->
     <string name="select_profile">Выберите профиль</string>
@@ -141,6 +146,8 @@
     <string name="show_all_participants">Показать всех участников</string>
     <string name="save_settings">Сохранить настройки</string>
     <string name="participant_actions">Действия с участником</string>
+    <string name="search_participants">Поиск участников...</string>
+    <string name="no_description">Нет описания</string>
 
     <!-- Chat Roulette -->
     <string name="select_priority_interests">Выберите приоритетные интересы</string>
@@ -166,7 +173,7 @@
     <string name="profile_updated">Профиль обновлен</string>
     <string name="type_to_search_interest">Введите название интереса</string>
     <string name="clear_avatar">Очистить аватар</string>
-    <string name="no_interests">У вас нет интересов</string>
+    <string name="no_interests">Интересы не указаны</string>
     <string name="delete_profile">Удалить профиль</string>
     <string name="delete_profile_confirmation">Вы уверены, что хотите удалить этот профиль? Это действие необратимо.</string>
 
@@ -209,7 +216,7 @@
     <!-- Chat Session -->
     <string name="session_statistics">Статистика чат-рулетки</string>
     <string name="sessions">Сессий</string>
-    <string name="average_rating">Средний рейтинг</string>
+    <string name="average_rating">Рейтинг</string>
     <string name="completed">Завершено</string>
 
     <!-- Message Actions -->
@@ -249,5 +256,12 @@
         <item quantity="few">%d участника</item>
         <item quantity="many">%d участников</item>
         <item quantity="other">%d участников</item>
+    </plurals>
+
+    <plurals name="online_count">
+        <item quantity="one">%d в сети</item>
+        <item quantity="few">%d в сети</item>
+        <item quantity="many">%d в сети</item>
+        <item quantity="other">%d в сети</item>
     </plurals>
 </resources>

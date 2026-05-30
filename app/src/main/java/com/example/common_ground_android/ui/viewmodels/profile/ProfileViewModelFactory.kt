@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.common_ground_android.network.client.KtorClientFactory
-import com.example.common_ground_android.network.client.TokenManager
 import com.example.common_ground_android.network.repository.RepositoryFactory
 
 class ProfileViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
@@ -26,8 +25,9 @@ class ProfileViewModelFactory(private val context: Context) : ViewModelProvider.
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 val profileRepository = RepositoryFactory.createProfileRepository()
                 val interestRepository = RepositoryFactory.createInterestRepository()
+                val authRepository = RepositoryFactory.createAuthRepository()
                 val tokenManager = KtorClientFactory.getTokenManager()
-                ProfileViewModel(profileRepository, interestRepository, tokenManager) as T
+                ProfileViewModel(profileRepository, interestRepository, authRepository, tokenManager) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

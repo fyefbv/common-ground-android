@@ -1,13 +1,14 @@
 package com.example.common_ground_android.network.client
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.auth.RefreshTokenRequest
+import com.example.common_ground_android.network.model.request.RefreshTokenRequest
 import com.example.common_ground_android.network.model.response.ApiErrorResponse
 import com.example.common_ground_android.network.model.response.ValidationErrorDetail
-import com.example.common_ground_android.network.model.response.auth.AuthTokensResponse
+import com.example.common_ground_android.network.model.response.AuthTokensResponse
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.*
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
@@ -82,12 +83,13 @@ class KtorClient(private val tokenManager: TokenManager) {
                 refreshTokens {
                     val refreshToken = runBlocking { tokenManager.getRefreshTokenSync() }
                     if (refreshToken == null) return@refreshTokens null
+                    val profileId = runBlocking { tokenManager.getProfileIdSync() }
                     val response = runBlocking { this@KtorClient.performTokenRefresh(refreshToken) }
                     if (response == null) {
                         runBlocking { tokenManager.clearTokens() }
                         return@refreshTokens null
                     }
-                    runBlocking { tokenManager.saveTokens(response.accessToken, response.refreshToken) }
+                    runBlocking { tokenManager.saveTokens(response.accessToken, response.refreshToken, profileId) }
                     BearerTokens(accessToken = response.accessToken, refreshToken = response.refreshToken)
                 }
                 sendWithoutRequest { request ->
@@ -100,7 +102,6 @@ class KtorClient(private val tokenManager: TokenManager) {
             url(ApiConfig.BASE_URL)
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
-            header(ApiConfig.HEADER_ACCEPT_LANGUAGE, ApiConfig.DEFAULT_LANGUAGE)
         }
 
         HttpResponseValidator {
@@ -166,7 +167,7 @@ class KtorClient(private val tokenManager: TokenManager) {
         }
     }
 
-    val webSocketClient = HttpClient(Android) {
+    val webSocketClient = HttpClient(CIO) {
         install(WebSockets) {
             pingInterval = ApiConfig.WS_PING_INTERVAL
             maxFrameSize = Long.MAX_VALUE

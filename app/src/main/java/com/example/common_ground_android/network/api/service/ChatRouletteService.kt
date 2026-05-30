@@ -1,9 +1,17 @@
 package com.example.common_ground_android.network.api.service
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.chat_roulette.*
-import com.example.common_ground_android.network.model.response.chat_roulette.*
 import com.example.common_ground_android.network.client.KtorClientFactory
+import com.example.common_ground_android.network.model.request.EndSessionRequest
+import com.example.common_ground_android.network.model.request.RatePartnerRequest
+import com.example.common_ground_android.network.model.request.ReportPartnerRequest
+import com.example.common_ground_android.network.model.request.SendChatRouletteMessageRequest
+import com.example.common_ground_android.network.model.request.StartSearchRequest
+import com.example.common_ground_android.network.model.response.ChatRouletteMessageResponse
+import com.example.common_ground_android.network.model.response.ChatRouletteSessionResponse
+import com.example.common_ground_android.network.model.response.DeleteChatRouletteResponse
+import com.example.common_ground_android.network.model.response.SearchResponse
+import com.example.common_ground_android.network.model.response.SessionExtensionResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -19,7 +27,7 @@ class ChatRouletteService {
         }.body()
     }
 
-    suspend fun cancelSearch(): DeleteResponse {
+    suspend fun cancelSearch(): DeleteChatRouletteResponse {
         return client.post {
             url(ApiConfig.Endpoints.CHAT_ROULETTE_SEARCH_CANCEL)
         }.body()
@@ -37,7 +45,7 @@ class ChatRouletteService {
         }.body()
     }
 
-    suspend fun endSession(reason: String? = null): DeleteResponse {
+    suspend fun endSession(reason: String? = null): DeleteChatRouletteResponse {
         return client.post {
             url(ApiConfig.Endpoints.CHAT_ROULETTE_SESSION_END)
             contentType(ContentType.Application.Json)
@@ -45,7 +53,7 @@ class ChatRouletteService {
         }.body()
     }
 
-    suspend fun ratePartner(rating: Int, feedback: String? = null): DeleteResponse {
+    suspend fun ratePartner(rating: Int, feedback: String? = null): DeleteChatRouletteResponse {
         return client.post {
             url(ApiConfig.Endpoints.CHAT_ROULETTE_RATE)
             contentType(ContentType.Application.Json)
@@ -53,7 +61,7 @@ class ChatRouletteService {
         }.body()
     }
 
-    suspend fun reportPartner(reason: String? = null, details: String? = null): DeleteResponse {
+    suspend fun reportPartner(reason: String? = null, details: String? = null): DeleteChatRouletteResponse {
         return client.post {
             url(ApiConfig.Endpoints.CHAT_ROULETTE_REPORT)
             contentType(ContentType.Application.Json)
@@ -61,9 +69,15 @@ class ChatRouletteService {
         }.body()
     }
 
-    suspend fun getStatistics(): ChatRouletteStatisticsResponse {
-        return client.get {
-            url(ApiConfig.Endpoints.CHAT_ROULETTE_STATISTICS)
+    suspend fun rejectExtension(): DeleteChatRouletteResponse {
+        return client.post {
+            url(ApiConfig.Endpoints.CHAT_ROULETTE_SESSION_EXTENSION_REJECT)
+        }.body()
+    }
+
+    suspend fun cancelExtensionRequest(): DeleteChatRouletteResponse {
+        return client.post {
+            url(ApiConfig.Endpoints.CHAT_ROULETTE_SESSION_EXTENSION_CANCEL)
         }.body()
     }
 
@@ -72,6 +86,14 @@ class ChatRouletteService {
             url(ApiConfig.Endpoints.CHAT_ROULETTE_MESSAGES)
             contentType(ContentType.Application.Json)
             setBody(SendChatRouletteMessageRequest(content))
+        }.body()
+    }
+
+    suspend fun getSessionMessages(limit: Int? = null, before: String? = null): List<ChatRouletteMessageResponse> {
+        return client.get {
+            url(ApiConfig.Endpoints.CHAT_ROULETTE_SESSION_MESSAGES)
+            limit?.let { parameter("limit", it.toString()) }
+            before?.let { parameter("before", it) }
         }.body()
     }
 }

@@ -1,7 +1,7 @@
 package com.example.common_ground_android.ui.viewmodels.home
 
-import com.example.common_ground_android.network.model.domain.profile.Profile
-import com.example.common_ground_android.network.model.domain.room.Room
+import com.example.common_ground_android.network.model.domain.Profile
+import com.example.common_ground_android.network.model.domain.Room
 
 sealed class HomeState {
     object Loading : HomeState()

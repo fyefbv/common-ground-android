@@ -12,50 +12,60 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.common_ground_android.ui.fragments.LoginFragment"
+        android:name="com.example.common_ground_android.ui.fragments.auth.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_profileSelectorFragment"
-            app:destination="@id/profileSelectorFragment" />
+            app:destination="@id/profileSelectorFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.common_ground_android.ui.fragments.RegisterFragment"
+        android:name="com.example.common_ground_android.ui.fragments.auth.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_registerFragment_to_profileSelectorFragment"
-            app:destination="@id/profileSelectorFragment" />
+            app:destination="@id/profileSelectorFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/accountSettingsFragment"
-        android:name="com.example.common_ground_android.ui.fragments.AccountSettingsFragment"
+        android:name="com.example.common_ground_android.ui.fragments.account.AccountSettingsFragment"
         android:label="AccountSettingsFragment"
         tools:layout="@layout/fragment_account_settings">
         <action
             android:id="@+id/action_accountSettingsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/profileSelectorFragment"
-        android:name="com.example.common_ground_android.ui.fragments.ProfileSelectorFragment"
+        android:name="com.example.common_ground_android.ui.fragments.profile.ProfileSelectorFragment"
         android:label="ProfileSelectorFragment"
         tools:layout="@layout/fragment_profile_selector">
         <action
             android:id="@+id/action_profileSelectorFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_profileSelectorFragment_to_createProfileFragment"
             app:destination="@id/createProfileFragment" />
@@ -65,24 +75,23 @@
         <action
             android:id="@+id/action_profileSelectorFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.common_ground_android.ui.fragments.HomeFragment"
+        android:name="com.example.common_ground_android.ui.fragments.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_chatRouletteFragment"
-            app:destination="@id/chatRouletteFragment" />
         <action
             android:id="@+id/action_homeFragment_to_groupRoomFragment"
             app:destination="@id/groupRoomFragment" />
         <action
             android:id="@+id/action_homeFragment_to_profileSelectorFragment"
-            app:destination="@id/profileSelectorFragment" />
+            app:destination="@id/profileSelectorFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_homeFragment_to_selectInterestsFragment"
             app:destination="@id/selectInterestsFragment" />
@@ -92,13 +101,13 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/roomsFragment"
-        android:name="com.example.common_ground_android.ui.fragments.RoomsFragment"
+        android:name="com.example.common_ground_android.ui.fragments.rooms.RoomsFragment"
         android:label="RoomsFragment"
         tools:layout="@layout/fragment_rooms">
         <action
@@ -107,7 +116,7 @@
         <action
             android:id="@+id/action_roomsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_roomsFragment_to_groupRoomFragment"
@@ -116,114 +125,131 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.common_ground_android.ui.fragments.ProfileFragment"
+        android:name="com.example.common_ground_android.ui.fragments.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_profileSelectorFragment"
-            app:destination="@id/profileSelectorFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/profileSelectorFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/chatRouletteFragment"
-        android:name="com.example.common_ground_android.ui.fragments.ChatRouletteFragment"
+        android:name="com.example.common_ground_android.ui.fragments.chat_roulette.ChatRouletteFragment"
         android:label="ChatRouletteFragment"
         tools:layout="@layout/fragment_chat_roulette">
         <action
-            android:id="@+id/action_chatRouletteFragment_to_ratePartnerFragment"
-            app:destination="@id/ratePartnerFragment" />
+            android:id="@+id/action_chatRouletteFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_chatRouletteFragment_to_reportFragment"
-            app:destination="@id/reportFragment" />
-        <action
-            android:id="@+id/action_chatRouletteFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_chatRouletteFragment_to_selectInterestsFragment"
+            app:destination="@id/selectInterestsFragment"
+            app:popUpTo="@id/chatRouletteFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="interestIds"
+            app:argType="string[]" />
     </fragment>
 
     <fragment
         android:id="@+id/groupRoomFragment"
-        android:name="com.example.common_ground_android.ui.fragments.GroupRoomFragment"
+        android:name="com.example.common_ground_android.ui.fragments.rooms.GroupRoomFragment"
         android:label="GroupRoomFragment"
         tools:layout="@layout/fragment_group_room">
+        <action
+            android:id="@+id/action_groupRoomFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_groupRoomFragment_to_roomManagementFragment"
             app:destination="@id/roomManagementFragment" />
         <argument
             android:name="roomId"
             app:argType="string" />
+        <argument
+            android:name="sourceFragmentId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/createRoomFragment"
-        android:name="com.example.common_ground_android.ui.fragments.CreateRoomFragment"
+        android:name="com.example.common_ground_android.ui.fragments.rooms.CreateRoomFragment"
         android:label="CreateRoomFragment"
         tools:layout="@layout/fragment_create_room">
         <action
             android:id="@+id/action_createRoomFragment_to_roomsFragment"
-            app:destination="@id/roomsFragment"
-            app:popUpTo="@id/roomsFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/roomsFragment" />
         <action
             android:id="@+id/action_createRoomFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/selectInterestsFragment"
-        android:name="com.example.common_ground_android.ui.fragments.SelectInterestsFragment"
+        android:name="com.example.common_ground_android.ui.fragments.chat_roulette.SelectInterestsFragment"
         android:label="SelectInterestsFragment"
         tools:layout="@layout/fragment_select_interests">
         <action
             android:id="@+id/action_selectInterestsFragment_to_chatRouletteFragment"
             app:destination="@id/chatRouletteFragment" />
+        <action
+            android:id="@+id/action_selectInterestsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
-        android:id="@+id/ratePartnerFragment"
-        android:name="com.example.common_ground_android.ui.fragments.RatePartnerFragment"
-        android:label="RatePartnerFragment"
-        tools:layout="@layout/fragment_rate_partner">
+        android:id="@+id/profileViewFragment"
+        android:name="com.example.common_ground_android.ui.fragments.profile.ProfileViewFragment"
+        android:label="ProfileViewFragment"
+        tools:layout="@layout/fragment_profile_view">
         <action
-            android:id="@+id/action_ratePartnerFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/reportFragment"
-        android:name="com.example.common_ground_android.ui.fragments.ReportFragment"
-        android:label="ReportFragment"
-        tools:layout="@layout/fragment_report">
-        <action
-            android:id="@+id/action_reportFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_profileViewFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/roomManagementFragment"
-        android:name="com.example.common_ground_android.ui.fragments.RoomManagementFragment"
+        android:name="com.example.common_ground_android.ui.fragments.rooms.RoomManagementFragment"
         android:label="RoomManagementFragment"
         tools:layout="@layout/fragment_room_management">
         <action
             android:id="@+id/action_roomManagementFragment_to_groupRoomFragment"
             app:destination="@id/groupRoomFragment" />
+        <action
+            android:id="@+id/action_roomManagementFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_roomManagementFragment_to_profileViewFragment"
+            app:destination="@id/profileViewFragment" />
         <argument
             android:name="roomId"
             app:argType="string" />
+        <argument
+            android:name="sourceFragmentId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/createProfileFragment"
-        android:name="com.example.common_ground_android.ui.fragments.CreateProfileFragment"
+        android:name="com.example.common_ground_android.ui.fragments.profile.CreateProfileFragment"
         android:label="CreateProfileFragment"
         tools:layout="@layout/fragment_create_profile">
         <action
@@ -232,7 +258,7 @@
         <action
             android:id="@+id/action_createProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 

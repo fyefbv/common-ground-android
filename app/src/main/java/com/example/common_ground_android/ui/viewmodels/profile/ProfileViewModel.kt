@@ -3,9 +3,11 @@ package com.example.common_ground_android.ui.viewmodels.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common_ground_android.network.client.TokenManager
-import com.example.common_ground_android.network.model.domain.interest.Interest
-import com.example.common_ground_android.network.model.domain.profile.Profile
+import com.example.common_ground_android.network.model.domain.Interest
+import com.example.common_ground_android.network.model.domain.Profile
+import com.example.common_ground_android.network.model.domain.ProfileStatistics
 import com.example.common_ground_android.network.model.response.NetworkResult
+import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
 import com.example.common_ground_android.network.repository.ProfileRepository
 import com.example.common_ground_android.utils.ValidationUtils
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     private val profileRepository: ProfileRepository,
     private val interestRepository: InterestRepository,
+    private val authRepository: AuthRepository,
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
@@ -26,6 +29,9 @@ class ProfileViewModel(
 
     private val _profileData = MutableStateFlow<Profile?>(null)
     val profileData: StateFlow<Profile?> = _profileData.asStateFlow()
+
+    private val _statistics = MutableStateFlow<ProfileStatistics?>(null)
+    val statistics: StateFlow<ProfileStatistics?> = _statistics.asStateFlow()
 
     private val _interests = MutableStateFlow<List<Interest>>(emptyList())
     val interests: StateFlow<List<Interest>> = _interests.asStateFlow()
@@ -58,6 +64,7 @@ class ProfileViewModel(
     init {
         loadProfile()
         loadInterests()
+        loadStatistics()
     }
 
     fun updateUsername(username: String) {
@@ -145,6 +152,17 @@ class ProfileViewModel(
                     _interests.value = result.data.map { Interest.fromResponse(it) }
                 }
                 is NetworkResult.Error -> { }
+                else -> {}
+            }
+        }
+    }
+
+    private fun loadStatistics() {
+        viewModelScope.launch {
+            when (val result = profileRepository.getMyStatistics()) {
+                is NetworkResult.Success -> {
+                    _statistics.value = ProfileStatistics.fromResponse(result.data)
+                }
                 else -> {}
             }
         }
@@ -295,7 +313,7 @@ class ProfileViewModel(
 
     fun clearTokensAndLogout() {
         viewModelScope.launch {
-            tokenManager.clearTokens()
+            authRepository.logout()
         }
     }
 }

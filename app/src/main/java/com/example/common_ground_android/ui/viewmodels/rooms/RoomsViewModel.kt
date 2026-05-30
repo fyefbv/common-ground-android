@@ -2,8 +2,9 @@ package com.example.common_ground_android.ui.viewmodels.rooms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common_ground_android.network.model.domain.interest.Interest
-import com.example.common_ground_android.network.model.domain.room.Room
+import com.example.common_ground_android.network.client.KtorClientFactory
+import com.example.common_ground_android.network.model.domain.Interest
+import com.example.common_ground_android.network.model.domain.Room
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
@@ -29,6 +30,9 @@ class RoomsViewModel(
     private val _state = MutableStateFlow<RoomsState>(RoomsState.Loading)
     val state: StateFlow<RoomsState> = _state.asStateFlow()
 
+    private val _shouldScrollToTop = MutableStateFlow(false)
+    val shouldScrollToTop: StateFlow<Boolean> = _shouldScrollToTop.asStateFlow()
+
     private val _availableInterests = MutableStateFlow<List<Interest>>(emptyList())
     val availableInterests: StateFlow<List<Interest>> = _availableInterests.asStateFlow()
 
@@ -38,46 +42,48 @@ class RoomsViewModel(
     private val _filters = MutableStateFlow(RoomFilters())
     val filters: StateFlow<RoomFilters> = _filters.asStateFlow()
 
-    private val _interestMap = MutableStateFlow<Map<String, String>>(emptyMap())
-    val interestMap: StateFlow<Map<String, String>> = _interestMap.asStateFlow()
+    private val _interestsMap = MutableStateFlow<Map<String, String>>(emptyMap())
+    val interestsMap: StateFlow<Map<String, String>> = _interestsMap.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     init {
-        loadInterests()
-        loadTags()
-
-        _searchQuery
-            .debounce(500)
-            .onEach { query ->
-                updateFilters(_filters.value.copy(query = query))
-            }
-            .launchIn(viewModelScope)
-
-        loadRooms()
+        loadData()
     }
 
-    private fun loadInterests() {
+    private fun loadData() {
         viewModelScope.launch {
-            when (val result = interestRepository.getAllInterests()) {
-                is NetworkResult.Success -> {
-                    _availableInterests.value = result.data.map { Interest.fromResponse(it) }
-                    _interestMap.value = result.data.associate { it.id to it.name }
+            loadInterests()
+            loadTags()
+
+            loadRooms(scrollToTop = false)
+
+            _searchQuery
+                .debounce(500)
+                .onEach { query ->
+                    updateFilters(_filters.value.copy(query = query))
                 }
-                else -> {}
-            }
+                .launchIn(viewModelScope)
         }
     }
 
-    private fun loadTags() {
-        viewModelScope.launch {
-            when (val result = roomRepository.getAllTags()) {
-                is NetworkResult.Success -> {
-                    _availableTags.value = result.data
-                }
-                else -> {}
+    private suspend fun loadInterests() {
+        when (val result = interestRepository.getAllInterests()) {
+            is NetworkResult.Success -> {
+                _availableInterests.value = result.data.map { Interest.fromResponse(it) }
+                _interestsMap.value = result.data.associate { it.id to it.name }
             }
+            else -> {}
+        }
+    }
+
+    private suspend fun loadTags() {
+        when (val result = roomRepository.getAllTags()) {
+            is NetworkResult.Success -> {
+                _availableTags.value = result.data
+            }
+            else -> {}
         }
     }
 
@@ -87,20 +93,19 @@ class RoomsViewModel(
 
     fun updateFilters(newFilters: RoomFilters) {
         _filters.value = newFilters
-        loadRooms()
+        refreshRooms()
     }
 
     fun resetFilters() {
         _filters.value = RoomFilters()
         _searchQuery.value = ""
-        loadRooms()
+        refreshRooms()
     }
 
-    fun loadRooms() {
+    fun loadRooms(scrollToTop: Boolean = false) {
         viewModelScope.launch {
             _state.value = RoomsState.Loading
             val filter = _filters.value
-
             val isValidQuery = filter.query.isBlank() || (filter.query.length in 2..100)
             val queryParam = if (isValidQuery) filter.query.takeIf { it.isNotBlank() } else null
 
@@ -111,18 +116,15 @@ class RoomsViewModel(
                 myRooms = filter.myRooms,
                 sortBy = filter.sortBy,
                 sortOrder = filter.sortOrder,
-                limit = 50,
+                limit = null,
                 offset = 0
             )
 
             when (result) {
                 is NetworkResult.Success -> {
                     val rooms = result.data.map { Room.fromResponse(it) }
-                    if (rooms.isEmpty()) {
-                        _state.value = RoomsState.Empty
-                    } else {
-                        _state.value = RoomsState.Success(rooms)
-                    }
+                    _shouldScrollToTop.value = scrollToTop
+                    _state.value = if (rooms.isEmpty()) RoomsState.Empty else RoomsState.Success(rooms)
                 }
                 is NetworkResult.Error -> {
                     _state.value = RoomsState.Error(result.errorMessage, result.errorCode)
@@ -132,13 +134,55 @@ class RoomsViewModel(
         }
     }
 
+    fun refreshRooms() {
+        loadRooms(scrollToTop = true)
+    }
+
+    fun resetScrollToTop() {
+        _shouldScrollToTop.value = false
+    }
+
+    fun joinRoom(room: Room) {
+        viewModelScope.launch {
+            when (val result = roomRepository.joinRoom(room.id)) {
+                is NetworkResult.Success -> {
+                    loadRooms(scrollToTop = false)
+                }
+                is NetworkResult.Error -> {
+                    _state.value = RoomsState.Error(result.errorMessage, result.errorCode)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun leaveRoom(room: Room) {
+        viewModelScope.launch {
+            when (val result = roomRepository.leaveRoom(room.id)) {
+                is NetworkResult.Success -> {
+                    loadRooms(scrollToTop = false)
+                }
+                is NetworkResult.Error -> {
+                    _state.value = RoomsState.Error(result.errorMessage, result.errorCode)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun openRoom(room: Room) { }
+
+    fun getCurrentProfileId(): String {
+        return try {
+            KtorClientFactory.getTokenManager().getProfileIdSync() ?: ""
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
     fun clearTokensAndLogout() {
         viewModelScope.launch {
             authRepository.logout()
         }
     }
-
-    fun joinRoom(room: Room) {}
-    fun leaveRoom(room: Room) {}
-    fun openRoom(room: Room) {}
 }

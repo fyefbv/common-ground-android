@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:maxHeight="500dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CardView.Rounded"
+        app:cardCornerRadius="@dimen/corner_radius_28"
+        app:cardElevation="@dimen/elevation_2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_24"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_experience"
+                android:textColor="@color/md_on_surface"
+                android:textSize="@dimen/text_xl"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/spacing_24"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/spacing_24">
+
+                <ImageView
+                    android:id="@+id/star_1"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_outline"
+                    android:padding="@dimen/spacing_8"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/md_tertiary" />
+
+                <ImageView
+                    android:id="@+id/star_2"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_outline"
+                    android:padding="@dimen/spacing_8"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/md_tertiary" />
+
+                <ImageView
+                    android:id="@+id/star_3"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_outline"
+                    android:padding="@dimen/spacing_8"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/md_tertiary" />
+
+                <ImageView
+                    android:id="@+id/star_4"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_outline"
+                    android:padding="@dimen/spacing_8"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/md_tertiary" />
+
+                <ImageView
+                    android:id="@+id/star_5"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_outline"
+                    android:padding="@dimen/spacing_8"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/md_tertiary" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Оценка: 0/5"
+                android:textColor="@color/md_on_surface_variant"
+                android:textSize="@dimen/text_sm"
+                android:layout_marginBottom="@dimen/spacing_24" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputLayout.Rounded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/feedback_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/optional_feedback"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:textColor="@color/md_on_surface"
+                    android:textSize="@dimen/text_base" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_rating_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                style="@style/Button.Filled"
+                android:text="@string/submit_rating" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/skip_rating_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                style="@style/Button.Outlined"
+                android:text="@string/skip_rating"
+                android:layout_marginTop="@dimen/spacing_12" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</ScrollView>

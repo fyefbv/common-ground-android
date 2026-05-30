@@ -128,19 +128,6 @@
                 android:visibility="gone"
                 android:layout_gravity="center"
                 android:padding="@dimen/spacing_32" />
-
-            <TextView
-                android:id="@+id/error_state_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/error_loading_rooms"
-                android:textColor="@color/md_error"
-                android:textSize="@dimen/text_lg"
-                android:gravity="center"
-                android:visibility="gone"
-                android:layout_gravity="center"
-                android:padding="@dimen/spacing_32" />
-
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

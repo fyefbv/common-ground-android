@@ -1,9 +1,12 @@
 package com.example.common_ground_android.network.api.service
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.auth.*
-import com.example.common_ground_android.network.model.response.auth.AuthTokensResponse
+import com.example.common_ground_android.network.model.response.AuthTokensResponse
 import com.example.common_ground_android.network.client.KtorClientFactory
+import com.example.common_ground_android.network.model.request.LoginRequest
+import com.example.common_ground_android.network.model.request.RefreshTokenRequest
+import com.example.common_ground_android.network.model.request.RegisterRequest
+import com.example.common_ground_android.network.model.request.SelectProfileRequest
 import io.ktor.client.call.*
 import io.ktor.client.plugins.auth.AuthCircuitBreaker
 import io.ktor.client.request.*

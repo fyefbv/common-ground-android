@@ -2,8 +2,8 @@ package com.example.common_ground_android.ui.viewmodels.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common_ground_android.network.model.domain.interest.Interest
-import com.example.common_ground_android.network.model.domain.profile.Profile
+import com.example.common_ground_android.network.model.domain.Interest
+import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository

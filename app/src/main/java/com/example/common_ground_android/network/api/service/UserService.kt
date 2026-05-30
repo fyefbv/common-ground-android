@@ -1,8 +1,8 @@
 package com.example.common_ground_android.network.api.service
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.user.UpdateUserRequest
-import com.example.common_ground_android.network.model.response.auth.UserResponse
+import com.example.common_ground_android.network.model.request.UpdateUserRequest
+import com.example.common_ground_android.network.model.response.UserResponse
 import com.example.common_ground_android.network.client.KtorClientFactory
 import io.ktor.client.call.*
 import io.ktor.client.request.*

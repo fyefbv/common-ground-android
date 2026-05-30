@@ -1,8 +1,13 @@
 package com.example.common_ground_android.network.model.websocket.chat_roulette
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonClassDiscriminator
 
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonClassDiscriminator("type")
 sealed class ChatRouletteWebSocketClientEvent {
     @Serializable
     @SerialName("send_message")
@@ -16,6 +21,9 @@ sealed class ChatRouletteWebSocketClientEvent {
     object Ping : ChatRouletteWebSocketClientEvent()
 }
 
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonClassDiscriminator("type")
 sealed class ChatRouletteWebSocketServerEvent {
     @Serializable
     @SerialName("connection_established")
@@ -81,17 +89,6 @@ sealed class ChatRouletteWebSocketServerEvent {
     ) : ChatRouletteWebSocketServerEvent()
 
     @Serializable
-    @SerialName("session_started")
-    data class SessionStarted(
-        @SerialName("data")
-        val data: SessionStartedData,
-        @SerialName("timestamp")
-        val timestamp: String,
-        @SerialName("session_id")
-        val sessionId: String
-    ) : ChatRouletteWebSocketServerEvent()
-
-    @Serializable
     @SerialName("session_ended")
     data class SessionEnded(
         @SerialName("data")
@@ -122,28 +119,6 @@ sealed class ChatRouletteWebSocketServerEvent {
     data class SessionExpired(
         @SerialName("data")
         val data: SessionExpiredData,
-        @SerialName("timestamp")
-        val timestamp: String,
-        @SerialName("session_id")
-        val sessionId: String
-    ) : ChatRouletteWebSocketServerEvent()
-
-    @Serializable
-    @SerialName("timer_update")
-    data class TimerUpdate(
-        @SerialName("data")
-        val data: TimerUpdateData,
-        @SerialName("timestamp")
-        val timestamp: String,
-        @SerialName("session_id")
-        val sessionId: String
-    ) : ChatRouletteWebSocketServerEvent()
-
-    @Serializable
-    @SerialName("time_almost_up")
-    data class TimeAlmostUp(
-        @SerialName("data")
-        val data: TimeAlmostUpData,
         @SerialName("timestamp")
         val timestamp: String,
         @SerialName("session_id")
@@ -290,7 +265,7 @@ data class SessionEndedData(
     @SerialName("profile_id")
     val profileId: String,
     @SerialName("reason")
-    val reason: String? = null
+    val reason: String
 )
 
 @Serializable
@@ -373,8 +348,8 @@ data class PongData(
 
 @Serializable
 data class ChatRouletteWebSocketMessage(
-    @SerialName("id")
-    val id: String,
+    @SerialName("session_id")
+    val sessionId: String,
     @SerialName("sender_id")
     val senderId: String,
     @SerialName("content")

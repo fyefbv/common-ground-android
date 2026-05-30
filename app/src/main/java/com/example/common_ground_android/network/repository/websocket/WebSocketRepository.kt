@@ -6,7 +6,6 @@ import com.example.common_ground_android.network.model.websocket.chat_roulette.C
 import com.example.common_ground_android.network.model.websocket.room.RoomWebSocketClientEvent
 import com.example.common_ground_android.network.model.websocket.room.RoomWebSocketServerEvent
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
 abstract class WebSocketRepository<ClientEvent, ServerEvent>(

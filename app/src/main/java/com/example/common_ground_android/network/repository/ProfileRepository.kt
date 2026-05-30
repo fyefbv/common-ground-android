@@ -1,18 +1,17 @@
 package com.example.common_ground_android.network.repository
 
-import android.graphics.Bitmap
 import com.example.common_ground_android.network.api.service.ProfileService
-import com.example.common_ground_android.network.model.request.profile.CreateProfileRequest
-import com.example.common_ground_android.network.model.request.profile.ProfileInterestsRequest
-import com.example.common_ground_android.network.model.request.profile.UpdateProfileRequest
+import com.example.common_ground_android.network.model.request.CreateProfileRequest
+import com.example.common_ground_android.network.model.request.ProfileInterestsRequest
+import com.example.common_ground_android.network.model.request.UpdateProfileRequest
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.interest.InterestResponse
-import com.example.common_ground_android.network.model.response.profile.ProfileResponse
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.InterestResponse
+import com.example.common_ground_android.network.model.response.ProfileResponse
+import com.example.common_ground_android.network.model.response.ProfileStatisticsResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 
 class ProfileRepository(
     private val profileService: ProfileService,
@@ -26,6 +25,18 @@ class ProfileRepository(
                 NetworkResult.Success(response)
             } catch (e: Exception) {
                 val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getAllProfiles")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
+            }
+        }
+    }
+
+    suspend fun getProfilesBatch(profileIds: List<String>): NetworkResult<List<ProfileResponse>> {
+        return withContext(dispatcher) {
+            try {
+                val response = profileService.getProfilesBatch(profileIds)
+                NetworkResult.Success(response)
+            } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getProfilesBatch")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
@@ -56,13 +67,25 @@ class ProfileRepository(
         }
     }
 
-    suspend fun getProfileByUsername(username: String): NetworkResult<ProfileResponse> {
+    suspend fun getMyStatistics(): NetworkResult<ProfileStatisticsResponse> {
         return withContext(dispatcher) {
             try {
-                val response = profileService.getProfileByUsername(username)
+                val response = profileService.getMyStatistics()
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getProfileByUsername")
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getMyStatistics")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
+            }
+        }
+    }
+
+    suspend fun getProfileStatisticsById(profileId: String): NetworkResult<ProfileStatisticsResponse> {
+        return withContext(dispatcher) {
+            try {
+                val response = profileService.getProfileStatisticsById(profileId)
+                NetworkResult.Success(response)
+            } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getProfileStatisticsById")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
@@ -75,6 +98,18 @@ class ProfileRepository(
                 NetworkResult.Success(response)
             } catch (e: Exception) {
                 val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getCurrentProfile")
+                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
+            }
+        }
+    }
+
+    suspend fun getProfileById(profileId: String): NetworkResult<ProfileResponse> {
+        return withContext(dispatcher) {
+            try {
+                val response = profileService.getProfileById(profileId)
+                NetworkResult.Success(response)
+            } catch (e: Exception) {
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.getProfileById")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
@@ -107,23 +142,6 @@ class ProfileRepository(
             }
         }
     }
-
-//    suspend fun uploadAvatar(bitmap: Bitmap): NetworkResult<String> {
-//        return withContext(dispatcher) {
-//            try {
-//                val outputStream = ByteArrayOutputStream()
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-//                val byteArray = outputStream.toByteArray()
-//                outputStream.close()
-//
-//                val response = profileService.uploadAvatar(byteArray)
-//                NetworkResult.Success(response.avatarUrl)
-//            } catch (e: Exception) {
-//                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "ProfileRepository.uploadAvatar")
-//                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
-//            }
-//        }
-//    }
 
     suspend fun uploadAvatar(byteArray: ByteArray): NetworkResult<String> {
         return withContext(dispatcher) {

@@ -1,10 +1,16 @@
 package com.example.common_ground_android.network.repository
 
 import com.example.common_ground_android.network.api.service.RoomService
-import com.example.common_ground_android.network.model.request.room.*
+import com.example.common_ground_android.network.model.request.CreateRoomRequest
+import com.example.common_ground_android.network.model.request.RoomFilter
+import com.example.common_ground_android.network.model.request.SendMessageRequest
+import com.example.common_ground_android.network.model.request.UpdateRoomRequest
+import com.example.common_ground_android.network.model.response.MessageResponse
+import com.example.common_ground_android.network.model.response.MessagesResponse
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.room.*
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.ParticipantResponse
+import com.example.common_ground_android.network.model.response.RoomResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,12 +27,13 @@ class RoomRepository(
         myRooms: Boolean = false,
         sortBy: String = "created_at",
         sortOrder: String = "desc",
-        limit: Int = 50,
+        limit: Int? = null,
         offset: Int = 0
     ): NetworkResult<List<RoomResponse>> {
         return withContext(dispatcher) {
             try {
-                val filter = RoomFilter(query, interestIds, tags, myRooms, sortBy, sortOrder, limit, offset)
+                val filter =
+                    RoomFilter(query, interestIds, tags, myRooms, sortBy, sortOrder, limit, offset)
                 val response = roomService.searchRooms(filter)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
@@ -80,7 +87,14 @@ class RoomRepository(
     ): NetworkResult<RoomResponse> {
         return withContext(dispatcher) {
             try {
-                val request = CreateRoomRequest(name, description, primaryInterestId, tags, maxParticipants, isPrivate)
+                val request = CreateRoomRequest(
+                    name,
+                    description,
+                    primaryInterestId,
+                    tags,
+                    maxParticipants,
+                    isPrivate
+                )
                 val response = roomService.createRoom(request)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
@@ -106,13 +120,21 @@ class RoomRepository(
         roomId: String,
         name: String? = null,
         description: String? = null,
+        primaryInterestId: String? = null,
         tags: List<String>? = null,
         maxParticipants: Int? = null,
         isPrivate: Boolean? = null
     ): NetworkResult<RoomResponse> {
         return withContext(dispatcher) {
             try {
-                val request = UpdateRoomRequest(name, description, tags, maxParticipants, isPrivate)
+                val request = UpdateRoomRequest(
+                    name,
+                    description,
+                    primaryInterestId,
+                    tags,
+                    maxParticipants,
+                    isPrivate
+                )
                 val response = roomService.updateRoom(roomId, request)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
@@ -185,7 +207,7 @@ class RoomRepository(
     suspend fun getRoomMessages(
         roomId: String,
         before: String? = null,
-        limit: Int = 50
+        limit: Int? = null
     ): NetworkResult<MessagesResponse> {
         return withContext(dispatcher) {
             try {

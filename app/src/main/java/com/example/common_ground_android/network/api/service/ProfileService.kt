@@ -1,21 +1,21 @@
 package com.example.common_ground_android.network.api.service
 
 import com.example.common_ground_android.network.config.ApiConfig
-import com.example.common_ground_android.network.model.request.profile.CreateProfileRequest
-import com.example.common_ground_android.network.model.request.profile.ProfileInterestsRequest
-import com.example.common_ground_android.network.model.request.profile.UpdateProfileRequest
-import com.example.common_ground_android.network.model.response.profile.AvatarResponse
-import com.example.common_ground_android.network.model.response.profile.DeleteResponse
-import com.example.common_ground_android.network.model.response.profile.ProfileResponse
-import com.example.common_ground_android.network.model.response.interest.InterestResponse
+import com.example.common_ground_android.network.model.request.CreateProfileRequest
+import com.example.common_ground_android.network.model.request.ProfileInterestsRequest
+import com.example.common_ground_android.network.model.request.UpdateProfileRequest
+import com.example.common_ground_android.network.model.response.AvatarResponse
+import com.example.common_ground_android.network.model.response.DeleteProfileResponse
+import com.example.common_ground_android.network.model.response.ProfileResponse
+import com.example.common_ground_android.network.model.response.InterestResponse
 import com.example.common_ground_android.network.client.KtorClientFactory
 import com.example.common_ground_android.network.client.replacePathParams
+import com.example.common_ground_android.network.model.response.ProfileStatisticsResponse
+import com.example.common_ground_android.utils.LocaleUtils
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import io.ktor.util.*
-import java.io.File
 
 class ProfileService {
     private val client = KtorClientFactory.getInstance().httpClient
@@ -23,6 +23,14 @@ class ProfileService {
     suspend fun getAllProfiles(): List<ProfileResponse> {
         return client.get {
             url(ApiConfig.Endpoints.PROFILES)
+        }.body()
+    }
+
+    suspend fun getProfilesBatch(profileIds: List<String>): List<ProfileResponse> {
+        return client.post {
+            url(ApiConfig.Endpoints.PROFILES_BATCH)
+            contentType(ContentType.Application.Json)
+            setBody(mapOf("profile_ids" to profileIds))
         }.body()
     }
 
@@ -40,15 +48,27 @@ class ProfileService {
         }.body()
     }
 
+    suspend fun getMyStatistics(): ProfileStatisticsResponse {
+        return client.get {
+            url(ApiConfig.Endpoints.PROFILES_ME_STATISTICS)
+        }.body()
+    }
+
+    suspend fun getProfileStatisticsById(profileId: String): ProfileStatisticsResponse {
+        return client.get {
+            url(ApiConfig.Endpoints.PROFILE_STATISTICS_BY_ID.replacePathParams("profile_id" to profileId))
+        }.body()
+    }
+
     suspend fun getCurrentProfile(): ProfileResponse {
         return client.get {
             url(ApiConfig.Endpoints.PROFILES_CURRENT)
         }.body()
     }
 
-    suspend fun getProfileByUsername(username: String): ProfileResponse {
+    suspend fun getProfileById(profileId: String): ProfileResponse {
         return client.get {
-            url(ApiConfig.Endpoints.PROFILES_BY_USERNAME.replacePathParams("username" to username))
+            url(ApiConfig.Endpoints.PROFILE_BY_ID.replacePathParams("profile_id" to profileId))
         }.body()
     }
 
@@ -60,7 +80,7 @@ class ProfileService {
         }.body()
     }
 
-    suspend fun deleteMyProfile(): DeleteResponse {
+    suspend fun deleteMyProfile(): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.PROFILES_ME)
         }.body()
@@ -94,7 +114,7 @@ class ProfileService {
         }.body()
     }
 
-    suspend fun deleteAvatar(): DeleteResponse {
+    suspend fun deleteAvatar(): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.PROFILES_AVATAR)
         }.body()
@@ -103,10 +123,11 @@ class ProfileService {
     suspend fun getProfileInterests(username: String): List<InterestResponse> {
         return client.get {
             url(ApiConfig.Endpoints.PROFILES_INTERESTS.replacePathParams("username" to username))
+            header(ApiConfig.HEADER_ACCEPT_LANGUAGE, LocaleUtils.getCurrentLanguage())
         }.body()
     }
 
-    suspend fun addInterestsToMyProfile(request: ProfileInterestsRequest): DeleteResponse {
+    suspend fun addInterestsToMyProfile(request: ProfileInterestsRequest): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.PROFILES_ME_INTERESTS)
             contentType(ContentType.Application.Json)
@@ -114,7 +135,7 @@ class ProfileService {
         }.body()
     }
 
-    suspend fun addInterestsToProfileByUsername(username: String, request: ProfileInterestsRequest): DeleteResponse {
+    suspend fun addInterestsToProfileByUsername(username: String, request: ProfileInterestsRequest): DeleteProfileResponse {
         return client.post {
             url(ApiConfig.Endpoints.PROFILES_INTERESTS.replacePathParams("username" to username))
             contentType(ContentType.Application.Json)
@@ -122,7 +143,7 @@ class ProfileService {
         }.body()
     }
 
-    suspend fun removeInterestsFromMyProfile(request: ProfileInterestsRequest): DeleteResponse {
+    suspend fun removeInterestsFromMyProfile(request: ProfileInterestsRequest): DeleteProfileResponse {
         return client.delete {
             url(ApiConfig.Endpoints.PROFILES_ME_INTERESTS)
             contentType(ContentType.Application.Json)

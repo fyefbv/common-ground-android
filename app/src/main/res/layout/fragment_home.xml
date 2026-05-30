@@ -37,6 +37,7 @@
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_xl"
                     android:textStyle="bold"
+                    android:layout_marginEnd="@dimen/spacing_16"
                     tools:text="Имя пользователя" />
 
                 <LinearLayout
@@ -196,18 +197,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/no_rooms_found"
                     android:textColor="@color/md_on_surface_variant"
-                    android:textSize="@dimen/text_lg"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    android:paddingVertical="@dimen/spacing_32" />
-
-                <TextView
-                    android:id="@+id/error_state_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/error_loading_rooms"
-                    android:textColor="@color/md_error"
                     android:textSize="@dimen/text_lg"
                     android:gravity="center"
                     android:visibility="gone"

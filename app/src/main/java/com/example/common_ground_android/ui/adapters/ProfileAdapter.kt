@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.ItemProfileBinding
-import com.example.common_ground_android.network.model.domain.profile.Profile
+import com.example.common_ground_android.network.model.domain.Profile
 import com.google.android.material.chip.Chip
 
 class ProfileAdapter(

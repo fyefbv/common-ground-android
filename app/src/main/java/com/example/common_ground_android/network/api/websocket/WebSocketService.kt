@@ -8,12 +8,9 @@ import com.example.common_ground_android.network.model.websocket.room.RoomErrorD
 import com.example.common_ground_android.network.model.websocket.room.RoomWebSocketClientEvent
 import com.example.common_ground_android.network.model.websocket.room.RoomWebSocketServerEvent
 import io.ktor.client.plugins.websocket.*
-import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 interface WebSocketService<ClientEvent, ServerEvent> {

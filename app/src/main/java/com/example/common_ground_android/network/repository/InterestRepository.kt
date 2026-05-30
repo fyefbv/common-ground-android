@@ -2,8 +2,8 @@ package com.example.common_ground_android.network.repository
 
 import com.example.common_ground_android.network.api.service.InterestService
 import com.example.common_ground_android.network.model.response.NetworkResult
-import com.example.common_ground_android.network.model.response.interest.InterestResponse
-import com.example.common_ground_android.network.utils.ErrorHandler
+import com.example.common_ground_android.network.model.response.InterestResponse
+import com.example.common_ground_android.utils.ErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,10 +13,10 @@ class InterestRepository(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun getAllInterests(language: String = "ru"): NetworkResult<List<InterestResponse>> {
+    suspend fun getAllInterests(): NetworkResult<List<InterestResponse>> {
         return withContext(dispatcher) {
             try {
-                val response = interestService.getAllInterests(language)
+                val response = interestService.getAllInterests()
                 NetworkResult.Success(response)
             } catch (e: Exception) {
                 val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getAllInterests")
@@ -25,26 +25,13 @@ class InterestRepository(
         }
     }
 
-    suspend fun getInterestById(interestId: String, language: String = "ru"): NetworkResult<InterestResponse> {
+    suspend fun getInterestsBatch(interestIds: List<String>): NetworkResult<List<InterestResponse>> {
         return withContext(dispatcher) {
             try {
-                val response = interestService.getInterestById(interestId, language)
+                val response = interestService.getInterestsBatch(interestIds)
                 NetworkResult.Success(response)
             } catch (e: Exception) {
-                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getInterestById")
-                NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
-            }
-        }
-    }
-
-    suspend fun getInterestsByIds(interestIds: List<String>, language: String = "ru"): NetworkResult<List<InterestResponse>> {
-        return withContext(dispatcher) {
-            try {
-                val allInterests = interestService.getAllInterests(language)
-                val filtered = allInterests.filter { interestIds.contains(it.id) }
-                NetworkResult.Success(filtered)
-            } catch (e: Exception) {
-                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getInterestsByIds")
+                val (errorCode, errorMessage) = ErrorHandler.handleException(e, "InterestRepository.getInterestsBatch")
                 NetworkResult.Error(errorCode = errorCode, errorMessage = errorMessage, exception = e)
             }
         }
