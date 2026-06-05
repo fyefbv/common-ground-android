@@ -24,7 +24,7 @@ enum class ChatRouletteStatus {
 
 data class ChatRouletteSession(
     val id: String,
-    val profile1Id: String,
+    val profile1Id: String?,
     val profile2Id: String?,
     val matchedInterestId: String?,
     val status: ChatRouletteStatus,
@@ -68,7 +68,7 @@ data class ChatRouletteSession(
 
 data class ChatRouletteMessage(
     val sessionId: String,
-    val senderId: String,
+    val senderId: String?,
     val content: String,
     val createdAt: Date
 ) {

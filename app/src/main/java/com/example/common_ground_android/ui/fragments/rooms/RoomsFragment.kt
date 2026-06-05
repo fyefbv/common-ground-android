@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,7 +23,6 @@ import com.example.common_ground_android.ui.navigation.rooms.RoomsFragmentDirect
 import com.example.common_ground_android.ui.viewmodels.rooms.RoomsState
 import com.example.common_ground_android.ui.viewmodels.rooms.RoomsViewModel
 import com.example.common_ground_android.ui.viewmodels.rooms.RoomsViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlin.collections.get
 
@@ -168,10 +168,10 @@ class RoomsFragment : Fragment() {
                 binding.swipeRefreshLayout.isRefreshing = false
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -179,9 +179,9 @@ class RoomsFragment : Fragment() {
 
     private fun openRoom(room: Room) {
         if (!room.isJoined && room.creatorId != viewModel.getCurrentProfileId()) {
-            Snackbar.make(binding.root, "Вы не являетесь участником. Нажмите «Вступить»", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.you_are_not_member_click_join, Toast.LENGTH_SHORT).show()
         } else if (room.isBanned) {
-            Snackbar.make(binding.root, "Вы забанены в этой комнате", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.you_are_banned_in_this_room, Toast.LENGTH_SHORT).show()
         } else {
             findNavController().navigate(
                 RoomsFragmentDirections.actionRoomsFragmentToGroupRoomFragment(room.id, R.id.roomsFragment)

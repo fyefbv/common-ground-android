@@ -60,4 +60,9 @@
     <style name="CustomMaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="android:background">@color/md_surface_container</item>
     </style>
+
+    <style name="CustomDialogTheme" parent="Theme.Common_Ground">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

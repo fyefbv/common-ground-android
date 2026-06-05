@@ -96,7 +96,7 @@ data class Participant(
 data class Message(
     val id: String,
     val roomId: String,
-    val senderId: String,
+    val senderId: String?,
     val content: String,
     val parentMessageId: String?,
     val createdAt: Date,

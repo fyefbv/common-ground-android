@@ -60,6 +60,8 @@
     <string name="logout">Log Out</string>
     <string name="account_settings_description">Manage your email, password, and account</string>
     <string name="back">Back</string>
+    <string name="logged_out_account">You have logged out of your account</string>
+    <string name="deleted_account">You deleted your account</string>
 
     <!-- Navigation -->
     <string name="home">Home</string>
@@ -89,6 +91,9 @@
     <string name="typing">Typing...</string>
     <string name="answer">Answer</string>
     <string name="delete">Delete</string>
+    <string name="no_interest">No interest</string>
+    <string name="you_are_banned_in_this_room">You are banned from this room</string>
+    <string name="you_are_not_member_click_join">You are not a member. Click "Join"</string>
 
     <!-- Chat -->
     <string name="type_message">Type a message…</string>
@@ -105,6 +110,7 @@
     <string name="chat_partner_label">Chat partner</string>
     <string name="matched_interest_label">Matched interest:</string>
     <string name="common_interests_label">Common interests:</string>
+    <string name="remote_profile">Remote profile</string>
 
     <!-- Profile Selector -->
     <string name="select_profile">Select Profile</string>
@@ -244,16 +250,218 @@
     <string name="sort_order">Order</string>
     <string name="tags">Tags</string>
 
+    <!-- General UI -->
+    <string name="unknown">Unknown</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="agree">Agree</string>
+    <string name="decline">Decline</string>
+    <string name="confirm">Confirm</string>
+    <string name="loading_dots">Loading...</string>
+    <string name="choose">Choose</string>
+
+    <!-- Network errors -->
+    <string name="error_request_timeout">Request timeout</string>
+    <string name="error_connect_timeout">Connection timeout</string>
+    <string name="error_validation_data">Data validation error</string>
+    <string name="error_database">Database error</string>
+    <string name="error_internal_server">Internal server error</string>
+    <string name="error_invalid_token">Invalid token</string>
+    <string name="error_expired_token">Token expired</string>
+    <string name="error_missing_token">Missing token</string>
+    <string name="error_authentication_failed">Authentication failed</string>
+    <string name="error_user_not_found">User not found</string>
+    <string name="error_user_already_exists">User already exists</string>
+    <string name="error_profile_not_found">Profile not found</string>
+    <string name="error_profile_already_exists">Profile already exists</string>
+    <string name="error_profile_permission_denied">Access denied to profile</string>
+    <string name="error_profile_not_selected">Profile not selected</string>
+    <string name="error_interest_not_found">Interest not found</string>
+    <string name="error_unsupported_media_type">Unsupported file type</string>
+    <string name="error_file_too_large">File too large</string>
+    <string name="error_room_not_found">Room not found</string>
+    <string name="error_room_already_exists">Room already exists</string>
+    <string name="error_room_permission_denied">Access denied to room</string>
+    <string name="error_room_max_participants_too_low">Cannot set participant limit below current count</string>
+    <string name="error_room_full">Room is full</string>
+    <string name="error_room_private">Room is private</string>
+    <string name="error_not_room_member">You are not a room member</string>
+    <string name="error_participant_banned">You are banned in this room</string>
+    <string name="error_participant_muted">You are muted in this room</string>
+    <string name="error_participant_not_found">Participant not found</string>
+    <string name="error_message_not_found">Message not found</string>
+    <string name="error_invalid_role">Invalid role</string>
+    <string name="error_participant_already_has_role">Participant already has this role</string>
+    <string name="error_already_in_search">Already searching for partner</string>
+    <string name="error_already_in_session">Already has an active session</string>
+    <string name="error_no_active_search">No active search found</string>
+    <string name="error_no_active_session">No active session found</string>
+    <string name="error_session_not_found">Session not found</string>
+    <string name="error_partner_not_found">Partner not found</string>
+    <string name="error_session_expired">Session expired</string>
+    <string name="error_session_already_ended">Session already ended</string>
+    <string name="error_cannot_rate_yourself">Cannot rate yourself</string>
+    <string name="error_already_rated">Already rated this partner</string>
+    <string name="error_cannot_rate_non_completed_session">Cannot rate an incomplete session</string>
+    <string name="error_extension_not_approved">Attempt to extend a session without partner confirmation</string>
+    <string name="error_no_matching_found">No partner found, please try again</string>
+    <string name="error_unknown_error">Unknown error</string>
+    <string name="error_network_connection">No internet connection. Please check your connection and try again.</string>
+    <string name="error_ssl_handshake">Secure connection error. Please check device date and time.</string>
+    <string name="error_timeout">Connection timeout</string>
+    <string name="error_host_not_found">Server not found. Please check your connection.</string>
+    <string name="error_session_expired_relogin">Session expired. Please log in again.</string>
+    <string name="error_failed_to_read_body">Failed to read error body</string>
+
+    <!-- Validation messages -->
+    <string name="validation_email_required">Enter email</string>
+    <string name="validation_email_invalid">Enter a valid email address</string>
+    <string name="validation_password_required">Enter password</string>
+    <string name="validation_password_min_length">At least 8 characters</string>
+    <string name="validation_password_max_length">Maximum 100 characters</string>
+    <string name="validation_password_uppercase">Must contain at least one uppercase letter</string>
+    <string name="validation_password_lowercase">Must contain at least one lowercase letter</string>
+    <string name="validation_password_digit">Must contain at least one digit</string>
+    <string name="validation_password_special">Must contain at least one special character (e.g., !@#$%)</string>
+    <string name="validation_password_strength">Password must be 8-100 characters, including uppercase, lowercase, digit and special character (e.g., !@#$%)</string>
+    <string name="validation_confirm_password_required">Confirm password</string>
+    <string name="validation_passwords_do_not_match">Passwords do not match</string>
+    <string name="validation_username_required">Enter profile name</string>
+    <string name="validation_username_no_spaces">Name must not contain spaces</string>
+    <string name="validation_username_invalid">Name must be 3-20 characters (letters, numbers, _)</string>
+    <string name="validation_bio_too_long">Bio must not exceed 200 characters</string>
+    <string name="validation_room_name_too_short">Name must be at least 3 characters</string>
+    <string name="validation_room_name_too_long">Name must not exceed 100 characters</string>
+    <string name="validation_room_description_too_long">Description must not exceed 1000 characters</string>
+    <string name="validation_max_tags">Maximum 10 tags</string>
+    <string name="validation_tag_too_long">Tag must not exceed 50 characters</string>
+    <string name="validation_room_name_required">Enter room name</string>
+
+    <!-- Profile roles -->
+    <string name="role_creator">Creator</string>
+    <string name="role_moderator">Moderator</string>
+    <string name="role_member">Member</string>
+    <string name="status_banned">Banned</string>
+    <string name="status_muted">Muted</string>
+
+    <!-- Chat room messages -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="you_are_muted_cannot_send">You are muted and cannot send messages</string>
+    <string name="delete_message_title">Delete message</string>
+    <string name="delete_message_confirmation">Are you sure you want to delete this message?</string>
+    <string name="delete_message_confirm">Delete</string>
+
+    <!-- Room management -->
+    <string name="participants_count_format">Participants: %d/%d</string>
+    <string name="messages_count_format">Messages: %d</string>
+    <string name="select_new_role">Select new role</string>
+    <string name="participant">Participant</string>
+    <string name="leave_room_confirm_title">Leave room</string>
+    <string name="leave_room_confirm_message">Are you sure you want to leave the room?</string>
+    <string name="leave_room_confirm_button">Leave</string>
+    <string name="delete_room_confirm_title">Delete room</string>
+    <string name="delete_room_confirm_message">Are you sure you want to delete the room? This action cannot be undone.</string>
+    <string name="delete_room_confirm_button">Delete</string>
+
+    <!-- Chat roulette -->
+    <string name="unknown_partner">Unknown partner</string>
+    <string name="extend_session_dialog_title">Extend session?</string>
+    <string name="extend_session_dialog_message">Your partner wants to extend the conversation by 5 minutes. Do you agree?</string>
+    <string name="extend_session_agree">Agree</string>
+    <string name="extend_session_decline">Decline</string>
+    <string name="end_session_dialog_title">End session</string>
+    <string name="end_session_dialog_message">Are you sure you want to end the conversation?</string>
+    <string name="end_session_confirm">End</string>
+    <string name="end_session_cancel">Cancel</string>
+    <string name="report_sent_session_ended">Report sent, session ended</string>
+    <string name="report_received_session_ended">A report has been filed against you, session ended</string>
+    <string name="session_ended_by_you">Session ended</string>
+    <string name="session_ended_by_partner">Partner ended the session</string>
+    <string name="session_expired_automatically">Session expired automatically</string>
+    <string name="extension_request_sent">Extension request sent</string>
+    <string name="partner_accepted_extension">Partner agreed to extend the session</string>
+    <string name="partner_declined_extension">Partner declined to extend the session</string>
+    <string name="extension_request_cancelled">Extension request cancelled</string>
+    <string name="choose_rating">Choose rating</string>
+    <string name="rating_format">Rating: %d/5</string>
+    <string name="select_reason">Select a reason</string>
+    <string name="details_min_length">Details must be at least 20 characters</string>
+
+    <!-- Profile creation / editing -->
+    <string name="failed_load_image">Failed to load image</string>
+    <string name="avatar_removed">Avatar removed</string>
+    <string name="creating">Creating...</string>
+    <string name="create_profile_button">Create profile</string>
+    <string name="avatar_changes_cancelled">Avatar changes cancelled</string>
+    <string name="avatar_will_be_deleted_on_save">Avatar will be deleted after saving</string>
+    <string name="profile_switch_success">Profile switched</string>
+    <string name="profile_deleted_success">Profile deleted</string>
+    <string name="error_selecting_profile">Error selecting profile</string>
+    <string name="room_created">Room created</string>
+
+    <!-- Account settings -->
+    <string name="email_updated_success">Email updated successfully</string>
+    <string name="password_updated_success">Password updated successfully</string>
+    <string name="field_new_password">New password</string>
+    <string name="field_confirm_password">Confirm password</string>
+    <string name="login_success">Login successful</string>
+    <string name="register_success">Registration successful</string>
+
+    <!-- Create profile viewmodel -->
+    <string name="error_profile_created_but_interests_failed">Profile created, but failed to add interests: %s</string>
+    <string name="error_profile_created_but_avatar_failed">Profile created, but failed to upload avatar: %s</string>
+    <string name="profile_created_success">Profile created</string>
+
+    <!-- Profile viewmodel -->
+    <string name="profile_updated_success">Profile updated</string>
+    <string name="profile_loaded_but_interests_failed">Profile loaded, but failed to load interests: %s</string>
+    <string name="profile_updated_but_interests_remove_failed">Profile updated, but failed to remove interests: %s</string>
+    <string name="profile_updated_but_interests_add_failed">Profile updated, but failed to add interests: %s</string>
+    <string name="profile_updated_but_avatar_delete_failed">Profile updated, but failed to delete avatar: %s</string>
+    <string name="profile_updated_but_avatar_upload_failed">Profile updated, but failed to upload avatar: %s</string>
+
+    <!-- Room creation viewmodel -->
+    <string name="error_max_10_tags">Maximum 10 tags</string>
+    <string name="error_tag_max_50_chars">Tag cannot exceed 50 characters</string>
+
+    <!-- Group room viewmodel -->
+    <string name="multiple_people_typing">Several people are typing...</string>
+    <string name="someone_typing">%s is typing...</string>
+
+    <!-- Room management viewmodel -->
+    <string name="error_room_name_length">Name must be between 3 and 100 characters</string>
+
+    <!-- System messages for rooms -->
+    <string name="joined_the_room">%s joined the room</string>
+    <string name="left_the_room">%s left the room</string>
+    <string name="was_kicked_from_room_by">%s was kicked from the room by %s</string>
+    <string name="was_banned_from_room_by">%s was banned from the room by %s</string>
+    <string name="was_unbanned_from_room_by">%s was unbanned from the room by %s</string>
+    <string name="became_moderator">%s became a moderator by %s</string>
+    <string name="became_member">%s became a member by %s</string>
+    <string name="was_muted_by">%s was muted by %s</string>
+    <string name="was_unmuted_by">%s was unmuted by %s</string>
+    <string name="room_info_updated">Room information updated</string>
+    <string name="room_was_deleted">Room was deleted</string>
+
+    <!-- User-targeted messages -->
+    <string name="you_were_kicked_from_room_by">You were kicked from the room by %s</string>
+    <string name="you_were_banned_from_room_by">You were banned from this room by %s</string>
+    <string name="your_role_changed_to_by">Your role has been changed to %s by %s</string>
+    <string name="you_were_muted_by">You were muted by %s</string>
+    <string name="you_were_unmuted_by">You were unmuted by %s</string>
+    <string name="you_left_room">You left the room</string>
+    <string name="failed_to_connect_websocket">Failed to connect: %s</string>
+
     <plurals name="rooms_count">
         <item quantity="one">%d room</item>
         <item quantity="other">%d rooms</item>
     </plurals>
-
     <plurals name="participants_count">
         <item quantity="one">%d participant</item>
         <item quantity="other">%d participants</item>
     </plurals>
-
     <plurals name="online_count">
         <item quantity="one">%d online</item>
         <item quantity="other">%d online</item>

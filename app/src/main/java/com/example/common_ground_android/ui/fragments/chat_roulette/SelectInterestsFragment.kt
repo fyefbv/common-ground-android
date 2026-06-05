@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,13 +15,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.FragmentSelectInterestsBinding
 import com.example.common_ground_android.ui.navigation.chat_roulette.SelectInterestsFragmentDirections
-import com.example.common_ground_android.ui.navigation.rooms.GroupRoomFragmentDirections
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.SelectInterestsState
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.SelectInterestsViewModel
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.SelectInterestsViewModelFactory
 import com.example.common_ground_android.utils.ErrorHandler
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class SelectInterestsFragment : Fragment() {
@@ -110,16 +109,23 @@ class SelectInterestsFragment : Fragment() {
                             interestAdapter.clear()
                             interestAdapter.addAll(names)
                             interestAdapter.notifyDataSetChanged()
+
+                            interestAdapter.filter.filter(null)
+
                             updateSelectedInterestsChips(state.selectedIds)
                             updateSelectedCount(state.selectedIds.size)
+
+                            if (binding.interestAutoComplete.hasFocus() && interestAdapter.count > 0) {
+                                binding.interestAutoComplete.showDropDown()
+                            }
                         }
                         is SelectInterestsState.Error -> {
                             if (ErrorHandler.isAuthError(state.errorCode)) {
                                 viewModel.clearTokensAndLogout()
-                                Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                                 navigateToLogin()
                             } else {
-                                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                             }
                         }
                     }

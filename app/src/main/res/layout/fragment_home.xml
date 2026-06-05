@@ -37,6 +37,8 @@
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_xl"
                     android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_marginEnd="@dimen/spacing_16"
                     tools:text="Имя пользователя" />
 

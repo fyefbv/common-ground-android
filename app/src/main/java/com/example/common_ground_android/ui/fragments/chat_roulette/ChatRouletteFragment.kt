@@ -31,8 +31,6 @@ import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.ui.adapters.ChatRouletteMessageAdapter
 import com.example.common_ground_android.ui.navigation.chat_roulette.ChatRouletteFragmentDirections
-import com.example.common_ground_android.ui.navigation.chat_roulette.SelectInterestsFragmentDirections
-import com.example.common_ground_android.ui.navigation.rooms.GroupRoomFragmentDirections
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRouletteEvent
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRouletteState
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRouletteViewModel
@@ -40,7 +38,7 @@ import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRoulett
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ExtensionState
 import com.example.common_ground_android.utils.ErrorHandler
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class ChatRouletteFragment : Fragment() {
@@ -104,7 +102,7 @@ class ChatRouletteFragment : Fragment() {
         }
         binding.cancelSearchButton.setOnClickListener {
             viewModel.cancelSearch()
-            navigateToSelectInterests()
+            findNavController().navigateUp()
         }
     }
 
@@ -121,13 +119,13 @@ class ChatRouletteFragment : Fragment() {
                 viewModel.event.collect { event ->
                     when (event) {
                         is ChatRouletteEvent.Success -> {
-                            Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
                             if (event.code == "extension_cancelled"){
                                 extensionDialog?.dismiss()
                             }
                         }
                         is ChatRouletteEvent.Error -> {
-                            Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -186,12 +184,12 @@ class ChatRouletteFragment : Fragment() {
                 RatePartnerDialogFragment().show(childFragmentManager, "rate_dialog")
             }
             is ChatRouletteState.Finished -> {
-                navigateToSelectInterests()
+                findNavController().navigateUp()
             }
             is ChatRouletteState.Error -> {
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
@@ -226,7 +224,7 @@ class ChatRouletteFragment : Fragment() {
         matchedInterest: Interest?
     ) {
         if (partner == null) {
-            binding.partnerName.text = "Неизвестный собеседник"
+            binding.partnerName.text = getString(R.string.unknown_partner)
             binding.partnerAvatar.setImageResource(R.drawable.ic_person)
             binding.matchedInterest.visibility = View.GONE
             binding.commonInterests.visibility = View.GONE
@@ -292,15 +290,15 @@ class ChatRouletteFragment : Fragment() {
     }
 
     private fun showExtensionRequestDialog(extensionState: ExtensionState) {
-        if (extensionState == ExtensionState.REQUESTED_BY_PARTNER){
+        if (extensionState == ExtensionState.REQUESTED_BY_PARTNER) {
             extensionDialog?.dismiss()
-            val dialog = AlertDialog.Builder(requireContext())
-                .setTitle("Продлить сессию?")
-                .setMessage("Собеседник хочет продлить разговор на 5 минут. Согласны?")
-                .setPositiveButton("Согласиться") { _, _ ->
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
+                .setTitle(R.string.extend_session_dialog_title)
+                .setMessage(R.string.extend_session_dialog_message)
+                .setPositiveButton(R.string.extend_session_agree) { _, _ ->
                     viewModel.acceptExtension()
                 }
-                .setNegativeButton("Отклонить") { _, _ ->
+                .setNegativeButton(R.string.extend_session_decline) { _, _ ->
                     viewModel.rejectExtension()
                 }
                 .setOnCancelListener {
@@ -314,22 +312,22 @@ class ChatRouletteFragment : Fragment() {
     }
 
     private fun showEndSessionDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Завершить сессию")
-            .setMessage("Вы уверены, что хотите завершить разговор?")
-            .setPositiveButton("Завершить") { _, _ -> viewModel.endSession() }
-            .setNegativeButton("Отмена", null)
+        MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
+            .setTitle(R.string.end_session_dialog_title)
+            .setMessage(R.string.end_session_dialog_message)
+            .setPositiveButton(R.string.end_session_confirm) { _, _ -> viewModel.endSession() }
+            .setNegativeButton(R.string.end_session_cancel, null)
             .show()
     }
 
     private fun updateExtensionButton(extensionState: ExtensionState) {
         when (extensionState) {
             ExtensionState.REQUESTED_BY_ME -> {
-                binding.extendButton.text = "Отменить"
+                binding.extendButton.text = getString(R.string.cancel)
                 binding.extendButton.setOnClickListener { viewModel.cancelExtensionRequest() }
             }
             else -> {
-                binding.extendButton.text = "+5 мин"
+                binding.extendButton.text = getString(R.string.extend_session_button)
                 binding.extendButton.setOnClickListener { viewModel.requestExtension() }
             }
         }
@@ -337,10 +335,6 @@ class ChatRouletteFragment : Fragment() {
 
     private fun getCurrentProfileId(): String {
         return KtorClientFactory.getTokenManager().getProfileIdSync() ?: ""
-    }
-
-    private fun navigateToSelectInterests() {
-        findNavController().navigate(ChatRouletteFragmentDirections.actionChatRouletteFragmentToSelectInterestsFragment())
     }
 
     private fun navigateToLogin() {

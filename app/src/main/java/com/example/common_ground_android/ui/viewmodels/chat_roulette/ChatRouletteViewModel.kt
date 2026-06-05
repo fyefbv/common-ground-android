@@ -2,6 +2,7 @@ package com.example.common_ground_android.ui.viewmodels.chat_roulette
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.client.KtorClientFactory
 import com.example.common_ground_android.network.model.domain.ChatRouletteMessage
 import com.example.common_ground_android.network.model.domain.ChatRouletteSession
@@ -17,7 +18,9 @@ import com.example.common_ground_android.network.repository.ProfileRepository
 import com.example.common_ground_android.network.repository.websocket.ChatRouletteWebSocketRepository
 import com.example.common_ground_android.network.repository.websocket.WebSocketConnectionState
 import com.example.common_ground_android.utils.DateUtils
+import com.example.common_ground_android.utils.Res
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
@@ -25,7 +28,6 @@ import kotlinx.coroutines.launch
 
 class ChatRouletteViewModel(
     private val chatRouletteRepository: ChatRouletteRepository,
-    private val profileRepository: ProfileRepository,
     private val authRepository: AuthRepository,
     private val interestRepository: InterestRepository,
     private val webSocketRepo: ChatRouletteWebSocketRepository,
@@ -82,7 +84,7 @@ class ChatRouletteViewModel(
                         val session = ChatRouletteSession.fromResponse(result.data.session)
                         enterActiveSession(session)
                     } else {
-                        _state.value = ChatRouletteState.Error("Ошибка поиска", "unknown")
+                        _state.value = ChatRouletteState.Error(Res.getString(R.string.error_unknown), "unknown")
                     }
                 }
                 is NetworkResult.Error -> {
@@ -170,7 +172,7 @@ class ChatRouletteViewModel(
                     _socketConnected.value = state is WebSocketConnectionState.Connected
                 }
             } catch (e: Exception) {
-                _state.value = ChatRouletteState.Error("Failed to connect: ${e.message}", "failed_connect")
+                _state.value = ChatRouletteState.Error(Res.getString(R.string.failed_to_connect_websocket), e.message)
             }
         }
     }
@@ -208,28 +210,29 @@ class ChatRouletteViewModel(
                 if (_sessionEnded.value) return
 
                 _sessionEnded.value = true
+                _partnerOnline.value = false
                 _timerSeconds.value = 0
                 val reason = event.data.reason
                 if (reason.startsWith("Reported")) {
                     val isInitiator = event.data.profileId == currentProfileId
                     val message: String = if (isInitiator){
-                        "Жалоба отправлена, сессия завершена"
+                        Res.getString(R.string.report_sent_session_ended)
                     } else {
-                        "На вас отправлена жалоба, сессия завершена"
+                        Res.getString(R.string.report_received_session_ended)
                     }
                     viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(message)) }
                     finishSession()
                 } else if (reason.startsWith("Left by user")){
                     val isInitiator = event.data.profileId == currentProfileId
                     val message: String = if (isInitiator){
-                        "Сессия завершена"
+                        Res.getString(R.string.session_ended_by_you)
                     } else {
-                        "Собеседник завершил сессию"
+                        Res.getString(R.string.session_ended_by_partner)
                     }
                     viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(message)) }
                     finishSession()
                 } else if (reason == "Session expired automatically"){
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Сессия завершена по истечению времени")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.session_expired_automatically))) }
                     _state.value = ChatRouletteState.Rating
                 }
                 disconnectWebSocket()
@@ -238,7 +241,7 @@ class ChatRouletteViewModel(
                 val isRequestingProfile = event.data.requestingProfileId == currentProfileId
                 if (isRequestingProfile) {
                     updateExtensionState(ExtensionState.REQUESTED_BY_ME)
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Запрос на продление отправлен")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.extension_request_sent))) }
                 } else {
                     updateExtensionState(ExtensionState.REQUESTED_BY_PARTNER)
                 }
@@ -247,23 +250,23 @@ class ChatRouletteViewModel(
                 updateExtensionState(ExtensionState.NONE)
                 val isApprovingProfile = event.data.approvingProfileId == currentProfileId
                 if (!isApprovingProfile){
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Собеседник согласился продлить сессию")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.partner_accepted_extension))) }
                 }
             }
             is ChatRouletteWebSocketServerEvent.ExtensionRejected -> {
                 updateExtensionState(ExtensionState.NONE)
                 val isRejectingProfile = event.data.rejectingProfileId == currentProfileId
                 if (!isRejectingProfile){
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Собеседник отказался продлевать сессию")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.partner_declined_extension))) }
                 }
             }
             is ChatRouletteWebSocketServerEvent.ExtensionCancelled -> {
                 updateExtensionState(ExtensionState.NONE)
                 val isCancellingProfile = event.data.cancellingProfileId == currentProfileId
                 if (isCancellingProfile){
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Запрос на продление сессии отменён")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.extension_request_cancelled))) }
                 } else {
-                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success("Запрос на продление сессии отменён", "extension_cancelled")) }
+                    viewModelScope.launch { _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.extension_request_cancelled), "extension_cancelled")) }
                 }
             }
             else -> {}
@@ -287,20 +290,17 @@ class ChatRouletteViewModel(
 
                 if (remaining <= 0 && !_sessionEnded.value && _state.value is ChatRouletteState.ActiveSession) {
                     _sessionEnded.value = true
+                    _partnerOnline.value = false
                     _state.value = ChatRouletteState.Rating
                     disconnectWebSocket()
                     viewModelScope.launch {
-                        _event.emit(ChatRouletteEvent.Success("Сессия завершена по истечению времени"))
+                        _event.emit(ChatRouletteEvent.Success(Res.getString(R.string.session_expired_automatically)))
                     }
                     return@launch
                 }
                 delay(300)
             }
         }
-    }
-
-    private fun updateTimer(seconds: Int) {
-        _timerSeconds.value = seconds
     }
 
     fun sendMessage(content: String) {
@@ -310,19 +310,17 @@ class ChatRouletteViewModel(
     }
 
     fun requestExtension() {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.extendSession()) {
                 is NetworkResult.Success -> { }
-                is NetworkResult.Error -> {
-                    _event.emit(ChatRouletteEvent.Error(result.errorMessage, result.errorCode))
-                }
+                is NetworkResult.Error -> { }
                 else -> {}
             }
         }
     }
 
     fun acceptExtension() {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.extendSession()) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {
@@ -334,7 +332,7 @@ class ChatRouletteViewModel(
     }
 
     fun rejectExtension() {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.rejectExtension()) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {
@@ -346,7 +344,7 @@ class ChatRouletteViewModel(
     }
 
     fun cancelExtensionRequest() {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.cancelExtensionRequest()) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {
@@ -358,8 +356,8 @@ class ChatRouletteViewModel(
     }
 
     fun endSession() {
-        viewModelScope.launch {
-            when (val result = chatRouletteRepository.endSession("Пользователь завершил диалог")) {
+        viewModelScope.launch(NonCancellable) {
+            when (val result = chatRouletteRepository.endSession("User ended session")) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {
                     _event.emit(ChatRouletteEvent.Error(result.errorMessage, result.errorCode))
@@ -370,7 +368,7 @@ class ChatRouletteViewModel(
     }
 
     fun reportPartner(reason: String, details: String?) {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.reportPartner(reason, details)) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {
@@ -382,7 +380,7 @@ class ChatRouletteViewModel(
     }
 
     fun ratePartner(rating: Int, feedback: String?) {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             when (val result = chatRouletteRepository.ratePartner(rating, feedback)) {
                 is NetworkResult.Success -> { }
                 is NetworkResult.Error -> {

@@ -2,6 +2,7 @@ package com.example.common_ground_android.ui.viewmodels.rooms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.client.KtorClientFactory
 import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.network.model.domain.Message
@@ -16,6 +17,7 @@ import com.example.common_ground_android.network.repository.RoomRepository
 import com.example.common_ground_android.network.repository.websocket.RoomWebSocketRepository
 import com.example.common_ground_android.network.repository.websocket.WebSocketConnectionState
 import com.example.common_ground_android.utils.DateUtils
+import com.example.common_ground_android.utils.Res
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -65,10 +67,10 @@ class GroupRoomViewModel(
             0 -> null
             1 -> {
                 val id = typingSet.first()
-                val name = profiles[id]?.username ?: "Кто-то"
-                "$name печатает..."
+                val name = profiles[id]?.username ?: Res.getString(R.string.unknown)
+                String.format(Res.getString(R.string.someone_typing), name)
             }
-            else -> "Несколько человек печатают..."
+            else -> Res.getString(R.string.multiple_people_typing)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -124,7 +126,7 @@ class GroupRoomViewModel(
                     _senderRoles.value = roles
 
                     if (isBanned) {
-                        _state.value = GroupRoomState.Error("Вы были забанены в этой комнате", "banned")
+                        _state.value = GroupRoomState.Error(Res.getString(R.string.error_participant_banned), "banned")
                         return@launch
                     }
 
@@ -148,7 +150,7 @@ class GroupRoomViewModel(
     }
 
     private suspend fun loadProfilesForMessages(messages: List<Message>) {
-        val uniqueIds = messages.map { it.senderId }.distinct()
+        val uniqueIds = messages.mapNotNull { it.senderId }.distinct()
         if (uniqueIds.isEmpty()) return
 
         when (val result = profileRepository.getProfilesBatch(uniqueIds)) {
@@ -194,7 +196,7 @@ class GroupRoomViewModel(
                     _socketConnected.value = state is WebSocketConnectionState.Connected
                 }
             } catch (e: Exception) {
-                _state.value = GroupRoomState.Error("Failed to connect: ${e.message}")
+                _state.value = GroupRoomState.Error(Res.getString(R.string.failed_to_connect_websocket), e.message)
             }
         }
     }
@@ -218,14 +220,16 @@ class GroupRoomViewModel(
                     isDeleted = webMsg.isDeleted
                 )
                 _messages.update { it + newMessage }
-                viewModelScope.launch { loadSingleProfile(webMsg.senderId) }
+                if (webMsg.senderId != null) {
+                    viewModelScope.launch { loadSingleProfile(webMsg.senderId) }
+                }
             }
             is RoomWebSocketServerEvent.ParticipantJoined -> {
                 val profileId = event.data.profileId
                 viewModelScope.launch {
                     loadSingleProfile(profileId)
                     val name = _senderProfiles.value[profileId]?.username ?: profileId.take(8)
-                    addSystemMessage("$name присоединился к комнате")
+                    addSystemMessage(String.format(Res.getString(R.string.joined_the_room), name))
                     val participantsResult = roomRepository.getRoomParticipants(roomId, includeBanned = false)
                     if (participantsResult is NetworkResult.Success) {
                         val roles = participantsResult.data.associate { it.profileId to it.role }
@@ -238,7 +242,7 @@ class GroupRoomViewModel(
                 viewModelScope.launch {
                     loadSingleProfile(profileId)
                     val name = _senderProfiles.value[profileId]?.username ?: profileId.take(8)
-                    addSystemMessage("$name покинул комнату")
+                    addSystemMessage(String.format(Res.getString(R.string.left_the_room), name))
                 }
             }
             is RoomWebSocketServerEvent.MessageUpdated -> {
@@ -298,9 +302,9 @@ class GroupRoomViewModel(
                     loadSingleProfile(kickerId)
                     val kickedName = _senderProfiles.value[kickedId]?.username ?: kickedId.take(8)
                     val kickerName = _senderProfiles.value[kickerId]?.username ?: kickerId.take(8)
-                    addSystemMessage("$kickedName был исключён из комнаты пользователем $kickerName")
+                    addSystemMessage(String.format(Res.getString(R.string.was_kicked_from_room_by), kickedName, kickerName))
                     if (kickedId == currentProfileId) {
-                        _event.emit(RoomEvent.Error("Вы были исключены из комнаты пользователем $kickerName", "kicked"))
+                        _event.emit(RoomEvent.Error(String.format(Res.getString(R.string.you_were_kicked_from_room_by), kickerName), "kicked"))
                     }
                 }
             }
@@ -312,9 +316,9 @@ class GroupRoomViewModel(
                     loadSingleProfile(bannerId)
                     val bannedName = _senderProfiles.value[bannedId]?.username ?: bannedId.take(8)
                     val bannerName = _senderProfiles.value[bannerId]?.username ?: bannerId.take(8)
-                    addSystemMessage("$bannedName был забанен в комнате пользователем $bannerName")
+                    addSystemMessage(String.format(Res.getString(R.string.was_banned_from_room_by), bannedName, bannerName))
                     if (bannedId == currentProfileId) {
-                        _event.emit(RoomEvent.Error("Вы были забанены в этой комнате пользователем $bannerName", "banned"))
+                        _event.emit(RoomEvent.Error(String.format(Res.getString(R.string.you_were_banned_from_room_by), bannerName), "banned"))
                     }
                 }
             }
@@ -326,7 +330,7 @@ class GroupRoomViewModel(
                     loadSingleProfile(unbannerId)
                     val unbannedName = _senderProfiles.value[unbannedId]?.username ?: unbannedId.take(8)
                     val unbannerName = _senderProfiles.value[unbannerId]?.username ?: unbannerId.take(8)
-                    addSystemMessage("$unbannedName был разбанен в комнате пользователем $unbannerName")
+                    addSystemMessage(String.format(Res.getString(R.string.was_unbanned_from_room_by), unbannedName, unbannerName))
                 }
             }
             is RoomWebSocketServerEvent.ParticipantRoleChanged -> {
@@ -338,16 +342,16 @@ class GroupRoomViewModel(
                     loadSingleProfile(changerId)
                     val targetName = _senderProfiles.value[targetId]?.username ?: targetId.take(8)
                     val changerName = _senderProfiles.value[changerId]?.username ?: changerId.take(8)
-                    var roleText = if (newRole == "MODERATOR") "модератором" else "участником"
-                    addSystemMessage("$targetName стал $roleText по решению $changerName")
+                    val roleText = if (newRole == "MODERATOR") Res.getString(R.string.became_moderator) else Res.getString(R.string.became_member)
+                    addSystemMessage(String.format(roleText, targetName, changerName))
                     if (targetId == currentProfileId) {
                         _state.update { currentState ->
                             if (currentState is GroupRoomState.Success) {
                                 currentState.copy(currentRole = newRole)
                             } else currentState
                         }
-                        roleText = if (newRole == "MODERATOR") "модератора" else "участника"
-                        _event.emit(RoomEvent.Success("Ваша роль изменена на $roleText пользователем $changerName", "role_changed"))
+                        val roleName = if (newRole == "MODERATOR") Res.getString(R.string.role_moderator).lowercase() else Res.getString(R.string.role_member).lowercase()
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.your_role_changed_to_by), roleName, changerName), "role_changed"))
                     }
                     _senderRoles.update { it + (targetId to newRole) }
                 }
@@ -360,10 +364,10 @@ class GroupRoomViewModel(
                     loadSingleProfile(muterId)
                     val mutedName = _senderProfiles.value[mutedId]?.username ?: mutedId.take(8)
                     val muterName = _senderProfiles.value[muterId]?.username ?: muterId.take(8)
-                    addSystemMessage("$mutedName был замучен пользователем $muterName")
+                    addSystemMessage(String.format(Res.getString(R.string.was_muted_by), mutedName, muterName))
                     if (mutedId == currentProfileId) {
                         _isMuted.value = true
-                        _event.emit(RoomEvent.Success("Вы были замучены пользователем $muterName", "muted"))
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.you_were_muted_by), muterName), "muted"))
                     }
                 }
             }
@@ -375,20 +379,20 @@ class GroupRoomViewModel(
                     loadSingleProfile(unmuterId)
                     val unmutedName = _senderProfiles.value[unmutedId]?.username ?: unmutedId.take(8)
                     val unmuterName = _senderProfiles.value[unmuterId]?.username ?: unmuterId.take(8)
-                    addSystemMessage("$unmutedName был размучен пользователем $unmuterName")
+                    addSystemMessage(String.format(Res.getString(R.string.was_unmuted_by), unmutedName, unmuterName))
                     if (unmutedId == currentProfileId) {
                         _isMuted.value = false
-                        _event.emit(RoomEvent.Success("С вас снял мут пользователь $unmuterName", "unmuted"))
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.you_were_unmuted_by), unmuterName), "unmuted"))
                     }
                 }
             }
             is RoomWebSocketServerEvent.RoomUpdated -> {
-                addSystemMessage("Информация о комнате обновлена")
+                addSystemMessage(Res.getString(R.string.room_info_updated))
                 refreshRoomData()
             }
             is RoomWebSocketServerEvent.RoomDeleted -> {
                 viewModelScope.launch {
-                    _event.emit(RoomEvent.Error("Комната удалена", "room_deleted"))
+                    _event.emit(RoomEvent.Error(Res.getString(R.string.room_was_deleted), "room_deleted"))
                 }
             }
             else -> {}
@@ -433,11 +437,9 @@ class GroupRoomViewModel(
                             }
                         }
                     }
-
                     is NetworkResult.Error -> {
                         _state.value = GroupRoomState.Error(result.errorMessage, result.errorCode)
                     }
-
                     else -> {}
                 }
             }
@@ -455,7 +457,7 @@ class GroupRoomViewModel(
     fun sendMessageWithReply(content: String) {
         if (_isMuted.value) {
             viewModelScope.launch {
-                _event.emit(RoomEvent.Error("Вы замучены и не можете отправлять сообщения", "muted"))
+                _event.emit(RoomEvent.Error(Res.getString(R.string.you_are_muted_cannot_send), "muted"))
             }
             return
         }

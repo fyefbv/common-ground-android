@@ -2,12 +2,14 @@ package com.example.common_ground_android.ui.viewmodels.rooms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.domain.Room
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
 import com.example.common_ground_android.network.repository.RoomRepository
+import com.example.common_ground_android.utils.Res
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,15 +68,15 @@ class CreateRoomViewModel(
     fun updateName(name: String) {
         _name.value = name
         _nameError.value = when {
-            name.length < 3 -> "Название должно содержать минимум 3 символа"
-            name.length > 100 -> "Название не должно превышать 100 символов"
+            name.length < 3 -> Res.getString(R.string.validation_room_name_too_short)
+            name.length > 100 -> Res.getString(R.string.validation_room_name_too_long)
             else -> null
         }
     }
 
     fun updateDescription(description: String) {
         _description.value = description
-        _descriptionError.value = if (description.length > 1000) "Описание не должно превышать 1000 символов" else null
+        _descriptionError.value = if (description.length > 1000) Res.getString(R.string.validation_room_description_too_long) else null
     }
 
     fun updatePrimaryInterest(interestId: String?) {
@@ -86,11 +88,11 @@ class CreateRoomViewModel(
         when {
             trimmed.isEmpty() -> return
             _tags.value.size >= 10 -> {
-                _state.value = CreateRoomState.Error("Максимум 10 тегов")
+                _state.value = CreateRoomState.Error(Res.getString(R.string.error_max_10_tags))
                 return
             }
             trimmed.length > 50 -> {
-                _state.value = CreateRoomState.Error("Тег не может превышать 50 символов")
+                _state.value = CreateRoomState.Error(Res.getString(R.string.error_tag_max_50_chars))
                 return
             }
             _tags.value.contains(trimmed) -> return
@@ -114,9 +116,9 @@ class CreateRoomViewModel(
 
     private fun getValidationErrors(): List<String> {
         val errors = mutableListOf<String>()
-        _nameError.value?.let { errors.add("Поле 'Название': $it") }
-        _descriptionError.value?.let { errors.add("Поле 'Описание': $it") }
-        if (_name.value.isBlank()) errors.add("Поле 'Название': Введите название комнаты")
+        _nameError.value?.let { errors.add("${Res.getString(R.string.room_name)}: $it") }
+        _descriptionError.value?.let { errors.add("${Res.getString(R.string.room_description)}: $it") }
+        if (_name.value.isBlank()) errors.add(Res.getString(R.string.validation_room_name_required))
         return errors
     }
 

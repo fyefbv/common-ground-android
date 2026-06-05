@@ -16,9 +16,11 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_input"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/input_height"
+            android:layout_height="wrap_content"
             android:hint="@string/new_email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:imeOptions="actionDone"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

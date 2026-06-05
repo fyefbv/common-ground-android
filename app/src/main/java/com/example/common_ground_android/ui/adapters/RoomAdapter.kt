@@ -3,6 +3,7 @@ package com.example.common_ground_android.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,6 @@ import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.ItemRoomBinding
 import com.example.common_ground_android.network.model.domain.Room
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 
 class RoomAdapter(
     private val currentProfileId: String,
@@ -39,10 +39,10 @@ class RoomAdapter(
             binding.participantsText.text = "${room.participantsCount}/${room.maxParticipants}"
 
             val interestName = getInterestName(room.primaryInterestId)
-            binding.primaryInterestChip.text = interestName ?: room.primaryInterestId ?: "Без интереса"
+            binding.primaryInterestChip.text = interestName ?: room.primaryInterestId ?: binding.root.context.getString(R.string.no_interest)
             binding.primaryInterestChip.visibility = if (interestName != null || room.primaryInterestId != null) View.VISIBLE else View.GONE
 
-            binding.privacyChip.text = if (room.isPrivate) "Приватная" else "Публичная"
+            binding.privacyChip.text = if (room.isPrivate) binding.root.context.getString(R.string.private_room) else binding.root.context.getString(R.string.public_room)
             binding.privacyChip.setChipBackgroundColorResource(
                 if (room.isPrivate) R.color.md_secondary_container
                 else R.color.md_tertiary_container
@@ -79,9 +79,9 @@ class RoomAdapter(
 
             binding.root.setOnClickListener {
                 if (room.isBanned) {
-                    Snackbar.make(binding.root, "Вы забанены в этой комнате", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(binding.root.context, R.string.you_are_banned_in_this_room, Toast.LENGTH_SHORT).show()
                 } else if (!room.isJoined && room.creatorId != currentProfileId) {
-                    Snackbar.make(binding.root, "Вы не являетесь участником. Нажмите «Вступить»", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(binding.root.context, R.string.you_are_not_member_click_join, Toast.LENGTH_SHORT).show()
                 } else {
                     onRoomClick(room)
                 }

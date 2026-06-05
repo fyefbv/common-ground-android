@@ -2,8 +2,10 @@ package com.example.common_ground_android.ui.viewmodels.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,7 +56,7 @@ class RegisterViewModel(
         val password = _password.value
         _confirmPasswordError.value = when {
             confirmPassword.isEmpty() -> null
-            password != confirmPassword -> "Пароли не совпадают"
+            password != confirmPassword -> Res.getString(R.string.error_passwords_dont_match)
             else -> null
         }
     }
@@ -96,7 +98,7 @@ class RegisterViewModel(
             _registerState.value = AuthState.Loading
             when (val result = authRepository.register(email, password)) {
                 is NetworkResult.Success -> {
-                    _registerState.value = AuthState.Success("Регистрация успешна")
+                    _registerState.value = AuthState.Success(Res.getString(R.string.register_success))
                 }
                 is NetworkResult.Error -> {
                     _registerState.value = AuthState.Error(result.errorMessage, result.errorCode)
@@ -108,9 +110,9 @@ class RegisterViewModel(
 
     private fun getValidationErrors(): List<String> {
         val errors = mutableListOf<String>()
-        _emailError.value?.let { errors.add("Поле 'Email': $it") }
-        _passwordError.value?.let { errors.add("Поле 'Пароль': $it") }
-        _confirmPasswordError.value?.let { errors.add("Поле 'Подтверждение пароля': $it") }
+        _emailError.value?.let { errors.add("${Res.getString(R.string.email)}: $it") }
+        _passwordError.value?.let { errors.add("${Res.getString(R.string.password)}: $it") }
+        _confirmPasswordError.value?.let { errors.add("${Res.getString(R.string.confirm_password)}: $it") }
         return errors
     }
 

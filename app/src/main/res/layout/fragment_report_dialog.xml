@@ -89,9 +89,7 @@
                 style="@style/TextInputLayout.Rounded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_24"
-                app:counterEnabled="true"
-                app:counterMaxLength="500">
+                android:layout_marginBottom="@dimen/spacing_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/details_edit_text"
@@ -99,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/report_details"
                     android:inputType="textMultiLine"
-                    android:maxLines="5"
+                    android:maxLines="3"
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_base" />
 

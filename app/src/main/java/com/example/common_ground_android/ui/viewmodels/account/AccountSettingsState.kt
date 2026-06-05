@@ -6,4 +6,5 @@ sealed class AccountSettingsState {
     data class Success(val message: String) : AccountSettingsState()
     data class Error(val message: String, val errorCode: String? = null) : AccountSettingsState()
     object LoggedOut : AccountSettingsState()
+    object DeleteAccount : AccountSettingsState()
 }

@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="@dimen/spacing_16">
+                android:paddingHorizontal="@dimen/spacing_8">
 
                 <ImageButton
                     android:id="@+id/back_button"
@@ -48,6 +48,8 @@
                         android:id="@+id/room_name_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         tools:text="Название комнаты"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_lg"
@@ -162,10 +164,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/message_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
+                        android:layout_height="wrap_content"
                         android:hint="@string/type_message"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base"
+                        android:inputType="textMultiLine"
                         android:maxLines="3" />
                 </com.google.android.material.textfield.TextInputLayout>
 

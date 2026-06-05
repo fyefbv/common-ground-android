@@ -37,9 +37,11 @@
 
             <TextView
                 android:id="@+id/profile_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Profile Name"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Имя профиля"
                 android:textColor="@color/md_on_surface"
                 android:textSize="@dimen/text_lg"
                 android:textStyle="bold"
@@ -47,12 +49,12 @@
 
             <TextView
                 android:id="@+id/profile_bio"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Short bio"
+                tools:text="Биография"
                 android:textColor="@color/md_on_surface_variant"
                 android:textSize="@dimen/text_sm"
-                android:maxLines="1"
+                android:maxLines="3"
                 android:ellipsize="end"
                 android:layout_marginBottom="@dimen/spacing_8" />
 

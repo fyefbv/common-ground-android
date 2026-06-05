@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -14,12 +15,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.FragmentRegisterBinding
 import com.example.common_ground_android.ui.navigation.auth.RegisterFragmentDirections
 import com.example.common_ground_android.ui.viewmodels.auth.AuthState
 import com.example.common_ground_android.ui.viewmodels.auth.AuthViewModelFactory
 import com.example.common_ground_android.ui.viewmodels.auth.RegisterViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
@@ -144,25 +145,16 @@ class RegisterFragment : Fragment() {
     private fun setLoading(isLoading: Boolean) {
         binding.registerButton.isEnabled = !isLoading
         binding.switchToLogin.isEnabled = !isLoading
-        binding.registerButton.text = if (isLoading) "Регистрация..." else "Зарегистрироваться"
+        binding.registerButton.text = if (isLoading) getString(R.string.creating) else getString(R.string.sign_up)
     }
 
     private fun showSuccess(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showError(message: String, errorCode: String?) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-
-        when (errorCode) {
-            "user_already_exists" -> {
-                snackbar.setAction("Войти") {
-                    navigateToLogin()
-                }
-            }
-        }
-
-        snackbar.show()
+        val toast = Toast.makeText(requireContext(), message, Toast.LENGTH_LONG)
+        toast.show()
     }
 
     private fun hideKeyboard() {

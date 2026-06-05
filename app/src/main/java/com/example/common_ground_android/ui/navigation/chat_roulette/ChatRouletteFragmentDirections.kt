@@ -8,8 +8,5 @@ class ChatRouletteFragmentDirections private constructor() {
     companion object {
         fun actionChatRouletteFragmentToLoginFragment(): NavDirections =
             ActionOnlyNavDirections(R.id.action_chatRouletteFragment_to_loginFragment)
-
-        fun actionChatRouletteFragmentToSelectInterestsFragment(): NavDirections =
-            ActionOnlyNavDirections(R.id.action_chatRouletteFragment_to_selectInterestsFragment)
     }
 }

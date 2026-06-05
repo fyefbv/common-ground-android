@@ -2,6 +2,7 @@ package com.example.common_ground_android.ui.viewmodels.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.client.TokenManager
 import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.domain.Profile
@@ -10,6 +11,7 @@ import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
 import com.example.common_ground_android.network.repository.ProfileRepository
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -69,17 +71,21 @@ class ProfileViewModel(
 
     fun updateUsername(username: String) {
         _username.value = username
-        _usernameError.value = when {
-            username.isBlank() -> "Введите имя профиля"
-            username.contains(" ") -> "Имя не должно содержать пробелы"
-            !ValidationUtils.isValidUsername(username) -> "Имя должно содержать 3-20 символов (буквы, цифры, _)"
-            else -> null
+        if (_profileState.value !is ProfileFormState.Loading) {
+            _usernameError.value = when {
+                username.isBlank() -> Res.getString(R.string.validation_username_required)
+                username.contains(" ") -> Res.getString(R.string.validation_username_no_spaces)
+                !ValidationUtils.isValidUsername(username) -> Res.getString(R.string.validation_username_invalid)
+                else -> null
+            }
         }
     }
 
     fun updateBio(bio: String) {
         _bio.value = bio
-        _bioError.value = if (bio.length > 200) "Биография не должна превышать 200 символов" else null
+        if (_profileState.value !is ProfileFormState.Loading) {
+            _bioError.value = if (bio.length > 200) Res.getString(R.string.validation_bio_too_long) else null
+        }
     }
 
     fun setNewAvatarBytes(bytes: ByteArray) {
@@ -126,12 +132,12 @@ class ProfileViewModel(
                         }
                         is NetworkResult.Error -> {
                             _profileState.value = ProfileFormState.Error(
-                                "Профиль загружен, но не удалось загрузить интересы: ${interestsResult.errorMessage}",
+                                String.format(Res.getString(R.string.profile_loaded_but_interests_failed), interestsResult.errorMessage),
                                 interestsResult.errorCode
                             )
                         }
                         else -> {
-                            _profileState.value = ProfileFormState.Error("Неизвестная ошибка при загрузке интересов")
+                            _profileState.value = ProfileFormState.Error(Res.getString(R.string.error_unknown_error))
                         }
                     }
                 }
@@ -139,7 +145,7 @@ class ProfileViewModel(
                     _profileState.value = ProfileFormState.Error(profileResult.errorMessage, profileResult.errorCode)
                 }
                 else -> {
-                    _profileState.value = ProfileFormState.Error("Неизвестная ошибка при загрузке профиля")
+                    _profileState.value = ProfileFormState.Error(Res.getString(R.string.error_unknown_error))
                 }
             }
         }
@@ -172,7 +178,7 @@ class ProfileViewModel(
         return when (val result = profileRepository.getProfileInterests(username)) {
             is NetworkResult.Success -> NetworkResult.Success(result.data.map { it.id }.toSet())
             is NetworkResult.Error -> NetworkResult.Error(result.errorCode, result.errorMessage)
-            else -> NetworkResult.Error(errorMessage = "Неизвестная ошибка")
+            else -> NetworkResult.Error(errorMessage = Res.getString(R.string.error_unknown_error))
         }
     }
 
@@ -237,7 +243,10 @@ class ProfileViewModel(
                 if (toRemove.isNotEmpty()) {
                     when (val removeResult = profileRepository.removeInterestsFromMyProfile(toRemove)) {
                         is NetworkResult.Error -> {
-                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить интересы: ${removeResult.errorMessage}", removeResult.errorCode)
+                            _profileState.value = ProfileFormState.Error(
+                                String.format(Res.getString(R.string.profile_updated_but_interests_remove_failed), removeResult.errorMessage),
+                                removeResult.errorCode
+                            )
                             return@launch
                         }
                         else -> {}
@@ -247,7 +256,10 @@ class ProfileViewModel(
                 if (toAdd.isNotEmpty()) {
                     when (val addResult = profileRepository.addInterestsToMyProfile(toAdd)) {
                         is NetworkResult.Error -> {
-                            _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось добавить интересы: ${addResult.errorMessage}", addResult.errorCode)
+                            _profileState.value = ProfileFormState.Error(
+                                String.format(Res.getString(R.string.profile_updated_but_interests_add_failed), addResult.errorMessage),
+                                addResult.errorCode
+                            )
                             return@launch
                         }
                         else -> {}
@@ -263,7 +275,10 @@ class ProfileViewModel(
                         _deleteAvatar.value = false
                     }
                     is NetworkResult.Error -> {
-                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось удалить аватар: ${deleteResult.errorMessage}", deleteResult.errorCode)
+                        _profileState.value = ProfileFormState.Error(
+                            String.format(Res.getString(R.string.profile_updated_but_avatar_delete_failed), deleteResult.errorMessage),
+                            deleteResult.errorCode
+                        )
                         return@launch
                     }
                     else -> {}
@@ -275,7 +290,10 @@ class ProfileViewModel(
                         _newAvatarBytes.value = null
                     }
                     is NetworkResult.Error -> {
-                        _profileState.value = ProfileFormState.Error("Профиль обновлён, но не удалось загрузить аватар: ${uploadResult.errorMessage}", uploadResult.errorCode)
+                        _profileState.value = ProfileFormState.Error(
+                            String.format(Res.getString(R.string.profile_updated_but_avatar_upload_failed), uploadResult.errorMessage),
+                            uploadResult.errorCode
+                        )
                         return@launch
                     }
                     else -> {}
@@ -283,7 +301,7 @@ class ProfileViewModel(
             }
 
             _isEditMode.value = false
-            _profileState.value = ProfileFormState.Success("Профиль обновлён")
+            _profileState.value = ProfileFormState.Success(Res.getString(R.string.profile_updated_success))
         }
     }
 
@@ -291,7 +309,7 @@ class ProfileViewModel(
         viewModelScope.launch {
             _profileState.value = ProfileFormState.Loading
             tokenManager.clearProfileId()
-            _profileState.value = ProfileFormState.Success("Переключение профиля")
+            _profileState.value = ProfileFormState.Success(Res.getString(R.string.profile_switch_success))
         }
     }
 
@@ -301,7 +319,7 @@ class ProfileViewModel(
             when (val result = profileRepository.deleteMyProfile()) {
                 is NetworkResult.Success -> {
                     tokenManager.clearProfileId()
-                    _profileState.value = ProfileFormState.Success("Профиль удалён")
+                    _profileState.value = ProfileFormState.Success(Res.getString(R.string.profile_deleted_success))
                 }
                 is NetworkResult.Error -> {
                     _profileState.value = ProfileFormState.Error(result.errorMessage, result.errorCode)

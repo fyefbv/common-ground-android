@@ -2,12 +2,14 @@ package com.example.common_ground_android.ui.viewmodels.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
 import com.example.common_ground_android.network.repository.ProfileRepository
+import com.example.common_ground_android.utils.Res
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -55,7 +57,7 @@ class ProfileSelectorViewModel(
                     _state.value = ProfileSelectorState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {
-                    _state.value = ProfileSelectorState.Error("Неизвестная ошибка")
+                    _state.value = ProfileSelectorState.Error(Res.getString(R.string.error_unknown_error))
                 }
             }
         }

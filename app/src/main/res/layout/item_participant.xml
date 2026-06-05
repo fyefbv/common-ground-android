@@ -33,8 +33,11 @@
 
             <TextView
                 android:id="@+id/participant_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="250dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="Имя участника"
                 android:textColor="@color/md_on_surface"
                 android:textSize="@dimen/text_base"

@@ -2,6 +2,7 @@ package com.example.common_ground_android.ui.viewmodels.rooms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.network.model.domain.Participant
@@ -15,6 +16,7 @@ import com.example.common_ground_android.network.repository.ProfileRepository
 import com.example.common_ground_android.network.repository.RoomRepository
 import com.example.common_ground_android.network.repository.websocket.RoomWebSocketRepository
 import com.example.common_ground_android.utils.DateUtils
+import com.example.common_ground_android.utils.Res
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -192,8 +194,8 @@ class RoomManagementViewModel(
                     viewModelScope.launch {
                         loadSingleProfile(event.data.changerProfileId)
                         val changerName = _participantsProfiles.value[event.data.changerProfileId]?.username ?: event.data.changerProfileId.take(8)
-                        val roleName = if (event.data.newRole == "MODERATOR") "модератора" else "участника"
-                        _event.emit(RoomEvent.Success("Ваша роль изменена на $roleName пользователем $changerName", "role_changed"))
+                        val roleName = if (event.data.newRole == "MODERATOR") Res.getString(R.string.role_moderator).lowercase() else Res.getString(R.string.role_member).lowercase()
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.your_role_changed_to_by), roleName, changerName), "role_changed"))
                     }
                 }
             }
@@ -203,7 +205,7 @@ class RoomManagementViewModel(
                     viewModelScope.launch {
                         loadSingleProfile(event.data.muterProfileId)
                         val muterName = _participantsProfiles.value[event.data.muterProfileId]?.username ?: event.data.muterProfileId.take(8)
-                        _event.emit(RoomEvent.Success("Вы были замучены пользователем $muterName", "muted"))
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.you_were_muted_by), muterName), "muted"))
                     }
                 }
             }
@@ -213,7 +215,7 @@ class RoomManagementViewModel(
                     viewModelScope.launch {
                         loadSingleProfile(event.data.unmuterProfileId)
                         val unmuterName = _participantsProfiles.value[event.data.unmuterProfileId]?.username ?: event.data.unmuterProfileId.take(8)
-                        _event.emit(RoomEvent.Success("С вас снял мут пользователь $unmuterName", "unmuted"))
+                        _event.emit(RoomEvent.Success(String.format(Res.getString(R.string.you_were_unmuted_by), unmuterName), "unmuted"))
                     }
                 }
             }
@@ -234,7 +236,7 @@ class RoomManagementViewModel(
                             _editMaxParticipants.value = updatedRoom.maxParticipants
                             _editIsPrivate.value = updatedRoom.isPrivate
                         }
-                        _event.emit(RoomEvent.Success("Информация о комнате обновлена", "room_updated"))
+                        _event.emit(RoomEvent.Success(Res.getString(R.string.room_info_updated), "room_updated"))
                     }
                 }
             }
@@ -243,7 +245,7 @@ class RoomManagementViewModel(
                     viewModelScope.launch {
                         loadSingleProfile(event.data.kickerProfileId)
                         val kickerName = _participantsProfiles.value[event.data.kickerProfileId]?.username ?: event.data.kickerProfileId.take(8)
-                        _event.emit(RoomEvent.Error("Вы были исключены из комнаты пользователем $kickerName", "kicked"))
+                        _event.emit(RoomEvent.Error(String.format(Res.getString(R.string.you_were_kicked_from_room_by), kickerName), "kicked"))
                     }
                 } else {
                     removeParticipant(event.data.profileId)
@@ -254,7 +256,7 @@ class RoomManagementViewModel(
                     viewModelScope.launch {
                         loadSingleProfile(event.data.bannerProfileId)
                         val bannerName = _participantsProfiles.value[event.data.bannerProfileId]?.username ?: event.data.bannerProfileId.take(8)
-                        _event.emit(RoomEvent.Error("Вы были забанены в этой комнате пользователем $bannerName", "banned"))
+                        _event.emit(RoomEvent.Error(String.format(Res.getString(R.string.you_were_banned_from_room_by), bannerName), "banned"))
                     }
                 } else {
                     updateParticipantBanned(event.data.bannedProfileId, true)
@@ -262,7 +264,7 @@ class RoomManagementViewModel(
             }
             is RoomWebSocketServerEvent.RoomDeleted -> {
                 viewModelScope.launch {
-                    _event.emit(RoomEvent.Error("Комната была удалена", "room_deleted"))
+                    _event.emit(RoomEvent.Error(Res.getString(R.string.room_was_deleted), "room_deleted"))
                 }
             }
             else -> {}
@@ -368,7 +370,7 @@ class RoomManagementViewModel(
     fun saveRoomChanges() {
         val name = _editRoomName.value.trim()
         if (name.length !in 3..100) {
-            _state.value = RoomManagementState.Error("Название должно быть от 3 до 100 символов")
+            _state.value = RoomManagementState.Error(Res.getString(R.string.error_room_name_length))
             return
         }
         viewModelScope.launch {
@@ -397,7 +399,7 @@ class RoomManagementViewModel(
             when (val result = roomRepository.leaveRoom(roomId)) {
                 is NetworkResult.Success -> {
                     webSocketRepo.disconnect()
-                    _event.emit(RoomEvent.Error("Вы вышли из комнаты", "left"))
+                    _event.emit(RoomEvent.Error(Res.getString(R.string.you_left_room), "left"))
                 }
                 is NetworkResult.Error -> {
                     _state.value = RoomManagementState.Error(result.errorMessage, result.errorCode)
@@ -495,7 +497,7 @@ class RoomManagementViewModel(
         viewModelScope.launch {
             val roomResult = roomRepository.getRoomById(roomId)
             if (roomResult is NetworkResult.Error && roomResult.errorCode == "room_not_found") {
-                _event.emit(RoomEvent.Error("Комната была удалена", "room_deleted"))
+                _event.emit(RoomEvent.Error(Res.getString(R.string.room_was_deleted), "room_deleted"))
                 return@launch
             }
 
@@ -503,10 +505,10 @@ class RoomManagementViewModel(
             if (participantsResult is NetworkResult.Error) {
                 when (participantsResult.errorCode) {
                     "participant_banned" -> {
-                        _event.emit(RoomEvent.Error("Вы были забанены в этой комнате", "banned"))
+                        _event.emit(RoomEvent.Error(Res.getString(R.string.error_participant_banned), "banned"))
                     }
                     "not_room_member" -> {
-                        _event.emit(RoomEvent.Error("Вы были исключены из комнаты", "kicked"))
+                        _event.emit(RoomEvent.Error(Res.getString(R.string.error_not_room_member), "kicked"))
                     }
                 }
             }

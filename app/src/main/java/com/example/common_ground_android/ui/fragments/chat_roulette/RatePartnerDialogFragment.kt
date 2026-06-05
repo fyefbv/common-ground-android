@@ -29,7 +29,11 @@ class RatePartnerDialogFragment : DialogFragment() {
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.CustomDialogTheme)
     }
 
     override fun onCreateView(
@@ -54,7 +58,7 @@ class RatePartnerDialogFragment : DialogFragment() {
                 viewModel.finishSession()
                 dismiss()
             } else {
-                binding.ratingText.text = "Выберите оценку"
+                binding.ratingText.text = getString(R.string.choose_rating)
             }
         }
         binding.skipRatingButton.setOnClickListener {
@@ -73,7 +77,7 @@ class RatePartnerDialogFragment : DialogFragment() {
         stars.forEachIndexed { i, star ->
             star.setImageResource(if (i < rating) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
         }
-        binding.ratingText.text = "Оценка: $rating/5"
+        binding.ratingText.text = getString(R.string.rating_format, rating)
     }
 
     override fun onDestroyView() {

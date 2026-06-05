@@ -1,10 +1,12 @@
 package com.example.common_ground_android.network.client
 
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.config.ApiConfig
 import com.example.common_ground_android.network.model.request.RefreshTokenRequest
 import com.example.common_ground_android.network.model.response.ApiErrorResponse
 import com.example.common_ground_android.network.model.response.ValidationErrorDetail
 import com.example.common_ground_android.network.model.response.AuthTokensResponse
+import com.example.common_ground_android.utils.Res
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.*
@@ -112,7 +114,7 @@ class KtorClient(private val tokenManager: TokenManager) {
                     val errorBody = try {
                         response.bodyAsText()
                     } catch (e: Exception) {
-                        "Не удалось прочитать тело ошибки"
+                        Res.getString(R.string.error_failed_to_read_body)
                     }
 
                     val errorResponse = try {
@@ -148,13 +150,13 @@ class KtorClient(private val tokenManager: TokenManager) {
                 when (exception) {
                     is HttpRequestTimeoutException -> {
                         throw NetworkException.TimeoutError(
-                            message = "Таймаут запроса",
+                            message = Res.getString(R.string.error_request_timeout),
                             cause = exception
                         )
                     }
                     is ConnectTimeoutException -> {
                         throw NetworkException.ConnectionError(
-                            message = "Таймаут подключения",
+                            message = Res.getString(R.string.error_connect_timeout),
                             cause = exception
                         )
                     }

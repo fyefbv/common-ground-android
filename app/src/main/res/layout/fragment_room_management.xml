@@ -209,10 +209,11 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edit_room_name"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/input_height"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/room_name"
                                 android:inputType="text"
-                                android:maxLines="1" />
+                                android:maxLines="1"
+                                android:imeOptions="actionDone" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -244,10 +245,12 @@
                                 android:hint="@string/select_primary_interest"
                                 android:paddingStart="16dp"
                                 android:inputType="text"
-                                android:maxLines="1" />
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_base"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tag_input_layout"
                             style="@style/TextInputLayout.Rounded"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -259,10 +262,11 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edit_tag_input"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/input_height"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/enter_tag"
                                 android:inputType="text"
-                                android:maxLines="1" />
+                                android:maxLines="1"
+                                android:imeOptions="actionDone" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.chip.ChipGroup
@@ -354,10 +358,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_participants"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="wrap_content"
                     android:hint="@string/search_participants"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:imeOptions="actionDone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView

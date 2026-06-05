@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,7 +21,6 @@ import com.example.common_ground_android.ui.viewmodels.rooms.CreateRoomState
 import com.example.common_ground_android.ui.viewmodels.rooms.CreateRoomViewModel
 import com.example.common_ground_android.ui.viewmodels.rooms.CreateRoomViewModelFactory
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class CreateRoomFragment : Fragment() {
@@ -177,17 +177,17 @@ class CreateRoomFragment : Fragment() {
             is CreateRoomState.Loading -> setLoading(true)
             is CreateRoomState.Success -> {
                 setLoading(false)
-                Snackbar.make(binding.root, "Комната создана", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.room_created, Toast.LENGTH_SHORT).show()
                 navigateToRooms()
             }
             is CreateRoomState.Error -> {
                 setLoading(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
                 viewModel.resetState()
             }
@@ -196,7 +196,7 @@ class CreateRoomFragment : Fragment() {
 
     private fun setLoading(isLoading: Boolean) {
         binding.createRoomButton.isEnabled = !isLoading
-        binding.createRoomButton.text = if (isLoading) "Создание..." else getString(R.string.create_room)
+        binding.createRoomButton.text = if (isLoading) getString(R.string.creating) else getString(R.string.create_room)
         binding.nameEditText.isEnabled = !isLoading
         binding.descriptionEditText.isEnabled = !isLoading
         binding.primaryInterestAutoComplete.isEnabled = !isLoading

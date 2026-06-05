@@ -81,7 +81,7 @@ data class MessageResponse(
     val roomId: String,
 
     @SerialName("sender_id")
-    val senderId: String,
+    val senderId: String?,
 
     @SerialName("content")
     val content: String,

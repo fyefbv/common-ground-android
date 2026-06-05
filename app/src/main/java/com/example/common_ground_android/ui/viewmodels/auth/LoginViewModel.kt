@@ -2,8 +2,10 @@ package com.example.common_ground_android.ui.viewmodels.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -68,7 +70,7 @@ class LoginViewModel(
             _loginState.value = AuthState.Loading
             when (val result = authRepository.login(email, password)) {
                 is NetworkResult.Success -> {
-                    _loginState.value = AuthState.Success("Вход выполнен успешно")
+                    _loginState.value = AuthState.Success(Res.getString(R.string.login_success))
                 }
                 is NetworkResult.Error -> {
                     _loginState.value = AuthState.Error(result.errorMessage, result.errorCode)
@@ -80,8 +82,8 @@ class LoginViewModel(
 
     private fun getValidationErrors(): List<String> {
         val errors = mutableListOf<String>()
-        _emailError.value?.let { errors.add("Поле 'Email': $it") }
-        _passwordError.value?.let { errors.add("Поле 'Пароль': $it") }
+        _emailError.value?.let { errors.add("${Res.getString(R.string.email)}: $it") }
+        _passwordError.value?.let { errors.add("${Res.getString(R.string.password)}: $it") }
         return errors
     }
 

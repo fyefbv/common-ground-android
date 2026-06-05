@@ -83,10 +83,13 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
+                        android:layout_height="wrap_content"
                         android:hint="@string/room_name"
                         android:textColor="@color/md_on_surface"
-                        android:textSize="@dimen/text_base" />
+                        android:textSize="@dimen/text_base"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:imeOptions="actionDone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -160,11 +163,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tag_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
+                        android:layout_height="wrap_content"
                         android:hint="@string/enter_tag"
+                        android:imeOptions="actionDone"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:singleLine="true"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base" />
                 </com.google.android.material.textfield.TextInputLayout>

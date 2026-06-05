@@ -29,7 +29,6 @@ import com.example.common_ground_android.ui.viewmodels.rooms.GroupRoomViewModel
 import com.example.common_ground_android.ui.viewmodels.rooms.GroupRoomViewModelFactory
 import com.example.common_ground_android.ui.viewmodels.rooms.RoomEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class GroupRoomFragment : Fragment() {
@@ -106,7 +105,7 @@ class GroupRoomFragment : Fragment() {
         }
         binding.sendButton.setOnClickListener {
             if (viewModel.isMuted.value) {
-                Snackbar.make(binding.root, "Вы замучены и не можете отправлять сообщения", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.you_are_muted_cannot_send, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             sendNewMessage()
@@ -137,10 +136,10 @@ class GroupRoomFragment : Fragment() {
                             binding.progressBar.visibility = View.GONE
                             if (ErrorHandler.isAuthError(state.errorCode)) {
                                 viewModel.clearTokensAndLogout()
-                                Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                                 navigateToLogin()
                             } else {
-                                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -217,11 +216,11 @@ class GroupRoomFragment : Fragment() {
                                     findNavController().popBackStack(R.id.roomsFragment, false)
                                 }
                             } else {
-                                Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                             }
                         }
                         is RoomEvent.Success -> {
-                            Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -238,6 +237,7 @@ class GroupRoomFragment : Fragment() {
         editingMessageId = message.id
         binding.messageEditText.setText(message.content)
         binding.messageEditText.requestFocus()
+        binding.messageEditText.setSelection(message.content.length)
         binding.sendButton.setImageResource(R.drawable.ic_check)
         binding.cancelEditButton.visibility = View.VISIBLE
         binding.sendButton.setOnClickListener { saveEditMessage() }
@@ -259,7 +259,7 @@ class GroupRoomFragment : Fragment() {
         binding.cancelEditButton.visibility = View.GONE
         binding.sendButton.setOnClickListener {
             if (viewModel.isMuted.value) {
-                Snackbar.make(binding.root, "Вы замучены и не можете отправлять сообщения", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.you_are_muted_cannot_send, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             sendNewMessage()
@@ -302,12 +302,12 @@ class GroupRoomFragment : Fragment() {
 
     private fun showDeleteMessageDialog(message: Message) {
         MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
-            .setTitle("Удалить сообщение")
-            .setMessage("Вы уверены, что хотите удалить это сообщение?")
-            .setPositiveButton("Удалить") { _, _ ->
+            .setTitle(R.string.delete_message_title)
+            .setMessage(R.string.delete_message_confirmation)
+            .setPositiveButton(R.string.delete_message_confirm) { _, _ ->
                 viewModel.deleteMessage(message.id)
             }
-            .setNegativeButton("Отмена", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 

@@ -91,10 +91,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/input_height"
+                android:layout_height="wrap_content"
                 android:hint="@string/search_rooms"
                 android:textColor="@color/md_on_surface"
-                android:textSize="@dimen/text_base" />
+                android:textSize="@dimen/text_base"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionDone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -150,11 +150,6 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_chatRouletteFragment_to_selectInterestsFragment"
-            app:destination="@id/selectInterestsFragment"
-            app:popUpTo="@id/chatRouletteFragment"
-            app:popUpToInclusive="true" />
         <argument
             android:name="interestIds"
             app:argType="string[]" />

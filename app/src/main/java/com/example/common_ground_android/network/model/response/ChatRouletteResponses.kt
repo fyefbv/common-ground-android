@@ -9,7 +9,7 @@ data class ChatRouletteSessionResponse(
     val id: String,
 
     @SerialName("profile1_id")
-    val profile1Id: String,
+    val profile1Id: String?,
 
     @SerialName("profile2_id")
     val profile2Id: String?,
@@ -87,7 +87,7 @@ data class ChatRouletteMessageResponse(
     val sessionId: String,
 
     @SerialName("sender_id")
-    val senderId: String,
+    val senderId: String?,
 
     @SerialName("content")
     val content: String,

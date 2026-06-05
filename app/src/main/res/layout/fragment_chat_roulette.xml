@@ -345,11 +345,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/message_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:hint="@string/type_message"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
                     android:textColor="@color/md_on_surface"
-                    android:textSize="@dimen/text_base"
-                    android:maxLines="3" />
+                    android:textSize="@dimen/text_base" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton

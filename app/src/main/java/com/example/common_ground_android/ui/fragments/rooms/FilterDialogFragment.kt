@@ -38,7 +38,11 @@ class FilterDialogFragment : DialogFragment() {
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.CustomDialogTheme)
     }
 
     override fun onCreateView(

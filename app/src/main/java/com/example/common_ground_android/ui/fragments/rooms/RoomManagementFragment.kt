@@ -32,7 +32,6 @@ import com.example.common_ground_android.ui.viewmodels.rooms.RoomManagementViewM
 import com.example.common_ground_android.ui.viewmodels.rooms.RoomManagementViewModelFactory
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 
@@ -133,13 +132,12 @@ class RoomManagementFragment : Fragment() {
             viewModel.updateEditPrimaryInterest(interest?.id)
         }
 
-        binding.editTagInput.setOnEditorActionListener { _, _, _ ->
+        binding.tagInputLayout.setEndIconOnClickListener {
             val tag = binding.editTagInput.text.toString().trim()
             if (tag.isNotEmpty()) {
                 viewModel.addTag(tag)
                 binding.editTagInput.text?.clear()
             }
-            true
         }
 
         binding.editMaxParticipantsSlider.addOnChangeListener { _, value, _ ->
@@ -186,10 +184,10 @@ class RoomManagementFragment : Fragment() {
                             binding.progressBar.visibility = View.GONE
                             if (ErrorHandler.isAuthError(state.errorCode)) {
                                 viewModel.clearTokensAndLogout()
-                                Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                                 navigateToLogin()
                             } else {
-                                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                             }
                         }
                         else -> {}
@@ -308,11 +306,11 @@ class RoomManagementFragment : Fragment() {
                                     findNavController().popBackStack(R.id.roomsFragment, false)
                                 }
                             } else {
-                                Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                             }
                         }
                         is RoomEvent.Success -> {
-                            Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -335,8 +333,8 @@ class RoomManagementFragment : Fragment() {
     private fun updateRoomInfo(room: Room) {
         binding.roomName.text = room.name
         binding.roomDescription.text = room.description ?: getString(R.string.no_description)
-        binding.roomParticipants.text = String.format("Участников: %d/%d", room.participantsCount, room.maxParticipants)
-        binding.roomMessagesCount.text = String.format("Сообщений: %d", room.messagesCount)
+        binding.roomParticipants.text = String.format(getString(R.string.participants_count_format), room.participantsCount, room.maxParticipants)
+        binding.roomMessagesCount.text = String.format(getString(R.string.messages_count_format), room.messagesCount)
 
         if (room.primaryInterestId != null) {
             val interestName = viewModel.availableInterests.value.find { it.id == room.primaryInterestId }?.name
@@ -408,9 +406,9 @@ class RoomManagementFragment : Fragment() {
     }
 
     private fun showChangeRoleDialog(participant: Participant) {
-        val roles = arrayOf("Участник", "Модератор")
+        val roles = arrayOf(getString(R.string.role_member), getString(R.string.role_moderator))
         MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
-            .setTitle("Выберите новую роль")
+            .setTitle(R.string.select_new_role)
             .setItems(roles) { _, which ->
                 val newRole = if (which == 0) "MEMBER" else "MODERATOR"
                 viewModel.changeRole(participant.profileId, newRole)
@@ -420,19 +418,19 @@ class RoomManagementFragment : Fragment() {
 
     private fun confirmLeaveRoom() {
         MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
-            .setTitle("Выйти из комнаты")
-            .setMessage("Вы уверены, что хотите покинуть комнату?")
-            .setPositiveButton("Выйти") { _, _ -> viewModel.leaveRoom() }
-            .setNegativeButton("Отмена", null)
+            .setTitle(R.string.leave_room_confirm_title)
+            .setMessage(R.string.leave_room_confirm_message)
+            .setPositiveButton(R.string.leave_room_confirm_button) { _, _ -> viewModel.leaveRoom() }
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
     private fun confirmDeleteRoom() {
         MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
-            .setTitle("Удалить комнату")
-            .setMessage("Вы уверены, что хотите удалить комнату? Это действие необратимо.")
-            .setPositiveButton("Удалить") { _, _ -> viewModel.deleteRoom() }
-            .setNegativeButton("Отмена", null)
+            .setTitle(R.string.delete_room_confirm_title)
+            .setMessage(R.string.delete_room_confirm_message)
+            .setPositiveButton(R.string.delete_room_confirm_button) { _, _ -> viewModel.deleteRoom() }
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 

@@ -351,7 +351,7 @@ data class ChatRouletteWebSocketMessage(
     @SerialName("session_id")
     val sessionId: String,
     @SerialName("sender_id")
-    val senderId: String,
+    val senderId: String?,
     @SerialName("content")
     val content: String,
     @SerialName("created_at")

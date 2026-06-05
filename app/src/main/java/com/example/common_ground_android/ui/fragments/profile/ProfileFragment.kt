@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,7 +31,7 @@ import com.example.common_ground_android.ui.viewmodels.profile.ProfileViewModel
 import com.example.common_ground_android.ui.viewmodels.profile.ProfileViewModelFactory
 import com.example.common_ground_android.utils.ImageUtils
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -53,7 +53,7 @@ class ProfileFragment : Fragment() {
                 viewModel.setNewAvatarBytes(byteArray)
                 binding.profileAvatar.setImageBitmap(bitmap)
             } catch (e: Exception) {
-                Snackbar.make(binding.root, "Не удалось загрузить изображение", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.failed_load_image, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -208,8 +208,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateProfileInfo(profile: Profile) {
-        binding.nameEditText.setText(profile.username)
-        binding.bioEditText.setText(profile.bio ?: "")
+        if (!viewModel.isEditMode.value) {
+            binding.nameEditText.setText(profile.username)
+            binding.bioEditText.setText(profile.bio ?: "")
+        }
 
         Glide.with(requireContext())
             .load(profile.avatarUrl)
@@ -348,11 +350,11 @@ class ProfileFragment : Fragment() {
                 } else {
                     binding.profileAvatar.setImageResource(R.drawable.ic_person)
                 }
-                Snackbar.make(binding.root, "Изменения аватарки отменены", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.avatar_changes_cancelled, Toast.LENGTH_SHORT).show()
             } else if (viewModel.profileData.value?.avatarUrl != null) {
                 viewModel.markAvatarForDeletion()
                 binding.profileAvatar.setImageResource(R.drawable.ic_person)
-                Snackbar.make(binding.root, "Аватар будет удалён после сохранения", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.avatar_will_be_deleted_on_save, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -361,13 +363,13 @@ class ProfileFragment : Fragment() {
         }
 
         binding.deleteProfileButton.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
                 .setTitle(R.string.delete_profile)
                 .setMessage(R.string.delete_profile_confirmation)
-                .setPositiveButton("Удалить") { _, _ ->
+                .setPositiveButton(R.string.delete) { _, _ ->
                     viewModel.deleteCurrentProfile()
                 }
-                .setNegativeButton("Отмена", null)
+                .setNegativeButton(R.string.cancel, null)
                 .show()
         }
 
@@ -386,8 +388,8 @@ class ProfileFragment : Fragment() {
             is ProfileFormState.Loading -> setLoading(true)
             is ProfileFormState.Success -> {
                 setLoading(false)
-                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
-                if (state.message == "Переключение профиля" || state.message == "Профиль удалён") {
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                if (state.message == getString(R.string.profile_switch_success) || state.message == getString(R.string.profile_deleted_success)) {
                     navigateToProfileSelector()
                 }
             }
@@ -395,10 +397,10 @@ class ProfileFragment : Fragment() {
                 setLoading(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

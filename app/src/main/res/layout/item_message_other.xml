@@ -33,10 +33,13 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="160dp"
             tools:text="Иван Иванов"
             android:textColor="@color/md_on_surface"
             android:textSize="@dimen/text_sm"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_marginStart="@dimen/spacing_12"
             android:layout_marginBottom="@dimen/spacing_4" />
 
@@ -44,7 +47,6 @@
             android:id="@+id/message_bubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="240dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="@dimen/elevation_1"
             android:layout_marginStart="@dimen/spacing_4"
@@ -91,6 +93,7 @@
                     android:id="@+id/message_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="240dp"
                     tools:text="Текст сообщения"
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_base" />

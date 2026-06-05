@@ -12,7 +12,6 @@ class ChatRouletteViewModelFactory(private val context: Context) : ViewModelProv
             @Suppress("UNCHECKED_CAST")
             return ChatRouletteViewModel(
                 chatRouletteRepository = RepositoryFactory.createChatRouletteRepository(),
-                profileRepository = RepositoryFactory.createProfileRepository(),
                 authRepository = RepositoryFactory.createAuthRepository(),
                 interestRepository = RepositoryFactory.createInterestRepository(),
                 webSocketRepo = KtorClientFactory.getChatRouletteWebSocketRepository(),

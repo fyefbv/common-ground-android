@@ -60,6 +60,8 @@
     <string name="logout">Выйти</string>
     <string name="account_settings_description">Управление email, паролем и аккаунтом</string>
     <string name="back">Назад</string>
+    <string name="logged_out_account">Вы вышли из аккаунта</string>
+    <string name="deleted_account">Вы удалили аккаунт</string>
 
     <!-- Navigation -->
     <string name="home">Главная</string>
@@ -89,6 +91,9 @@
     <string name="typing">Печатает...</string>
     <string name="answer">Ответить</string>
     <string name="delete">Удалить</string>
+    <string name="no_interest">Без интереса</string>
+    <string name="you_are_banned_in_this_room">Вы забанены в этой комнате</string>
+    <string name="you_are_not_member_click_join">Вы не являетесь участником. Нажмите «Вступить»</string>
 
     <!-- Chat -->
     <string name="type_message">Напишите сообщение…</string>
@@ -105,6 +110,7 @@
     <string name="chat_partner_label">Собеседник</string>
     <string name="matched_interest_label">Интерес подбора:</string>
     <string name="common_interests_label">Общие интересы:</string>
+    <string name="remote_profile">Удалённый профиль</string>
 
     <!-- Profile Selector -->
     <string name="select_profile">Выберите профиль</string>
@@ -244,20 +250,222 @@
     <string name="sort_order">Порядок</string>
     <string name="tags">Теги</string>
 
+    <!-- General UI -->
+    <string name="unknown">Неизвестно</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="agree">Согласиться</string>
+    <string name="decline">Отклонить</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="loading_dots">Загрузка...</string>
+    <string name="choose">Выбрать</string>
+
+    <!-- Network errors -->
+    <string name="error_request_timeout">Таймаут запроса</string>
+    <string name="error_connect_timeout">Таймаут подключения</string>
+    <string name="error_validation_data">Ошибка валидации данных</string>
+    <string name="error_database">Ошибка базы данных</string>
+    <string name="error_internal_server">Внутренняя ошибка сервера</string>
+    <string name="error_invalid_token">Недействительный токен</string>
+    <string name="error_expired_token">Срок действия токена истек</string>
+    <string name="error_missing_token">Токен отсутствует</string>
+    <string name="error_authentication_failed">Ошибка аутентификации</string>
+    <string name="error_user_not_found">Пользователь не найден</string>
+    <string name="error_user_already_exists">Пользователь уже существует</string>
+    <string name="error_profile_not_found">Профиль не найден</string>
+    <string name="error_profile_already_exists">Профиль уже существует</string>
+    <string name="error_profile_permission_denied">Нет доступа к профилю</string>
+    <string name="error_profile_not_selected">Профиль не выбран</string>
+    <string name="error_interest_not_found">Интерес не найден</string>
+    <string name="error_unsupported_media_type">Неподдерживаемый тип файла</string>
+    <string name="error_file_too_large">Файл слишком большой</string>
+    <string name="error_room_not_found">Комната не найдена</string>
+    <string name="error_room_already_exists">Комната уже существует</string>
+    <string name="error_room_permission_denied">Нет доступа к комнате</string>
+    <string name="error_room_max_participants_too_low">Нельзя установить лимит участников ниже текущего количества</string>
+    <string name="error_room_full">Комната заполнена</string>
+    <string name="error_room_private">Комната приватная</string>
+    <string name="error_not_room_member">Вы не участник комнаты</string>
+    <string name="error_participant_banned">Вы забанены в этой комнате</string>
+    <string name="error_participant_muted">Вы замучены в этой комнате</string>
+    <string name="error_participant_not_found">Участник не найден</string>
+    <string name="error_message_not_found">Сообщение не найдено</string>
+    <string name="error_invalid_role">Недопустимая роль</string>
+    <string name="error_participant_already_has_role">Участник уже имеет эту роль</string>
+    <string name="error_already_in_search">Уже идет поиск собеседника</string>
+    <string name="error_already_in_session">Уже есть активная сессия</string>
+    <string name="error_no_active_search">Активный поиск не найден</string>
+    <string name="error_no_active_session">Активная сессия не найдена</string>
+    <string name="error_session_not_found">Сессия не найдена</string>
+    <string name="error_partner_not_found">Собеседник не найден</string>
+    <string name="error_session_expired">Сессия истекла</string>
+    <string name="error_session_already_ended">Сессия уже завершена</string>
+    <string name="error_cannot_rate_yourself">Нельзя оценить самого себя</string>
+    <string name="error_already_rated">Уже оценили этого собеседника</string>
+    <string name="error_cannot_rate_non_completed_session">Нельзя оценить незавершенную сессию</string>
+    <string name="error_extension_not_approved">Попытка продлить сессию без подтверждения партнера</string>
+    <string name="error_no_matching_found">Собеседник не найден, попробуйте ещё раз</string>
+    <string name="error_unknown_error">Неизвестная ошибка</string>
+    <string name="error_network_connection">Нет подключения к интернету. Проверьте соединение и попробуйте снова.</string>
+    <string name="error_ssl_handshake">Ошибка безопасного соединения. Проверьте дату и время устройства.</string>
+    <string name="error_timeout">Таймаут соединения</string>
+    <string name="error_host_not_found">Сервер не найден. Проверьте подключение</string>
+    <string name="error_session_expired_relogin">Сессия истекла. Пожалуйста, войдите заново.</string>
+    <string name="error_failed_to_read_body">Не удалось прочитать тело ошибки</string>
+
+    <!-- Validation messages -->
+    <string name="validation_email_required">Введите email</string>
+    <string name="validation_email_invalid">Введите корректный email</string>
+    <string name="validation_password_required">Введите пароль</string>
+    <string name="validation_password_min_length">Минимум 8 символов</string>
+    <string name="validation_password_max_length">Максимум 100 символов</string>
+    <string name="validation_password_uppercase">Должна быть хотя бы одна заглавная буква</string>
+    <string name="validation_password_lowercase">Должна быть хотя бы одна строчная буква</string>
+    <string name="validation_password_digit">Должна быть хотя бы одна цифра</string>
+    <string name="validation_password_special">Должен быть хотя бы один спецсимвол (например, !@#$%)</string>
+    <string name="validation_password_strength">Пароль должен содержать от 8 до 100 символов, включая заглавную и строчную буквы, цифру и спецсимвол (например, !@#$%)</string>
+    <string name="validation_confirm_password_required">Подтвердите пароль</string>
+    <string name="validation_passwords_do_not_match">Пароли не совпадают</string>
+    <string name="validation_username_required">Введите имя профиля</string>
+    <string name="validation_username_no_spaces">Имя не должно содержать пробелы</string>
+    <string name="validation_username_invalid">Имя должно содержать 3-20 символов (буквы, цифры, _)</string>
+    <string name="validation_bio_too_long">Биография не должна превышать 200 символов</string>
+    <string name="validation_room_name_too_short">Название должно содержать минимум 3 символа</string>
+    <string name="validation_room_name_too_long">Название не должно превышать 100 символов</string>
+    <string name="validation_room_description_too_long">Описание не должно превышать 1000 символов</string>
+    <string name="validation_max_tags">Максимум 10 тегов</string>
+    <string name="validation_tag_too_long">Тег не может превышать 50 символов</string>
+    <string name="validation_room_name_required">Введите название комнаты</string>
+
+    <!-- Profile roles -->
+    <string name="role_creator">Создатель</string>
+    <string name="role_moderator">Модератор</string>
+    <string name="role_member">Участник</string>
+    <string name="status_banned">Забанен</string>
+    <string name="status_muted">Замучен</string>
+
+    <!-- Chat room messages -->
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="you_are_muted_cannot_send">Вы замучены и не можете отправлять сообщения</string>
+    <string name="delete_message_title">Удалить сообщение</string>
+    <string name="delete_message_confirmation">Вы уверены, что хотите удалить это сообщение?</string>
+    <string name="delete_message_confirm">Удалить</string>
+
+    <!-- Room management -->
+    <string name="participants_count_format">Участников: %d/%d</string>
+    <string name="messages_count_format">Сообщений: %d</string>
+    <string name="select_new_role">Выберите новую роль</string>
+    <string name="participant">Участник</string>
+    <string name="leave_room_confirm_title">Выйти из комнаты</string>
+    <string name="leave_room_confirm_message">Вы уверены, что хотите покинуть комнату?</string>
+    <string name="leave_room_confirm_button">Выйти</string>
+    <string name="delete_room_confirm_title">Удалить комнату</string>
+    <string name="delete_room_confirm_message">Вы уверены, что хотите удалить комнату? Это действие необратимо.</string>
+    <string name="delete_room_confirm_button">Удалить</string>
+
+    <!-- Chat roulette -->
+    <string name="unknown_partner">Неизвестный собеседник</string>
+    <string name="extend_session_dialog_title">Продлить сессию?</string>
+    <string name="extend_session_dialog_message">Собеседник хочет продлить разговор на 5 минут. Согласны?</string>
+    <string name="extend_session_agree">Согласиться</string>
+    <string name="extend_session_decline">Отклонить</string>
+    <string name="end_session_dialog_title">Завершить сессию</string>
+    <string name="end_session_dialog_message">Вы уверены, что хотите завершить разговор?</string>
+    <string name="end_session_confirm">Завершить</string>
+    <string name="end_session_cancel">Отмена</string>
+    <string name="report_sent_session_ended">Жалоба отправлена, сессия завершена</string>
+    <string name="report_received_session_ended">На вас отправлена жалоба, сессия завершена</string>
+    <string name="session_ended_by_you">Сессия завершена</string>
+    <string name="session_ended_by_partner">Собеседник завершил сессию</string>
+    <string name="session_expired_automatically">Сессия завершена по истечению времени</string>
+    <string name="extension_request_sent">Запрос на продление отправлен</string>
+    <string name="partner_accepted_extension">Собеседник согласился продлить сессию</string>
+    <string name="partner_declined_extension">Собеседник отказался продлевать сессию</string>
+    <string name="extension_request_cancelled">Запрос на продление сессии отменён</string>
+    <string name="choose_rating">Выберите оценку</string>
+    <string name="rating_format">Оценка: %d/5</string>
+    <string name="select_reason">Выберите причину</string>
+    <string name="details_min_length">Детали должны содержать не менее 20 символов</string>
+
+    <!-- Profile creation / editing -->
+    <string name="failed_load_image">Не удалось загрузить изображение</string>
+    <string name="avatar_removed">Аватар удалён</string>
+    <string name="creating">Создание...</string>
+    <string name="create_profile_button">Создать профиль</string>
+    <string name="avatar_changes_cancelled">Изменения аватарки отменены</string>
+    <string name="avatar_will_be_deleted_on_save">Аватар будет удалён после сохранения</string>
+    <string name="profile_switch_success">Переключение профиля</string>
+    <string name="profile_deleted_success">Профиль удалён</string>
+    <string name="error_selecting_profile">Ошибка выбора профиля</string>
+    <string name="room_created">Комната создана</string>
+
+    <!-- Account settings -->
+    <string name="email_updated_success">Email успешно обновлён</string>
+    <string name="password_updated_success">Пароль успешно изменён</string>
+    <string name="field_new_password">Новый пароль</string>
+    <string name="field_confirm_password">Подтверждение пароля</string>
+    <string name="login_success">Вход выполнен успешно</string>
+    <string name="register_success">Регистрация успешна</string>
+
+    <!-- Create profile viewmodel -->
+    <string name="error_profile_created_but_interests_failed">Профиль создан, но не удалось добавить интересы: %s</string>
+    <string name="error_profile_created_but_avatar_failed">Профиль создан, но не удалось загрузить аватар: %s</string>
+    <string name="profile_created_success">Профиль создан</string>
+
+    <!-- Profile viewmodel -->
+    <string name="profile_updated_success">Профиль обновлён</string>
+    <string name="profile_loaded_but_interests_failed">Профиль загружен, но не удалось загрузить интересы: %s</string>
+    <string name="profile_updated_but_interests_remove_failed">Профиль обновлён, но не удалось удалить интересы: %s</string>
+    <string name="profile_updated_but_interests_add_failed">Профиль обновлён, но не удалось добавить интересы: %s</string>
+    <string name="profile_updated_but_avatar_delete_failed">Профиль обновлён, но не удалось удалить аватар: %s</string>
+    <string name="profile_updated_but_avatar_upload_failed">Профиль обновлён, но не удалось загрузить аватар: %s</string>
+
+    <!-- Room creation viewmodel -->
+    <string name="error_max_10_tags">Максимум 10 тегов</string>
+    <string name="error_tag_max_50_chars">Тег не может превышать 50 символов</string>
+
+    <!-- Group room viewmodel -->
+    <string name="multiple_people_typing">Несколько человек печатают...</string>
+    <string name="someone_typing">%s печатает...</string>
+
+    <!-- Room management viewmodel -->
+    <string name="error_room_name_length">Название должно быть от 3 до 100 символов</string>
+
+    <!-- System messages for rooms -->
+    <string name="joined_the_room">%s присоединился к комнате</string>
+    <string name="left_the_room">%s покинул комнату</string>
+    <string name="was_kicked_from_room_by">%s был исключён из комнаты пользователем %s</string>
+    <string name="was_banned_from_room_by">%s был забанен в комнате пользователем %s</string>
+    <string name="was_unbanned_from_room_by">%s был разбанен в комнате пользователем %s</string>
+    <string name="became_moderator">%s стал модератором по решению %s</string>
+    <string name="became_member">%s стал участником по решению %s</string>
+    <string name="was_muted_by">%s был замучен пользователем %s</string>
+    <string name="was_unmuted_by">%s был размучен пользователем %s</string>
+    <string name="room_info_updated">Информация о комнате обновлена</string>
+    <string name="room_was_deleted">Комната была удалена</string>
+
+    <!-- User-targeted messages -->
+    <string name="you_were_kicked_from_room_by">Вы были исключены из комнаты пользователем %s</string>
+    <string name="you_were_banned_from_room_by">Вы были забанены в этой комнате пользователем %s</string>
+    <string name="your_role_changed_to_by">Ваша роль изменена на %s пользователем %s</string>
+    <string name="you_were_muted_by">Вы были замучены пользователем %s</string>
+    <string name="you_were_unmuted_by">С вас снял мут пользователь %s</string>
+    <string name="you_left_room">Вы вышли из комнаты</string>
+    <string name="failed_to_connect_websocket">Не удалось подключиться: %s</string>
+
     <plurals name="rooms_count">
         <item quantity="one">%d комната</item>
         <item quantity="few">%d комнаты</item>
         <item quantity="many">%d комнат</item>
         <item quantity="other">%d комнат</item>
     </plurals>
-
     <plurals name="participants_count">
         <item quantity="one">%d участник</item>
         <item quantity="few">%d участника</item>
         <item quantity="many">%d участников</item>
         <item quantity="other">%d участников</item>
     </plurals>
-
     <plurals name="online_count">
         <item quantity="one">%d в сети</item>
         <item quantity="few">%d в сети</item>

@@ -2,9 +2,11 @@ package com.example.common_ground_android.ui.viewmodels.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.UserRepository
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,7 +60,7 @@ class AccountSettingsViewModel(
 
     fun updateConfirmPassword(password: String) {
         _confirmPassword.value = password
-        _confirmPasswordError.value = if (_newPassword.value != password) "Пароли не совпадают" else null
+        _confirmPasswordError.value = if (_newPassword.value != password) Res.getString(R.string.error_passwords_dont_match) else null
     }
 
     fun updateEmail(newEmail: String) {
@@ -67,7 +69,7 @@ class AccountSettingsViewModel(
             when (val result = userRepository.updateEmail(newEmail)) {
                 is NetworkResult.Success -> {
                     _currentEmail.value = result.data.email
-                    _state.value = AccountSettingsState.Success("Email успешно обновлён")
+                    _state.value = AccountSettingsState.Success(Res.getString(R.string.email_updated_success))
                 }
                 is NetworkResult.Error -> {
                     _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)
@@ -81,9 +83,12 @@ class AccountSettingsViewModel(
         val new = _newPassword.value
         val confirm = _confirmPassword.value
 
+        updateNewPassword(new)
+        updateConfirmPassword(confirm)
+
         val errors = mutableListOf<String>()
-        _newPasswordError.value?.let { errors.add("Поле 'Новый пароль': $it") }
-        _confirmPasswordError.value?.let { errors.add("Поле 'Подтверждение пароля': $it") }
+        _newPasswordError.value?.let { errors.add("${Res.getString(R.string.field_new_password)}: $it") }
+        _confirmPasswordError.value?.let { errors.add("${Res.getString(R.string.field_confirm_password)}: $it") }
 
         if (errors.isNotEmpty()) {
             _state.value = AccountSettingsState.Error(errors.joinToString("\n"))
@@ -94,7 +99,7 @@ class AccountSettingsViewModel(
             _state.value = AccountSettingsState.Loading
             when (val result = userRepository.updatePassword(new)) {
                 is NetworkResult.Success -> {
-                    _state.value = AccountSettingsState.Success("Пароль успешно изменён")
+                    _state.value = AccountSettingsState.Success(Res.getString(R.string.password_updated_success))
                     _newPassword.value = ""
                     _confirmPassword.value = ""
                     _newPasswordError.value = null
@@ -114,7 +119,7 @@ class AccountSettingsViewModel(
             when (val result = userRepository.deleteUser()) {
                 is NetworkResult.Success -> {
                     authRepository.logout()
-                    _state.value = AccountSettingsState.LoggedOut
+                    _state.value = AccountSettingsState.DeleteAccount
                 }
                 is NetworkResult.Error -> {
                     _state.value = AccountSettingsState.Error(result.errorMessage, result.errorCode)

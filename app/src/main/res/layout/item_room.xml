@@ -30,8 +30,10 @@
 
                 <TextView
                     android:id="@+id/room_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     tools:text="Название комнаты"
                     android:textColor="@color/md_on_surface"
                     android:textSize="@dimen/text_lg"
@@ -40,12 +42,12 @@
 
                 <TextView
                     android:id="@+id/room_description"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Описание комнаты"
                     android:textColor="@color/md_on_surface_variant"
                     android:textSize="@dimen/text_sm"
-                    android:maxLines="2"
+                    android:maxLines="4"
                     android:ellipsize="end"
                     android:layout_marginBottom="@dimen/spacing_8" />
             </LinearLayout>

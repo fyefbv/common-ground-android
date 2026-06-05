@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.FragmentReportDialogBinding
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRouletteViewModel
 import com.example.common_ground_android.ui.viewmodels.chat_roulette.ChatRouletteViewModelFactory
@@ -28,7 +29,11 @@ class ReportDialogFragment : DialogFragment() {
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.CustomDialogTheme)
     }
 
     override fun onCreateView(
@@ -50,12 +55,12 @@ class ReportDialogFragment : DialogFragment() {
         }
         binding.submitReportButton.setOnClickListener {
             if (selectedReason == null) {
-                binding.detailsEditText.error = "Выберите причину"
+                binding.detailsEditText.error = getString(R.string.select_reason)
                 return@setOnClickListener
             }
             val details = binding.detailsEditText.text.toString().trim()
             if (details.isNotEmpty() && details.length < 20) {
-                binding.detailsEditText.error = "Детали должны содержать не менее 20 символов"
+                binding.detailsEditText.error = getString(R.string.details_min_length)
                 return@setOnClickListener
             }
             viewModel.reportPartner(selectedReason!!, details.takeIf { it.isNotEmpty() })

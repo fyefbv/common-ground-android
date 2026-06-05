@@ -17,6 +17,7 @@ import com.example.common_ground_android.databinding.ItemSystemMessageBinding
 import com.example.common_ground_android.network.model.domain.Profile
 import com.example.common_ground_android.network.model.domain.Message
 import com.example.common_ground_android.utils.DateUtils
+import com.example.common_ground_android.utils.Res
 import java.util.Calendar
 import java.util.Date
 
@@ -63,8 +64,8 @@ class RoomMessageAdapter(
             val messageDate = message.createdAt
             if (lastDate == null || !isSameDay(messageDate, lastDate)) {
                 val headerText = when {
-                    isSameDay(messageDate, today) -> "Сегодня"
-                    isSameDay(messageDate, yesterday) -> "Вчера"
+                    isSameDay(messageDate, today) -> Res.getString(R.string.today)
+                    isSameDay(messageDate, yesterday) -> Res.getString(R.string.yesterday)
                     else -> DateUtils.formatDate(messageDate)
                 }
                 displayItems.add(DisplayItem.Header(messageDate, headerText))
@@ -196,7 +197,8 @@ class RoomMessageAdapter(
         }
 
         fun bind(message: Message, profiles: Map<String, Profile>) {
-            val profile = profiles[message.senderId]
+            val profile = message.senderId?.let { profiles[it] }
+            val isDeletedProfile = message.senderId == null || profile == null
 
             message.parentMessageId?.let { parentId ->
                 val parentMsg = getParentMessage(parentId)
@@ -208,22 +210,27 @@ class RoomMessageAdapter(
                 }
             } ?: run { binding.replyPreview.visibility = View.GONE }
 
-            binding.userName.text = profile?.username ?: message.senderId.take(8)
+            if (isDeletedProfile) {
+                binding.userName.text = Res.getString(R.string.remote_profile)
+                binding.avatar.setImageResource(R.drawable.ic_person_remote)
+            } else {
+                binding.userName.text = profile.username
+                val avatarUrl = profile.avatarUrl
+                if (!avatarUrl.isNullOrEmpty()) {
+                    Glide.with(binding.root.context)
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                        .into(binding.avatar)
+                } else {
+                    binding.avatar.setImageResource(R.drawable.ic_person)
+                }
+            }
+
             binding.messageText.text = message.content
             binding.messageTime.text = DateUtils.formatToTime(message.createdAt)
             binding.messageEdited.visibility = if (message.isEdited) View.VISIBLE else View.GONE
-
-            val avatarUrl = profile?.avatarUrl
-            if (!avatarUrl.isNullOrEmpty()) {
-                Glide.with(binding.root.context)
-                    .load(avatarUrl)
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_person)
-                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                    .into(binding.avatar)
-            } else {
-                binding.avatar.setImageResource(R.drawable.ic_person)
-            }
 
             binding.root.setOnLongClickListener {
                 onMessageLongClick(message, binding.root)

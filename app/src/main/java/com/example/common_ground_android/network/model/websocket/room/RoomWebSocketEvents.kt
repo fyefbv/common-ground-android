@@ -346,7 +346,7 @@ data class PongData(
 data class WebSocketMessage(
     val id: String,
     @SerialName("room_id") val roomId: String,
-    @SerialName("sender_id") val senderId: String,
+    @SerialName("sender_id") val senderId: String?,
     val content: String,
     @SerialName("parent_message_id") val parentMessageId: String? = null,
     @SerialName("created_at") val createdAt: String,

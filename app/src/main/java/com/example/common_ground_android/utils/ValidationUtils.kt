@@ -1,5 +1,6 @@
 package com.example.common_ground_android.utils
 
+import com.example.common_ground_android.R
 import java.util.regex.Pattern
 
 object ValidationUtils {
@@ -15,8 +16,8 @@ object ValidationUtils {
     fun validateEmail(email: String): String? {
         val trimmed = email.trim()
         return when {
-            trimmed.isEmpty() -> "Введите email"
-            !isValidEmail(trimmed) -> "Введите корректный email"
+            trimmed.isEmpty() -> Res.getString(R.string.validation_email_required)
+            !isValidEmail(trimmed) -> Res.getString(R.string.validation_email_invalid)
             else -> null
         }
     }
@@ -27,27 +28,27 @@ object ValidationUtils {
 
     fun validatePassword(password: String): String? {
         return when {
-            password.isEmpty() -> "Введите пароль"
-            password.length < MIN_PASSWORD_LENGTH -> "Минимум $MIN_PASSWORD_LENGTH символов"
-            password.length > MAX_PASSWORD_LENGTH -> "Максимум $MAX_PASSWORD_LENGTH символов"
-            !password.any { it.isUpperCase() } -> "Должна быть хотя бы одна заглавная буква"
-            !password.any { it.isLowerCase() } -> "Должна быть хотя бы одна строчная буква"
-            !password.any { it.isDigit() } -> "Должна быть хотя бы одна цифра"
-            password.all { it.isLetterOrDigit() } -> "Должен быть хотя бы один спецсимвол (например, !@#\$%)"
+            password.isEmpty() -> Res.getString(R.string.validation_password_required)
+            password.length < MIN_PASSWORD_LENGTH -> Res.getString(R.string.validation_password_min_length)
+            password.length > MAX_PASSWORD_LENGTH -> Res.getString(R.string.validation_password_max_length)
+            !password.any { it.isUpperCase() } -> Res.getString(R.string.validation_password_uppercase)
+            !password.any { it.isLowerCase() } -> Res.getString(R.string.validation_password_lowercase)
+            !password.any { it.isDigit() } -> Res.getString(R.string.validation_password_digit)
+            password.all { it.isLetterOrDigit() } -> Res.getString(R.string.validation_password_special)
             else -> null
         }
     }
 
     fun validateConfirmPassword(password: String, confirmPassword: String): String? {
         return when {
-            confirmPassword.isEmpty() -> "Подтвердите пароль"
-            password != confirmPassword -> "Пароли не совпадают"
+            confirmPassword.isEmpty() -> Res.getString(R.string.validation_confirm_password_required)
+            password != confirmPassword -> Res.getString(R.string.error_passwords_dont_match)
             else -> null
         }
     }
 
     fun getPasswordStrengthErrorMessage(): String {
-        return "Пароль должен содержать от 8 до 100 символов, включая заглавную и строчную буквы, цифру и спецсимвол (например, !@#\$%)"
+        return Res.getString(R.string.validation_password_strength)
     }
 
     fun isValidUsername(username: String): Boolean {

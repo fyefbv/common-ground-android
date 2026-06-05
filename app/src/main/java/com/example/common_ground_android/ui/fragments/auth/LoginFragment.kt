@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -12,12 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.common_ground_android.R
 import com.example.common_ground_android.databinding.FragmentLoginBinding
 import com.example.common_ground_android.ui.navigation.auth.LoginFragmentDirections
 import com.example.common_ground_android.ui.viewmodels.auth.AuthState
 import com.example.common_ground_android.ui.viewmodels.auth.AuthViewModelFactory
 import com.example.common_ground_android.ui.viewmodels.auth.LoginViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
@@ -115,7 +116,7 @@ class LoginFragment : Fragment() {
             }
             is AuthState.Error -> {
                 setLoading(false)
-                showError(state.message, state.errorCode)
+                showError(state.message)
                 viewModel.resetState()
             }
         }
@@ -123,26 +124,16 @@ class LoginFragment : Fragment() {
 
     private fun setLoading(isLoading: Boolean) {
         binding.loginButton.isEnabled = !isLoading
-        binding.loginButton.text = if (isLoading) "Загрузка..." else "Войти"
+        binding.loginButton.text = if (isLoading) getString(R.string.loading_dots) else getString(R.string.sign_in)
     }
 
     private fun showSuccess(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showError(message: String, errorCode: String?) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-
-        when (errorCode) {
-            "user_not_found" -> {
-                snackbar.setAction("Зарегистрироваться") {
-                    navigateToRegister()
-                }
-            }
-            "expired_token", "invalid_token" -> { }
-        }
-
-        snackbar.show()
+    private fun showError(message: String) {
+        val toast = Toast.makeText(requireContext(), message, Toast.LENGTH_LONG)
+        toast.show()
     }
 
     private fun navigateToRegister() {

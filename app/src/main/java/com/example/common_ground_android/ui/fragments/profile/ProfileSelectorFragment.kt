@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +22,6 @@ import com.example.common_ground_android.ui.viewmodels.profile.ProfileSelectorSt
 import com.example.common_ground_android.ui.viewmodels.profile.ProfileSelectorViewModel
 import com.example.common_ground_android.ui.navigation.profile.ProfileSelectorFragmentDirections
 import com.example.common_ground_android.ui.viewmodels.profile.ProfileViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class ProfileSelectorFragment : Fragment() {
@@ -132,10 +132,10 @@ class ProfileSelectorFragment : Fragment() {
                 showEmptyState(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
             }
             is ProfileSelectorState.Empty -> {
@@ -156,7 +156,7 @@ class ProfileSelectorFragment : Fragment() {
             if (success) {
                 navigateToHome()
             } else {
-                Snackbar.make(binding.root, "Ошибка выбора профиля", Snackbar.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), R.string.error_selecting_profile, Toast.LENGTH_LONG).show()
             }
         }
     }

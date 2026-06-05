@@ -1,10 +1,11 @@
 package com.example.common_ground_android.ui.fragments.account
 
+import android.accounts.Account
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,8 +20,9 @@ import com.example.common_ground_android.ui.viewmodels.account.AccountSettingsSt
 import com.example.common_ground_android.ui.viewmodels.account.AccountSettingsViewModel
 import com.example.common_ground_android.ui.viewmodels.account.AccountSettingsViewModelFactory
 import com.example.common_ground_android.utils.ErrorHandler
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
@@ -122,26 +124,26 @@ class AccountSettingsFragment : Fragment() {
         emailInput.doOnTextChanged { text, _, _, _ ->
             val email = text.toString().trim()
             emailLayout.error = if (email.isNotEmpty() && !ValidationUtils.isValidEmail(email)) {
-                "Введите корректный email"
+                getString(R.string.validation_email_invalid)
             } else null
         }
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
             .setTitle(R.string.change_email)
             .setView(dialogView)
-            .setPositiveButton("Сохранить", null)
-            .setNegativeButton("Отмена", null)
+            .setPositiveButton(R.string.save, null)
+            .setNegativeButton(R.string.cancel, null)
             .create()
 
         dialog.setOnShowListener {
-            val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val button = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
             button.setOnClickListener {
                 val email = emailInput.text.toString().trim()
                 if (ValidationUtils.isValidEmail(email)) {
                     viewModel.updateEmail(email)
                     dialog.dismiss()
                 } else {
-                    emailLayout.error = "Введите корректный email"
+                    emailLayout.error = getString(R.string.validation_email_invalid)
                 }
             }
         }
@@ -149,13 +151,13 @@ class AccountSettingsFragment : Fragment() {
     }
 
     private fun showDeleteAccountConfirmation() {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
             .setTitle(R.string.delete_account)
             .setMessage(R.string.delete_account_confirmation)
-            .setPositiveButton("Удалить") { _, _ ->
+            .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.deleteAccount()
             }
-            .setNegativeButton("Отмена", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
@@ -164,22 +166,32 @@ class AccountSettingsFragment : Fragment() {
             is AccountSettingsState.Loading -> setLoading(true)
             is AccountSettingsState.Success -> {
                 setLoading(false)
-                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                if (state.message == Res.getString(R.string.password_updated_success)) {
+                    binding.newPasswordEdit.text?.clear()
+                    binding.confirmPasswordEdit.text?.clear()
+                }
                 viewModel.resetState()
             }
             is AccountSettingsState.Error -> {
                 setLoading(false)
                 if (ErrorHandler.isAuthError(state.errorCode)) {
                     viewModel.clearTokensAndLogout()
-                    Snackbar.make(binding.root, "Сессия истекла. Пожалуйста, войдите заново.", Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.error_session_expired_relogin, Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 } else {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
                 viewModel.resetState()
             }
             is AccountSettingsState.LoggedOut -> {
                 setLoading(false)
+                Toast.makeText(requireContext(), R.string.logged_out_account, Toast.LENGTH_LONG).show()
+                navigateToLogin()
+            }
+            is AccountSettingsState.DeleteAccount -> {
+                setLoading(false)
+                Toast.makeText(requireContext(), R.string.deleted_account, Toast.LENGTH_LONG).show()
                 navigateToLogin()
             }
             AccountSettingsState.Idle -> setLoading(false)

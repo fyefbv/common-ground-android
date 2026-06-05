@@ -2,11 +2,13 @@ package com.example.common_ground_android.ui.viewmodels.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common_ground_android.R
 import com.example.common_ground_android.network.model.domain.Interest
 import com.example.common_ground_android.network.model.response.NetworkResult
 import com.example.common_ground_android.network.repository.AuthRepository
 import com.example.common_ground_android.network.repository.InterestRepository
 import com.example.common_ground_android.network.repository.ProfileRepository
+import com.example.common_ground_android.utils.Res
 import com.example.common_ground_android.utils.ValidationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,9 +65,9 @@ class CreateProfileViewModel(
     fun updateUsername(username: String) {
         _username.value = username
         _usernameError.value = when {
-            username.isBlank() -> "Введите имя профиля"
-            username.contains(" ") -> "Имя не должно содержать пробелы"
-            !ValidationUtils.isValidUsername(username) -> "Имя должно содержать 3-20 символов (буквы, цифры, _)"
+            username.isBlank() -> Res.getString(R.string.validation_username_required)
+            username.contains(" ") -> Res.getString(R.string.validation_username_no_spaces)
+            !ValidationUtils.isValidUsername(username) -> Res.getString(R.string.validation_username_invalid)
             else -> null
         }
     }
@@ -73,7 +75,7 @@ class CreateProfileViewModel(
     fun updateBio(bio: String) {
         val trimmed = bio.trim()
         _bio.value = trimmed
-        _bioError.value = if (trimmed.length > 200) "Биография не должна превышать 200 символов" else null
+        _bioError.value = if (trimmed.length > 200) Res.getString(R.string.validation_bio_too_long) else null
     }
 
     fun addInterest(interest: Interest) {
@@ -120,7 +122,10 @@ class CreateProfileViewModel(
                     if (selectedIds.isNotEmpty()) {
                         val interestResult = profileRepository.addInterestsToProfileByUsername(profile.username, selectedIds)
                         if (interestResult is NetworkResult.Error) {
-                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось добавить интересы: ${interestResult.errorMessage}", interestResult.errorCode)
+                            _state.value = ProfileFormState.Error(
+                                String.format(Res.getString(R.string.error_profile_created_but_interests_failed), interestResult.errorMessage),
+                                interestResult.errorCode
+                            )
                             return@launch
                         }
                     }
@@ -128,17 +133,20 @@ class CreateProfileViewModel(
                     if (avatarBytes != null) {
                         val avatarResult = profileRepository.uploadAvatarByUsername(profile.username, avatarBytes)
                         if (avatarResult is NetworkResult.Error) {
-                            _state.value = ProfileFormState.Error("Профиль создан, но не удалось загрузить аватар: ${avatarResult.errorMessage}", avatarResult.errorCode)
+                            _state.value = ProfileFormState.Error(
+                                String.format(Res.getString(R.string.error_profile_created_but_avatar_failed), avatarResult.errorMessage),
+                                avatarResult.errorCode
+                            )
                             return@launch
                         }
                     }
-                    _state.value = ProfileFormState.Success("Профиль создан")
+                    _state.value = ProfileFormState.Success(Res.getString(R.string.profile_created_success))
                 }
                 is NetworkResult.Error -> {
                     _state.value = ProfileFormState.Error(result.errorMessage, result.errorCode)
                 }
                 else -> {
-                    _state.value = ProfileFormState.Error("Неизвестная ошибка")
+                    _state.value = ProfileFormState.Error(Res.getString(R.string.error_unknown_error))
                 }
             }
         }
@@ -146,8 +154,8 @@ class CreateProfileViewModel(
 
     private fun getValidationErrors(): List<String> {
         val errors = mutableListOf<String>()
-        _usernameError.value?.let { errors.add("Поле 'Имя': $it") }
-        _bioError.value?.let { errors.add("Поле 'Биография': $it") }
+        _usernameError.value?.let { errors.add("${Res.getString(R.string.name)}: $it") }
+        _bioError.value?.let { errors.add("${Res.getString(R.string.bio)}: $it") }
         return errors
     }
 

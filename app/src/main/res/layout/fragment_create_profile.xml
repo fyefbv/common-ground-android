@@ -122,11 +122,13 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
+                        android:layout_height="wrap_content"
                         android:hint="@string/profile_name"
                         android:textColor="@color/md_on_surface"
                         android:textSize="@dimen/text_base"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:imeOptions="actionDone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

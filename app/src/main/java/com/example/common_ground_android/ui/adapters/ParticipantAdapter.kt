@@ -52,20 +52,20 @@ class ParticipantAdapter(
             binding.participantName.text = profile?.username ?: participant.profileId.take(8)
 
             val roleText = when (participant.role) {
-                ParticipantRole.CREATOR -> "Создатель"
-                ParticipantRole.MODERATOR -> "Модератор"
-                else -> "Участник"
+                ParticipantRole.CREATOR -> binding.root.context.getString(R.string.role_creator)
+                ParticipantRole.MODERATOR -> binding.root.context.getString(R.string.role_moderator)
+                else -> binding.root.context.getString(R.string.role_member)
             }
             binding.participantRoleChip.text = roleText
 
             if (participant.isBanned) {
                 binding.participantStatusChip.visibility = View.VISIBLE
-                binding.participantStatusChip.text = "Забанен"
+                binding.participantStatusChip.text = binding.root.context.getString(R.string.status_banned)
                 binding.participantStatusChip.setChipBackgroundColorResource(R.color.md_error_container)
                 binding.participantStatusChip.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_on_error_container))
             } else if (participant.isMuted) {
                 binding.participantStatusChip.visibility = View.VISIBLE
-                binding.participantStatusChip.text = "Замучен"
+                binding.participantStatusChip.text = binding.root.context.getString(R.string.status_muted)
                 binding.participantStatusChip.setChipBackgroundColorResource(R.color.md_secondary_container)
                 binding.participantStatusChip.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_on_secondary_container))
             } else {
