@@ -135,7 +135,7 @@
     <string name="error_unknown">Произошла неизвестная ошибка</string>
 
     <!-- Room Management -->
-    <string name="room_management">Управление комнатой</string>
+    <string name="room_management">Информация о комнате</string>
     <string name="participants">Участники</string>
     <string name="settings">Настройки</string>
     <string name="leave_room">Покинуть комнату</string>
@@ -312,6 +312,8 @@
     <string name="error_host_not_found">Сервер не найден. Проверьте подключение</string>
     <string name="error_session_expired_relogin">Сессия истекла. Пожалуйста, войдите заново.</string>
     <string name="error_failed_to_read_body">Не удалось прочитать тело ошибки</string>
+    <string name="error_server_unavailable">Сервер временно недоступен или вернул неожиданный ответ.</string>
+    <string name="error_search_cancelled_new_device">Поиск был отменён, так как начат новый сеанс с другого устройства.</string>
 
     <!-- Validation messages -->
     <string name="validation_email_required">Введите email</string>
@@ -338,7 +340,7 @@
     <string name="validation_room_name_required">Введите название комнаты</string>
 
     <!-- Profile roles -->
-    <string name="role_creator">Создатель</string>
+    <string name="role_creator">Владелец</string>
     <string name="role_moderator">Модератор</string>
     <string name="role_member">Участник</string>
     <string name="status_banned">Забанен</string>

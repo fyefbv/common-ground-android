@@ -108,6 +108,16 @@ class KtorClient(private val tokenManager: TokenManager) {
 
         HttpResponseValidator {
             validateResponse { response ->
+                response.contentType()?.match(ContentType.Application.Json)?.let {
+                    if (!it) {
+                        throw NetworkException.ServerError(
+                            status = response.status,
+                            message = Res.getString(R.string.error_server_unavailable),
+                            errorCode = "invalid_response_format"
+                        )
+                    }
+                }
+
                 val statusCode = response.status
 
                 if (!statusCode.isSuccess()) {

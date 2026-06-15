@@ -66,6 +66,7 @@ object ErrorHandler {
                     "cannot_rate_non_completed_session" -> Res.getString(R.string.error_cannot_rate_non_completed_session)
                     "extension_not_approved" -> Res.getString(R.string.error_extension_not_approved)
                     "no_matching_found" -> Res.getString(R.string.error_no_matching_found)
+                    "search_cancelled" -> Res.getString(R.string.error_search_cancelled_new_device)
 
                     else -> exception.message ?: Res.getString(R.string.error_unknown_error)
                 }

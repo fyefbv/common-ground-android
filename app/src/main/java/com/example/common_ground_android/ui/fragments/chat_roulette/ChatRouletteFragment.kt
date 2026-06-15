@@ -193,7 +193,7 @@ class ChatRouletteFragment : Fragment() {
                     navigateToLogin()
                 } else {
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                    if (state.errorCode == "no_matching_found") {
+                    if (state.errorCode == "no_matching_found" || state.errorCode == "search_cancelled") {
                         findNavController().navigateUp()
                     }
                 }
